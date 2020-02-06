@@ -1,0 +1,39 @@
+\documentclass{amsart}
+
+
+\def\vv{{\bf v}}
+\def\ww{{\bf w}}
+\def\R{{\Bbb R}}
+
+\begin{document}
+
+\centerline{A proof of the existence of the regular icosahedron.}
+
+
+Let $\lambda > 1$ be a real number, and consider the set $X$ 
+consisting of the 12 vectors 
+$$(0,\pm 1,\pm\lambda), \qquad 
+(\pm 1,\pm\lambda,0), \qquad 
+(\pm\lambda,0,\pm 1).$$ 
+Let $G$ be the group of symmetries of the set $X$, or equivalently 
+of its convex hull in $\R^3$.  
+For any choice of $\lambda$, show that 24 divides $|G|$, and 
+show that $G$ acts transitively on $X$.  (Hint: 
+find a subgroup of $G$ of order 8 and another subgroup of $G$ of 
+order 3.)  
+
+Find all possible dot products $\vv.\ww$ for $\vv,\ww\in X$.  
+(Hint: since you have already shown that $G$ acts 
+transitively on $X$, it suffices to fix one particular choice of
+$\vv$.)  Check that for each $\vv\in X$, there are five distinct 
+vectors $\ww\in X - \{\vv\}$ such 
+that $\vv.\ww>0$.  Call these 5 $\ww$ the set $N_\vv$ of neighbours of
+$\vv$.  Find a value for $\lambda$ for which all of the products 
+$\vv.\ww$ for $\ww\in N_\vv$ are equal.  For this value of $\lambda$, 
+show that the elements of $N_\vv$ form a regular pentagon lying in a 
+plane orthogonal to $\vv$, whose centre lies on the line $t\vv$.  
+Deduce that for this particular value of $\lambda$, the group $G$ 
+contains an element of order 5, and hence $|G| \geq 120$, the order 
+of the group of symmetries of the regular icosahedron.  
+
+\end{document}

@@ -1,0 +1,2382 @@
+\documentclass{amsart}
+\usepackage{fullpage}
+\usepackage{amscd,amssymb}
+\usepackage{verbatim}
+\usepackage{tikz}
+
+\DeclareMathOperator{\Dir}{Dir}
+\DeclareMathOperator{\Fix}{Fix}
+\DeclareMathOperator{\Symm}{Symm}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\Inn}{Inn}
+\DeclareMathOperator{\Out}{Out}
+\DeclareMathOperator{\Trans}{Trans}
+
+\DeclareMathOperator{\Tet}{Tet}
+\DeclareMathOperator{\Cube}{Cube}
+\DeclareMathOperator{\Oct}{Oct}
+\DeclareMathOperator{\Dodec}{Dodec}
+\DeclareMathOperator{\Icos}{Icos}
+
+\newcommand{\xra}{\xrightarrow}
+
+\renewcommand{\:}{\colon}
+\newcommand{\sse}{\subseteq}
+\newcommand{\sm}{\setminus}
+\newcommand{\ov}{\overline}
+\newcommand{\tm}{\times}
+\newcommand{\ip}[1]{\langle #1\rangle}
+\newcommand{\st}{\;|\;}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\bsm}       {\left(\begin{smallmatrix}}
+\newcommand{\esm}       {\end{smallmatrix}\right)}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\newcommand{\al}        {\alpha}
+\newcommand{\bt}        {\beta} 
+\newcommand{\gm}        {\gamma}
+\newcommand{\dl}        {\delta}
+\newcommand{\ep}        {\epsilon}
+\newcommand{\zt}        {\zeta}
+\newcommand{\et}        {\eta}
+\newcommand{\tht}       {\theta}
+\newcommand{\io}        {\iota}
+\newcommand{\kp}        {\kappa}
+\newcommand{\lm}        {\lambda}
+\newcommand{\ph}        {\phi}
+\newcommand{\ch}        {\chi}
+\newcommand{\ps}        {\psi}
+\newcommand{\rh}        {\rho}
+\newcommand{\sg}        {\sigma}
+\newcommand{\om}        {\omega}
+
+\definecolor{olivegreen}{cmyk}{0.64,0,0.95,0.40}
+
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}
+\newenvironment{solution}{{\noindent\bf Solution:}}{}
+
+\begin{document}
+\title{Problems on Groups and Symmetry}
+\author{N.~P.~Strickland}
+
+\maketitle 
+
+\begin{exercise}
+ Note that $R_\pi(x)=-x$.  Give expressions for $R_{a,\pi}(x)$,
+ $R_{a,\pi}^{-1}(x)$ and
+ $R_{a,\pi}R_{b,\pi}R_{a,\pi}^{-1}R_{b,\pi}^{-1}(x)$.  Check that your
+ last answer is consistent with the formula in the notes for
+ $R_{a,\tht}R_{b,\phi}R_{a,\tht}^{-1}R_{b,\phi}^{-1}$. 
+\end{exercise}
+\begin{solution}
+ First, we have $R_{a,\pi}=T_aR_\pi T_{-a}$, so
+ $R_{a,\pi}(x)=a+R_\pi(x-a)=a-(x-a)=2a-x$.  If $y=2a-x$ then $x=2a-y$;
+ this shows that $R_{a,\pi}^{-1}(y)=2a-y$ and thus
+ $R_{a,\pi}^{-1}=R_{a,\pi}$.  Using this we have
+ \begin{align*}
+  R_{a,\pi}R_{b,\pi}R_{a,\pi}^{-1}R_{b,\pi}^{-1}(x) &=
+     2a-(2b-(2a-(2b-x))) \\
+  &= 2a-(2b-(2a-2b+x)) \\
+  &= 2a-(4b-2a-x)) \\
+  &= 4a-4b+x,
+ \end{align*}
+ so $[R_{a,\pi},R_{b,\pi}]=T_{4(a-b)}$.  On the other hand, we saw in
+ lectures that
+ $[R_{a,\tht},R_{b,\phi}]=T_{(1-R_\tht)(1-R_\phi)(a-b)}$.  This is
+ consistent because $1-R_\pi$ is just twice the identity matrix, so
+ $(1-R_\tht)(1-R_\phi)(a-b)=4(a-b)$.
+\end{solution}
+
+\begin{exercise}
+ Find $\Symm(X)$ and $\Dir(X)$ when $X\subseteq\R^2$ is
+ \begin{itemize}
+ \item[(a)] The unit disc centred at the origin
+ \item[(b)] The isosceles triangle with vertices $(0,2)$, $(-1,-3)$ and
+  $(1, -3)$.
+ \item[(c)] The four points $(1,1)$, $(1,-1)$, $(-1,1)$ and $(-1,-1)$.
+ \item[(d)] The square with vertices $(-1, 2)$, $(-1,-2)$, $(3, 2)$ and
+  $(3, -2)$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] Here $\Symm(X)=O_2$ and $\Dir(X)=SO_2$.  This just means
+  that the unit disc is invariant under any rotation about the origin,
+  and under any reflection across a line through the origin, which is
+  geometrically clear.
+
+  For a more algebraic proof, note that $X=\{x\in\R^2\st\;\|x\|\leq
+  1\}$.  For any $A\in O_2$ and $x\in X$ we have $\|Ax\|=\|x\|\leq 1$
+  so $Ax\in X$; thus $AX\sse X$.  Conversely, if $y\in X$ then
+  $\|A^{-1}y\|=\|y\|\leq 1$ so the point $x:=A^{-1}y$ lies in $X$.  We
+  have $y=Ax$ so $y\in AX$.  This shows that $X\sse AX$, so $X=AX$, so
+  $A\in\Symm(X)$.  As $A$ was an arbitrary element of $O_2$ we have
+  $\Symm(X)=O_2$ and $\Dir(X)=\Symm(X)\cap SO_2=O_2\cap SO_2=SO_2$, as
+  claimed.
+ \item[(b)] Here it is evident that the only symmetry is under
+  reflection across the $y$-axis, which lies at angle $\pi/2$ to the
+  horizontal.  Recall that $S_\tht$ is the reflection across the line
+  at angle $\tht/2$ to the horizontal, so reflection across the
+  $y$-axis is $S_\pi$.  Thus $\Symm(X)=\{1,S_\pi\}$.  This contains no
+  rotations other than the identity, so $\Dir(X)=\{1\}$.
+  \begin{center}
+   \begin{tikzpicture}
+    \draw[->] (-1.2,0) -- (1.2,0);
+    \draw[->] (0,-3.2) -- (0,2.4);
+    \draw[->] (0,2.2) -- (0.2,2.2);
+    \draw[->] (0,2.2) -- (-0.2,2.2);
+    \draw (0,2) -- (1,-3) -- (-1,-3) -- (0,2);
+    \draw (0.9,-1) node {$X$};
+    \draw (0.3,2.2) node[anchor=west] {$S_\pi$};
+   \end{tikzpicture}
+  \end{center}
+ \item[(c)] Here $X$ consists of the vertices of a square of side $2$
+  with horizontal and vertical sides (note that this is different from
+  our usual square $X_4$).  We have $\Symm(X)=D_4$ and $\Dir(X)=C_4$.
+  Indeed, it is clear that $X$ is invariant under a rotation $R_\tht$
+  if and only if $\tht$ is a multiple of a quarter-turn, or in other
+  words a multiple of $\pi/2=2\pi/4$.  Thus if we put $R=R_{\pi/2}$ we
+  find that
+  \[ \Dir(X)=\{1=R_0,R_{\pi/2},R_\pi,R_{3\pi/2}\}=
+      \{1,R,R^2,R^3\}=C_4.
+  \]
+  It is also clear that $X$ is unchanged if we reflect it across the
+  $x$-axis, so $S_0\in\Symm(X)$.  If $A\in\Symm(X)$ is a reflection
+  then $AS_0$ is a rotation and lies in $\Symm(X)$ so $AS_0=R^k$ for
+  some $k$ so $A=AS_0S_0=R^kS_0$ so $A\in D_4$.  If $A\in\Symm(X)$ is
+  a rotation we have seen that $A\in C_4\sse D_4$, so again $A\in D_4$; 
+  thus $\Symm(X)\sse D_4$.  As $R$ and $S_0$ preserve $X$ we also have
+  $D_4\sse\Symm(X)$, so $\Symm(X)=D_4$.  Alternatively, we can just
+  observe geometrically that there are four lines of reflectional
+  symmetry at angles $0$, $\pi/4$, $\pi/2$ and $3\pi/4$ to the
+  $x$-axis, so the reflections in $\Symm(X)$ are $S_0$, $S_{\pi/2}$,
+  $S_\pi$ and $S_{3\pi/2}$. 
+ \item[(d)] Here $X$ is an off-centre square.
+  \begin{center}
+   \begin{tikzpicture}
+    \draw[->] (-1.3,0) -- (3.5,0);
+    \draw[->] (0,-2.3) -- (0,2.3);
+    \draw (-1,-2) -- (-1,2) -- (3,2) -- (3,-2) -- (-1,-2);
+    \fill (1,0) circle(0.05);
+    \draw[->] (3.2,0) -- (3.2,0.2);
+    \draw[->] (3.2,0) -- (3.2,-0.2);
+    \draw (3.3,0.3) node[anchor=south west] {$S_0$};
+    \draw (1,-0.1) node[anchor=north west] {$(1,0)$};
+   \end{tikzpicture}
+  \end{center}
+
+  There is a lot of symmetry about the point $(1,0)$ at the centre of
+  the square.  However, the question asks about $\Symm(X)$, which is by
+  definition the group of symmetries about the point $(0,0)$, and from
+  that point of view the picture is much less symmetrical.  In fact,
+  the only symmetry is the reflection across the $x$-axis, so
+  $\Symm(X)=\{1,S_0\}$ and $\Dir(X)=\{1\}$.
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ \begin{itemize}
+  \item[(a)] What can you say about $R_\pi A R_\pi^{-1}$ for
+   $A\in O_2$? (Try writing out the matrices explicitly).
+  \item[(b)] Show that $R_{\pi/n}X_n\neq X_n$ but that
+   $D_n=R_{\pi/n}D_nR_{\pi/n}^{-1}$.
+  \item[(c)] Deduce that $R_{\pi k/n}D_nR_{\pi k/n}^{-1}=D_n$ for all
+   $k\in\Z$. 
+  \item[(d)]
+   Let $X$ be the regular heptagon centred at $(0,0)$ with one vertex at
+   $(0,1)$.  Find $n$ and $\tht$ such that
+   $\Symm(X)=R_\tht D_n R_\tht^{-1}$.  There are three different
+   possibilities for $\tht$ in the range $[0,\pi/2)$; find all of
+   them.
+   \begin{center}
+    \begin{tikzpicture}[scale=2]
+     \draw[->] (-1.2,0) -- (1.2,0);
+     \draw[->] (0,-1.2) -- (0,1.2);
+     \def\PA{( 0.00, 1.00)}
+     \def\PB{(-0.78, 0.62)}
+     \def\PC{(-0.97,-0.22)}
+     \def\PD{(-0.43,-0.90)}
+     \def\PE{( 0.43,-0.90)}
+     \def\PF{( 0.97,-0.22)}
+     \def\PG{( 0.78, 0.62)}
+     \draw \PA -- \PB -- \PC -- \PD -- \PE -- \PF -- \PG -- \PA -- cycle;     
+    \end{tikzpicture}
+   \end{center}
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+  \item[(a)] $R_\pi$ is the matrix $\bsm -1&0\\0&-1\esm$, in other
+   words $R_\pi=-I$.  This means that $R_\pi^{-1}=-I$ also and thus
+   that $R_\pi A R_\pi^{-1}=-(-A)=A$ for all $A$.
+  \item[(b)] The polygon $X_n$ has vertices $v_k$ with polar
+   coordinates $[1,2\pi k/n]$.  The map $R_{\pi/n}$ sends $v_0$ to
+   $[1,\pi/n]$ which is not a vertex, so $R_{\pi/n}X_n\neq X_n$.  The
+   elements of $D_n$ have the form $R_{2k\pi/n}$ or $S_{2k\pi/n}$ for
+   $k\in\Z$.  Using the equations $R_\al R_\bt R_\al^{-1}=R_\bt$ and
+   $R_\al S_\bt R_\al^{-1}=S_{\bt+2\al}$ we see that
+   \begin{align*}
+    R_{\pi/n} R_{2\pi k/n} R_{\pi/n}^{-1} &= R_{2\pi k/n}\in D_n \\
+    R_{\pi/n} S_{2\pi k/n} R_{\pi/n}^{-1} &= S_{2\pi(k+1)/n}\in D_n.
+   \end{align*}
+   This shows that $R_{\pi/n}D_n R_{\pi/n}^{-1}\sse D_n$ but these two
+   sets have the same size so they must actually be equal.
+  \item[(c)]
+   If $R_{\pi k/n}D_n R_{\pi k/n}^{-1}=D_n$ then we can substitute
+   $D_n=R_{\pi/n} D_n R_{\pi/n}^{-1}$ on the left hand side to deduce
+   that 
+   \[ R_{\pi(k+1)/n}D_n R_{\pi(k+1)/n}^{-1}=
+      R_{\pi k/n} R_{\pi/n}D_n R_{\pi/n}^{-1} R_{\pi k/n}^{-1}=
+      R_{\pi k/n} D_n R_{\pi k/n}^{-1}=
+      D_n.
+   \]
+   By induction, this proves~(c) for all $k\geq 0$.  If $k<0$ we have
+   $k=-m$ for some $m>0$ and we have proved already that 
+   $D_n=R_{\pi m/n} D_n R_{\pi m/n}^{-1}$.  If we multiply this
+   equation on the left by $R_{\pi m/n}^{-1}$ and on the right by
+   $R_{\pi m/n}$ we obtain $R_{\pi -m/n} D_n R_{\pi m/n}=D_n$, or in
+   other words $R_{\pi k/n}D_n R_{\pi k/n}^{-1}=D_n$, as required.
+  \item[(d)]
+   We have $X=R_{\pi/2}X_7$ so 
+   \[ \Symm(X) = R_{\pi/2}\Symm(X_7)R_{\pi/2}^{-1}
+               = R_{\pi/2} D_7 R_{\pi/2}^{-1} .
+   \]
+   More generally, by using part~(c) we see that
+   $R_{\pi k/7}D_7 R_{\pi k/7}^{-1}=D_7$ and thus that 
+   \[ \Symm(X) = R_{\pi/2} D_7 R_{\pi/2}^{-1}
+               = R_{\pi/2} R_{\pi k/7}D_7 R_{\pi k/7}^{-1} R_{\pi/2}^{-1}
+               = R_{(2k+7)\pi/14} D_7 R_{(2k+7)\pi/14}^{-1}.
+   \]
+   Thus, if we put $\tht=(2k+7)\pi/14$ we again have
+   $\Symm(X)=R_\tht D_7R_\tht^{-1}$. 
+
+   Conversely, suppose that $\tht$ satisfies 
+   $\Symm(X)=R_\tht D_7R_\tht^{-1}$.  We then have
+   \[ D_7 = R_{\pi/2}^{-1}\Symm(X)R_{\pi/2} =
+            R_{\pi/2}^{-1}R_\tht D_7 R_{\pi/2}R_\tht^{-1} = 
+            R_{\tht-\pi/2}D_7R_{\tht-\pi/2}^{-1}.
+   \]
+   As $S_0\in D_7$ this implies that the element
+   $S_{2\tht-\pi}=R_{\tht-\pi/2}S_0R_{\tht-\pi/2}^{-1}$ also lies in
+   $D_7$.  However, we only have $S_\phi\in D_7$ if $\phi$ is a multiple
+   of $2\pi/7$, so $2\tht-\pi=2k\pi/7$ for some $k$, so
+   $\tht=\pi/2+k\pi/7=(2k+7)\pi/14$.  Thus we have
+   $\Symm(X)=R_\tht D_7R_\tht^{-1}$ if and only if $\tht$ has the form
+   $(2k+7)\pi/14$ for some integer $k$.  For $\tht\in[0,\pi/2)$ we
+   must have $k=-3$ or $k=-2$ or $k=-1$, so
+   $\tht\in\{\pi/14,3\pi/14,5\pi/14\}$. 
+ \end{itemize} 
+\end{solution}
+
+\begin{exercise}
+Prove that $D_n$ is generated by reflections.
+
+(A group $G$ is said to be {\em generated} by a subset $Y$ if every
+$g\in G$ can be written in the form
+\[ g = y_1^{a_1}y_2^{a_2}\cdots y_n^{a_n} \]
+for some $n \geq 1$, $y_1,y_2,\ldots,y_n\in Y$ and
+$a_1,a_2,\ldots,a_n\in\{\pm 1\}$.)
+
+\end{exercise}
+\begin{solution}
+ Write $R=R_{2\pi/n}$ and $S=S_0$ so 
+ \[ D_n=\{1,R,\ldots,R^{n-1},S,RS,\ldots,R^{n-1}S\}. \]
+ Using the fact that $R_\al S_\bt=S_{\al+\bt}$ we see that
+ $R^kS=R_{2k\pi/n}S_0=S_{2k\pi/n}$, which is a reflection.  Also,
+ because $S^2=1$ we see that $R^k=(R^kS)S$.  Here $R^kS$ and $S$ are
+ reflections lying in $D_n$, so $R^k$ can be written as a product of
+ two reflections lying in $D_n$.  Thus every element in $D_n$ is
+ either a reflection or a product of reflections, so the reflections
+ in $D_n$ generate $D_n$ as claimed.
+\end{solution}
+
+\begin{exercise}
+ Find the conjugacy classes of the elements of $D_n$ and hence find the
+ centre of $D_n$.  [Hint: First deal with the cases of $D_1$ and $D_2$
+ which are a bit different.  Then treat $D_3$ and $D_4$. You are then
+ probably ready for the general case. See also the case treated in
+ lectures!]
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+  \item $D_1=\{1,S\}$; the conjugacy classes are $\{1\}$ and $\{S\}$.
+  \item $D_2=\{I,R,S,SR\}$.  We have $R^2=1$ so $R=R^{-1}$.  This
+    means that $SRS=R^{-1}=R$, so $SR=RS$, so the group is
+    commutative.  This means that each element is in a separate
+    conjugacy class, so the classes are $\{1\}$, $\{R\}$, $\{S\}$ and
+    $\{SR\}$. 
+  \item $D_3=\{1,R,R^2,S,SR,SR^2\}$.  We have $R^3=1$ so
+   $S^{-1}RS=R^{-1}=R^2$, showing that $R$ and $R^2$ are conjugate.  
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Use the First Isomorphism Theorem to prove that $SO_2\simeq\R/2\pi\Z$.
+\end{exercise}
+\begin{solution}
+ Define $\phi\:\R\xra{}SO_2$ by $\phi(\al)=R_\al$.  We have
+ \[ \phi(\al)\phi(\bt)=R_\al R_\bt=R_{\al+\bt}=\phi(\al+\bt), \]
+ so $\phi$ is a homomorphism.  Any element of $SO_2$ has the form
+ $R_\al=\phi(\al)$ for some $\al$, so $\phi$ is surjective.  Thus, the
+ First Isomorphism Theorem gives us an isomorphism
+ $\ov{\phi}\:\R/\ker(\phi)\xra{}SO_2$.  Moreover, we have
+ $\al\in\ker(\phi)$ iff $\phi(\al)=1$ iff $R_\al=R_0$ iff $\al$ is an
+ integer multiple of $2\pi$, so $\ker(\phi)=2\pi\Z$.  Thus
+ $\R/2\pi\Z\simeq SO_2$ as claimed.
+\end{solution}
+
+\begin{exercise}
+ Suppose $x_0,x_1,\ldots x_n\in\R^n$ have the property that
+ $x_1-x_0,x_2-x_0,\ldots,x_n-x_0 $ is a basis. If $f,g$ are isometries
+ of $\R^n$ so that $f(x_i)=g(x_i)$ for $i=0,1,2,\ldots,n$ then show
+ that $f=g$. Thus for instance an isometry of $\R^2$ is determined by
+ the image of three points.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $\R^\infty$ be the set of sequences $x=(x_1,x_2,\ldots)$ such that
+ $x_n=0$ for $n\gg 0$.  We define as usual
+ \begin{align*}
+  \ip{x,y} &= \sum_{k=1}^\infty x_k y_k \\
+  \|x\|    &= \sqrt{\ip{x,x}} \\
+  d(x,y)   &= \|x-y\|. 
+ \end{align*}
+ Note that the infinite sum is really only a finite sum because when
+ $k$ is large we have $x_k=y_k=0$.  Thus, there is no convergence
+ problem to worry about.  Construct a function
+ $f\:\R^\infty\xra{}\R^\infty$ that preserves distances but is not a
+ bijection. 
+\end{exercise}
+\begin{solution}
+ Define $f(x_1,x_2,x_3,\ldots)=(0,x_1,x_2,x_3,\ldots)$.  This is a
+ linear map, and it satisfies
+ \[ \|f(x)\|^2 = 0^2 + x_1^2 + x_2^2 + \ldots = \|x\|^2. \]
+ We thus have 
+ \[ d(f(x),f(y))=\|f(x)-f(y)\|=\|f(x-y)\|=\|x-y\|=d(x,y), \]
+ so $f$ preserves distances.  However, the first entry in $f(x)$ is
+ always $0$, so $f(x)$ cannot be equal to $(1,0,0,\ldots)$ for any
+ $x$, so $f$ is not surjective and thus not bijective.
+\end{solution}
+
+\begin{exercise}
+ Find the conjugacy classes in $O_2$.  What is the centre of $O_2$?
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ \begin{itemize}
+ \item[(a)] Consider the action of $O_2$ on $\R^2$. Identify the orbits
+  as subsets of $\R^2$ and draw a picture. Identify the stabilizers.
+ \item[(b)] Consider the action of $I(\R^2)$ on $\R^2$. Identify the orbits
+  as subsets of $\R^2$ and draw a picture. Identify the stabilizers.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $X$ be the following subset of $\R^2$ (with centre at the
+ origin).  The group $D_3$ acts on $X$.  Find the orbits of this
+ action, find the fixed points of all the elements of $D_3$, and
+ verify the orbit counting theorem.
+ \begin{center}
+  \begin{tikzpicture}[scale=2.5]
+   \foreach \i in {0,60,...,300} {
+    \fill (\i:1) circle(0.03);
+    \fill ({\i+30}:0.87) circle(0.03);
+   }
+  \end{tikzpicture}
+ \end{center}
+\end{exercise}
+\begin{solution}
+ The points marked $1$ form an orbit of size $3$, the points marked
+ $2$ form another orbit of size $3$, and the points marked $3$ form an
+ orbit of size $6$.  Thus, there are $3$ orbits altogether.
+ \begin{center}
+  \begin{tikzpicture}[scale=2.5]
+   \foreach \i in {0,120,240} {
+    \draw (\i:1) -- (\i:-1);
+    \fill[blue] (\i:1) circle(0.03);
+    \draw (\i:1.1) node{$1$};
+    \fill[red] ({\i+60}:1) circle(0.03);
+    \draw ({\i+60}:1.1) node{$2$};
+   }
+   \foreach \i in {0,60,...,300} {
+    \fill[green] ({\i+30}:0.88) circle(0.03);
+    \draw ({\i+30}:1.1) node{$3$};
+   }
+  \end{tikzpicture}
+ \end{center}
+ Recall that 
+ \[ D_3=\{1,R_{2\pi/3},R_{4\pi/3},S_0,S_{2\pi/3},S_{4\pi/3}\}. \]
+ The identity element of $D_3$ fixes all $12$ points of $X$.  The
+ rotations $R_{2\pi/3}$ and $R_{4\pi/3}$ have no fixed points in $X$.
+ The axis of the reflection $S_0$ passes through $2$ of the points of
+ $X$.  These two points are fixed under $S_0$, and the remaining
+ points are not.  Similarly, the reflections $S_{2\pi/3}$ and
+ $S_{4\pi/3}$ have two fixed points each.  Thus
+ \[ \frac{1}{|G|}\sum_{g\in G}|\Fix(g)| = 
+     \frac{1}{6}(12+0+0+2+2+2) = 3, 
+ \]
+ which is equal to the number of orbits, as predicted by the
+ orbit counting theorem.
+\end{solution}
+
+\begin{exercise}
+ Find an infinite subgroup $G<SO_2$ such that $G\neq SO_2$.  [Hint:
+ think about rational and irrational numbers.]
+\end{exercise}
+\begin{solution}
+ One possibility is to choose an irrational number $\al$ and define
+ $R=R_{2\pi\al}$ and 
+ \[ G = \ip{R} = \{R^n\st n\in\Z\} = \{R_{2\pi\al n}\st n\in\Z\}. \]
+ This is clearly a subgroup of $SO_2$ (because $1=R^0\in G$ and
+ $R^nR^m=R^{n+m}\in G$ and $(R^n)^{-1}=R^{-n}\in G$ for all
+ $n,m\in\Z$.)  
+
+ I next claim that all the elements $R^n$ are distinct, in other words
+ that $R^n\neq R^m$ whenever $n\neq m$.  Indeed, if $R^n=R^m$ then
+ $R_{2\pi\al(n-m)}=R^{n-m}=1$ so $2\pi\al(n-m)=2\pi k$ for some
+ integer $k$.  If $n\neq m$ then this implies that $\al=k/(n-m)$,
+ contradicting our assumption that $\al$ is irrational.  This proves
+ that the elements $R^n$ are all distinct, so $G$ is infinite.  
+
+ Finally we must prove that $G\neq SO_2$.  For those of you that know
+ about countability, the ``real reason'' is that $G$ is countable and
+ $SO_2$ is not.  For a more direct proof, it will suffice to show that
+ $R_\pi\not\in G$.  If $R_\pi$ were an element of $G$ we would have
+ $R_\pi=R^k$ for some $k\in\Z$, and $k\neq 0$ because certainly
+ $R_\pi\neq 1=R^0$.  This would give $R^{2k}=R_\pi^2=1=R^0$,
+ contradicting the fact that all the $R^n$'s are distinct.
+
+ Two other possibilities are to take $G=\{R_{a\pi}\st a\in\Q\}$ or to
+ take $G=\{R_\tht\st\tht\in\Q\}$.
+\end{solution}
+
+\begin{exercise}
+ Put $H_n=\{A\in O_2\st A^n=1\}$.  Show that if $n$ is odd then $H_n$ is
+ a finite subgroup of $O_2$ (which one?), but if $n$ is even then
+ $H_n$ is not a subgroup at all.
+\end{exercise}
+\begin{solution}
+ First suppose that $n$ is odd, say $n=2m+1$.  For any $\tht$ we have
+ $S_\tht^2=1$ so $S_\tht^n=(S_\tht^2)^mS_\tht=S_\tht\neq 1$, so
+ $S_\tht\not\in H_n$.  On the other hand, we have $R_\tht^n=1$ iff
+ $n\tht=2k\pi$ for some $k\in\Z$, iff $\tht=2k\pi/n$ for some $k$, iff
+ $R_\tht\in C_n$.  Thus $H_n=C_n$, which is a finite subgroup of
+ $O_2$.
+
+ Now suppose instead that $n$ is even, say $n=2m$.  Then for all
+ $\tht$ we have $S_\tht^n=(S_\tht^2)^m=1$, so $S_\tht\in H_n$.  For
+ most $\tht$ we have $R_\tht^n\neq 1$, so $R_\tht\not\in H_n$.  Thus
+ $S_\tht$ and $S_0$ lie in $H_n$ but $S_\tht S_0=R_\tht$ does not;
+ this shows that $H_n$ is not a subgroup.
+\end{solution}
+
+\begin{exercise}
+ Show that if $G/Z(G)$ is a cyclic group then $G$ is abelian (hence
+ in fact $Z(G)=G$). Identify $D_4/Z(D_4)$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ The Quaternion group of order 8  is the group
+ \[ G = \{\pm 1, \pm i, \pm j, \pm k \} \]
+ with $ij=-ji=k$, $jk=-kj=i$, $ki=-ik=j$, $i^2=j^2=k^2=-1$. 
+ Do there exist subgroups $N,Q<G$ (with $N\neq G$ and $Q\neq G$) such
+ that $G$ is the semidirect product of $N$ and $Q$?  (One approach is
+ just to find all the subgroups of $G$).
+\end{exercise}
+\begin{solution}
+ No such subgroups exist.  To prove this, I first claim that any
+ nontrivial subgroup $H\leq G$ contains the element $-1$.  Indeed, we
+ have $G=\{1,-1,i,-i,j,-j,k,-k\}$ and
+ $i^2=(-i)^2=j^2=(-j)^2=k^2=(-k)^2=-1$.  As $H$ is nontrivial it must
+ either contain $-1$ (so there is nothing to say) or some element
+ $h\in\{\pm i,\pm j,\pm k\}$, in which case it also contains $h^2=-1$,
+ as claimed.  
+
+ Now suppose that $G$ is the semidirect product of $N$ and $Q$, where
+ $N\neq G$ and $Q\neq G$.  We then have $|N|<|G|$ so $|Q|=|G|/|N|>1$,
+ so $Q$ is nontrivial, so $-1\in Q$.  Similarly $-1\in N$, so
+ $-1\in N\cap Q$.  However, for a semidirect product we must have
+ $N\cap Q=\{1\}$, so this gives a contradiction.
+ 
+ The complete list of subgroups is as follows:
+ \begin{align*}
+  & \{1\} \\
+  & \{1,-1\} \\
+  & \{1,-1,i,-i\} \\
+  & \{1,-1,j,-j\} \\
+  & \{1,-1,k,-k\} \\
+  & \{1,-1,i,-i,j,-j,k,-k\}.
+ \end{align*}
+\end{solution}
+
+\begin{exercise}
+ If $X$ is a non-empty subset of a group $G$, we write
+ \[ \langle X \rangle = 
+    \left\{ x_1^{\varepsilon_1} \cdots x_t^{\varepsilon_t}
+     \st t \geq 1, \; x_1,\cdots, x_t\in X, \;
+         \varepsilon_1, \cdots \varepsilon_t \in \{\pm 1\} \right\}
+ \]
+ and call it the subgroup of $G$ generated by $X$.
+
+ Suppose $G$ is a group with elements $a, b \in G$, so that 
+ $G=\langle a,b\rangle$. Show that if $a$ and $b$ are of order 2 and
+ $ab$ is of order $n$ then $G \cong D_n$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Use your classification of the conjugacy classes in $D_n$ to find all
+ the normal subgroups of $D_n$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a subgroup of $SO_2$.  Suppose that there exists a number
+ $\ep>0$ such that $R_\tht\not\in G$ for $0<\tht<\ep$.  Prove that
+ $G=C_n$ for some $n$ (and thus that $G$ is finite).  [Hint: mimic the
+ classification of finite subgroups of $C_n$.]
+\end{exercise}
+\begin{solution}
+ Put $S=\{\phi>0\st R_\phi\in G\}$, so $2\pi\in S$.  If we take $m=1$
+ then by assumption we have $S\cap(0,m\ep)=\emptyset$.  If we take $m$
+ to be very large then $2\pi\in S\cap(0,m\ep)$ so
+ $S\cap(0,m\ep)\neq\emptyset$.  Thus, there must be some intermediate
+ value of $m$ such that $S\cap(0,m\ep)=\emptyset$ and
+ $S\cap(0,(m+1)\ep)\neq\emptyset$.  Choose
+ $\tht\in S\cap(0,(m+1)\ep)$.  I claim that for $\phi\in S$ we have
+ $\phi\geq\tht$.  Suppose not, so $\phi<\tht$.  Put $\psi=\tht-\phi$,
+ so $\psi>0$ and $R_\psi=R_\tht R_\phi^{-1}\in G$ so $\psi\in S$.  
+ We also have $\tht<(m+1)\ep$.  As $S\cap(0,m\ep)=\emptyset$ we
+ certainly have $\phi\geq m\ep$, so
+ $\psi=\tht-\phi<(m+1)\ep-m\ep=\ep$.  This contradicts the assumption
+ that $S\cap(0,\ep)=\emptyset$, so we must have $\phi\geq\tht$ after
+ all.  
+
+ Now let $\al$ be any element of $S$.  For some $k\geq 0$ we must have
+ $k\tht\leq\al<(k+1)\tht$.  If we put $\bt=\al-k\tht$ then
+ $0\leq\bt<\tht$ and $R_\bt=R_\al R_\tht^{-k}\in G$.  As every element
+ of $S$ is at least as large as $\tht$ we see that $\bt$ cannot lie in
+ $S$, and the only way this can happen is if $\bt=0$.  Thus
+ $\al=k\tht$ for some $k>0$.
+
+ By applying this in the case $\al=2\pi$ we see that $2\pi=n\tht$ for
+ some $n$ and thus that $\tht=2\pi/n$.  It follows that
+ $S=\{2\pi k/n\st k>0\}$ and thus that $G=C_n$.
+\end{solution}
+
+\begin{exercise}
+ The quaternion group of order 8  is the group
+ \[ G = \{\pm 1, \pm i, \pm j, \pm k \} \]
+ with $ij=-ji=k$, $jk=-kj=i$, $ki=-ik=j$, $i^2=j^2=k^2=-1$. 
+ Show that if $P$ and $Q$ are any two nontrivial subgroups of $G$,
+ then $P\cap Q$ is also nontrivial.
+\end{exercise}
+\begin{solution}
+ We first claim that any nontrivial subgroup $P\leq G$ contains the
+ element $-1$.  Indeed, we have $G=\{1,-1,i,-i,j,-j,k,-k\}$ and
+ $i^2=(-i)^2=j^2=(-j)^2=k^2=(-k)^2=-1$.  As $P$ is nontrivial it must
+ either contain $-1$ (so there is nothing to say) or some element
+ $x\in\{\pm i,\pm j,\pm k\}$, in which case it also contains $x^2=-1$,
+ as claimed.  By the same argument, $Q$ must contain $-1$, so
+ $P\cap Q$ contains $-1$, so $P\cap Q$ is nontrivial.
+\end{solution}
+
+\begin{exercise}
+ Prove or disprove the following statements:
+ \begin{itemize}
+  \item[(i)] $D_6/Z(D_6)\simeq D_3,$ where $Z(D_6)$ is the centre of $D_6$.
+  \item[(ii)] $D_{42}$ has a non-cyclic subgroup of order 21.
+  \item[(iii)] $D_8\simeq D_4\times C_2$.
+  \item[(iv)] There is an integer $n\geq 1$ such that there is a
+   surjective homomorphism $D_n\xra{}Q_8$.
+  \item[(v)] $D_{10}\cong D_5\times C_2$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $\delta\:I_n\xra{}\{\pm 1\}$ be the composite of
+ $\psi\:I_n\xra{}I_n/T_n\simeq O_n$ and the determinant map (ie
+ $\delta(f)=\det(\psi(f))$).
+ \begin{itemize}
+  \item[(a)] If $f\in O_n$ show that $\delta(f)=\det(f)$.
+  \item[(b)] When $n = 2$ find the value of $\delta$ on reflections,
+   rotations, translations and glides.
+  \item[(c)] If $X \subseteq \R^n$ write
+   \[ SI(X) = \{f \in I(X) \st \delta(f) = 1 \}. \]
+   Show that $SI(X)$ is a subgroup of $I(X)$ and that either
+   $SI(X)=I(X)$ or $[I(X):SI(X)]=2$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $f,g\in I_n$ be given by $f(x)=Ax+a$ and $g(x)=Bx+b$, where
+ $A,B\in O_n$ and $a,b\in\R^n$.
+ \begin{itemize}
+ \item[(a)] Find $C\in O_n$ and $c\in\R^n$ such that $fg(x)=Cx+c$ for
+  all $x$.
+ \item[(b)] Find $D$ and $d$ such that $fgf^{-1}(x)=Dx+d$ for all $x$.
+ \item[(c)] Describe the isometry $fT_bf^{-1}$.
+ \item[(d)] Show that $T_{(1,0)}$ is not conjugate to $T_{(0,2)}$ in
+  $I_2$.   
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] We have $fg(x)=f(Bx+b)=A(Bx+b)+a=ABx+(Ab+a)$, so we can
+  take $C=AB$ and $c=Ab+a$.
+ \item[(b)] First, if $x=f(y)=Ay+a$ then
+  $f^{-1}(x)=y=A^{-1}(x-a)=A^{-1}x-A^{-1}a$.  Thus 
+  \begin{align*}
+   fgf^{-1}(x) &= fg(A^{-1}x - A^{-1}a) \\
+               &= f(BA^{-1}x - BA^{-1}a + b) \\
+               &= ABA^{-1}x - ABA^{-1}a + Ab + a.
+  \end{align*}
+  Thus we can take $D=ABA^{-1}$ and $d=a+Ab-ABA^{-1}a$.
+ \item[(c)] This is what we get in the case $B=1$.  We then have
+  $ABA^{-1}=1$, so part~(b) gives
+  $fT_bf^{-1}(x)=x-a+Ab+a=x+Ab=T_{Ab}(x)$, so $fT_bf^{-1}=T_{Ab}$.
+ \item[(d)] If $T_b$ is conjugate to $T_c$ then $T_c=fT_bf^{-1}$ for
+  some $f\in I_2$.  If we write $f$ in the form $f(x)=Ax+a$ (with
+  $A\in O_2$), we see from~(c) that $fT_bf^{-1}=T_{Ab}$, so $Ab=c$.
+  Thus $\|c\|=\|Ab\|=\|b\|$.  As $\|(1,0)\|\neq\|(0,2)\|$, we deduce
+  that $T_{(1,0)}$ is not conjugate to $T_{(0,2)}$.  
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Let $H$ be a wallpaper group, and let $a$ be a point in $\R^2$.
+ Recall that $\text{orbit}_H(a)=\{h(a)\st h\in H\}$.  Prove that if
+ $\text{orbit}_H(a)=\text{orbit}_{T(H)}(a)$ then $\sg_a(H)=\psi(H)$.
+\end{exercise}
+\begin{solution}
+ For any group $H\leq I_2$ we have seen that $\sg_a(H)\leq\psi(H)$, so
+ we need only prove the opposite inequality.  Suppose that
+ $B\in\psi(H)$, so there is some element $h\in H$ with $\psi(h)=B$.
+ We have $h(a)\in \text{orbit}_H(a)=\text{orbit}_{T(H)}(a)$, so there
+ must be some $u\in T(H)$ such that $h(a)=a+u$.  Put $g=T_{-u}h$,
+ so $g\in H$ and $g(a)=a$.  This means that the map $f:=T_{-a}gT_a$
+ satisfies $f(0,0)=(0,0)$, so $f(x)=Ax$ for some $A\in O_2$.  From the
+ definition of $\sg_a(H)$ we see that $A\in\sg_a(H)$.  On the other
+ hand, we have 
+ \[ A = \psi(f) = \psi(T_{-a}gT_a) = \psi(T_{-u-a}hT_a) =
+    \psi(T_{-u-a})\psi(h)\psi(T_a) = 1.B.1 = B,
+ \] 
+ so $A=B$.  As $A\in\sg_a(H)$, this means that $B\in\sg_a(H)$, as
+ required. 
+\end{solution}
+
+\begin{exercise}
+ Let $H$ be a wallpaper group, and put $L=\{h(0)\st h\in H\}$.  Prove
+ that $H\cap O_2\leq\psi(H)$.  Prove also that if $L=\Trans(H)$, then
+ $\psi(H)=H\cap O_2$. 
+\end{exercise}
+\begin{solution}
+ First, if $A\in O_2$ then $A=\psi(A)$.  Thus, if $A\in H\cap O_2$
+ then $A=\psi(A)\in\psi(H)$, so $H\cap O_2\leq\psi(H)$.
+ 
+ Now suppose that $L=\Trans(H)$; we must show that
+ $\psi(H)\leq H\cap O_2$.  If $A\in\psi(H)$ then there is an element
+ $h\in H$ with $\psi(h)=A$, which means that $h(x)=Ax+a$ for some
+ $a\in\R^2$.  Next, note that $a=h(0)$, so $a\in L$ (by the definition
+ of $L$).  We are assuming that $L=\Trans(H)$, so $a\in\Trans(H)$,
+ which means that $T_a\in H$.  This means that the function
+ $g=T_a^{-1}h$ also lies in $H$.  Clearly $g(x)=h(x)-a=Ax$, so $g$
+ corresponds to the element $A\in O_2$.  This means that
+ $A\in H\cap O_2$, as claimed.
+\end{solution}
+
+\begin{exercise}
+ Three infinite wall-paper patterns are represented below
+ by a small segment of the pattern.
+ \begin{itemize}
+  \item[(a)] Find the isometry group of pattern (a).
+  \item[(b)] Find the isometry group of pattern (b). 
+  \item[(c)] Find the isometry group of pattern (c) and show that it is
+   generated by a reflection and a rotation.
+ \end{itemize}
+
+ \begin{center}
+  \begin{tikzpicture}
+   \begin{scope}
+    \begin{scope}[scale=0.45]
+     \def\a{0.3}
+     \def\b{0.1}
+     \def\c{0.6}
+     \def\d{0.3}
+     \foreach \i in {1,2,3,4,5} {
+      \foreach \j in {1,2,3,4,5} {
+       \begin{scope}[fill=green!40,draw=black,shift={({2.2 * \i},{2.2 * \j})}]
+        \filldraw ( \a, \b) -- ({ \a+\c}, \b) -- ({ \a+\c},{ \b+\d}) -- cycle;
+        \filldraw ( \a,-\b) -- ({ \a+\c},-\b) -- ({ \a+\c},{-\b-\d}) -- cycle;
+        \filldraw (-\a, \b) -- ({-\a-\c}, \b) -- ({-\a-\c},{ \b+\d}) -- cycle;
+        \filldraw (-\a,-\b) -- ({-\a-\c},-\b) -- ({-\a-\c},{-\b-\d}) -- cycle;
+        \filldraw ( \b, \a) -- ( \b,{ \a+\c}) -- ({ \b+\d},{ \a+\c}) -- cycle;
+        \filldraw (-\b, \a) -- (-\b,{ \a+\c}) -- ({-\b-\d},{ \a+\c}) -- cycle;
+        \filldraw ( \b,-\a) -- ( \b,{-\a-\c}) -- ({ \b+\d},{-\a-\c}) -- cycle;
+        \filldraw (-\b,-\a) -- (-\b,{-\a-\c}) -- ({-\b-\d},{-\a-\c}) -- cycle;
+       \end{scope}
+      }
+     }
+    \end{scope}
+   \end{scope}
+   \begin{scope}[shift={(6.5,1)}]
+    \begin{scope}[scale=0.13]
+     \def\M{
+     \filldraw%
+     (-3, 0) -- (-2, 1) -- ( 0, 1) -- (-1, 2) -- ( 0, 3) -- %
+     ( 1, 2) -- ( 2, 3) -- ( 2, 1) -- ( 3, 0) -- ( 2,-1) -- %
+     ( 2,-3) -- ( 1,-2) -- ( 0,-3) -- (-1,-2) -- ( 0,-1) -- %
+     (-2,-1) -- cycle;}
+     \foreach \i in {0,1,2} {
+      \foreach \j in {0,1,2} {
+       \begin{scope}[shift={({12*\i},{12*\j})}]
+        \begin{scope}[fill=green!30,xscale=-1] \M \end{scope}
+        \begin{scope}[fill=green!30,xscale=-1,shift={(-6,6)}] \M \end{scope}
+        \begin{scope}[fill=blue!30 ,draw=black,shift={(6,0)}] \M \end{scope}
+        \begin{scope}[fill=blue!30 ,draw=black,shift={(0,6)}] \M \end{scope}     
+       \end{scope}
+      }
+     }
+    \end{scope}
+   \end{scope}
+   \begin{scope}[shift={(12,1)}]
+    \begin{scope}[scale=0.46,fill=orange]
+     \def\a{0.3}
+     \def\b{0.1}
+     \def\c{0.6}
+     \def\d{0.3}
+     \foreach \i in {0,1,2,3,4} {
+      \foreach \j in {0,1,2} {
+       \foreach \k in {0,1} {
+        \begin{scope}[shift={({2*\i+\k},{1.73*(2*\j+\k)})}]
+         \foreach \p in {0,120,240} {
+          \begin{scope}[rotate=\p]
+           \filldraw ( \a, \b) -- ({ \a+\c}, \b) -- ({ \a+\c},{ \b+\d}) -- cycle;
+           \filldraw ( \a,-\b) -- ({ \a+\c},-\b) -- ({ \a+\c},{-\b-\d}) -- cycle;
+          \end{scope}
+         }
+        \end{scope}
+       }
+      }
+     }
+    \end{scope}
+   \end{scope}
+   \draw( 3.0,-0.2) node{Pattern (a)};
+   \draw( 8.5,-0.2) node{Pattern (b)};
+   \draw(14.0,-0.2) node{Pattern (c)};
+  \end{tikzpicture}
+ \end{center}
+\end{exercise}
+\begin{solution}
+ {\bf Pattern~(a):} Let $R$ be rotation throught $\pi/2$ about $O$,
+ and let $S$ be reflection across $L$.  It is clear that $T_u$, $T_v$,
+ $R$ and $S$ preserve $X$, so $\ip{T_u,T_v,R,S}\leq I(X)$.  Now
+ suppose we have $f_0\in I(X)$.  If $\det(f_0)=-1$ we put $f_1=Sf_0$,
+ otherwise we put $f_1=f_0$; either way we have $\det(f_1)=1$ and
+ $f_1\in I(X)$.  Clearly $f_1$ must send $O$ to the centre of one of
+ the motifs, so $f_1(O)=nu+mv+O$ for some $n,m\in\Z$.  We put
+ $f_2=T_u^{-n}T_v^{-m}f_1$, so $f_2\in I(X)$, $\det(f_2)=1$ and
+ $f_2(O)=O$.  Thus $f_2$ is a rotation about $O$ that preserves $X$;
+ clearly the angle must be a multiple of $\pi/2$, so $f_2=R^k$ for
+ some $k$.  We thus have $f_1=T_v^mT_u^nR^k$ and either
+ $f_0=T_v^mT_u^nR^k$ or $f_0=ST_v^mT_u^nR^k$.  Thus
+ $f_0\in\ip{T_u,T_v,R,S}$, which proves that $I(X)=\ip{T_u,T_v,R,S}$.
+ \begin{center}
+  \begin{tikzpicture}[scale=1.2]
+   \def\a{0.3}
+   \def\b{0.1}
+   \def\c{0.6}
+   \def\d{0.3}
+   \def\e{2.2}
+   \foreach \i in {-1,0,1} {
+    \foreach \j in {-1,0,1} {
+     \begin{scope}[fill=green!40,draw=black,shift={({\e * \i},{\e * \j})}]
+      \filldraw ( \a, \b) -- ({ \a+\c}, \b) -- ({ \a+\c},{ \b+\d}) -- cycle;
+      \filldraw ( \a,-\b) -- ({ \a+\c},-\b) -- ({ \a+\c},{-\b-\d}) -- cycle;
+      \filldraw (-\a, \b) -- ({-\a-\c}, \b) -- ({-\a-\c},{ \b+\d}) -- cycle;
+      \filldraw (-\a,-\b) -- ({-\a-\c},-\b) -- ({-\a-\c},{-\b-\d}) -- cycle;
+      \filldraw ( \b, \a) -- ( \b,{ \a+\c}) -- ({ \b+\d},{ \a+\c}) -- cycle;
+      \filldraw (-\b, \a) -- (-\b,{ \a+\c}) -- ({-\b-\d},{ \a+\c}) -- cycle;
+      \filldraw ( \b,-\a) -- ( \b,{-\a-\c}) -- ({ \b+\d},{-\a-\c}) -- cycle;
+      \filldraw (-\b,-\a) -- (-\b,{-\a-\c}) -- ({-\b-\d},{-\a-\c}) -- cycle;
+     \end{scope}
+    }
+   }
+   \draw[blue] ({-1.5 * \e},0) -- ({1.8 * \e},0);
+   \draw[blue] ({-0.5 * \e},{-1.5 * \e}) -- ({ 1.8 * \e},{ 0.8 * \e});
+   \draw[thick,red,<->] ({-\e},{0.5 * \e}) -- ({-\e},{-0.5*\e}) -- (0,{-0.5*\e});
+   \fill (    {-\e},{-0.5*\e}) circle(0.05);
+   \fill (        0,        0) circle(0.05);
+   \fill (        0,{ 0.5*\e}) circle(0.05);
+   \fill ({ 0.5*\e},{ 0.5*\e}) circle(0.05);
+   \draw ({ 1.7*\e},        0) node[anchor=north     ] {$L$};
+   \draw ({ 1.7*\e},{ 0.7*\e}) node[anchor=north west] {$M$};
+   \draw (        0,        0) node[anchor=north     ] {$O$};
+   \draw (        0,{ 0.5*\e}) node[anchor=east      ] {$P$};
+   \draw ({ 0.5*\e},{ 0.5*\e}) node[anchor=east      ] {$Q$};
+   \draw ({-0.5*\e},{-0.5*\e}) node[anchor=north     ] {$u$};
+   \draw ({-    \e},        0) node[anchor=north east] {$v$};
+  \end{tikzpicture}
+ \end{center} 
+ In particular, we see that $S_M$, $R_{P,\pi}$ and $R_{Q,\pi/2}$ all
+ lie in $\ip{T_u,T_v,R,S}$.  By following the above recipe we find
+ that $S_M=ST_vT_uR$, $R_{P,\pi}=T_vR^2$ and $R_{Q,\pi/2}=T_uR$.
+
+ {\bf Pattern~(b):} Clearly $\ip{T_u,T_v,S_L}\leq I(X)$.  Suppose that
+ $f_0\in I(X)$, and put $f_1=S_Lf_0$ if $\det(f_0)=-1$ and $f_1=f_0$
+ otherwise.  Note that $O$ is the point where the blunt ends of two
+ white motifs meet, so $f_1(O)$ must also be the point of intersection
+ of the blunt ends of two white motifs, so $f_1(O)=O+nu+mv$ for some
+ $n,m\in\Z$.  Put $f_2=T_u^{-n}T_v^{-m}f_1$, so $f_2$ is a rotation
+ around $O$ that preserves the pattern $X$.  There is only one dark
+ grey motif adjacent to $O$, so $f_2$ must send that motif to itself,
+ and this forces $f_2$ to be the identity.  Thus either
+ $f_0=T_v^mT_u^n$ or $f_0=S_LT_v^mT_u^n$, and in either case we have
+ $f_0\in\ip{S_L,T_u,T_v}$.  This shows that $I(X)=\ip{S_L,T_u,T_v}$.
+ \begin{center}
+  \begin{tikzpicture}[scale=0.3]
+   \def\M{
+   \filldraw%
+   (-3, 0) -- (-2, 1) -- ( 0, 1) -- (-1, 2) -- ( 0, 3) -- %
+   ( 1, 2) -- ( 2, 3) -- ( 2, 1) -- ( 3, 0) -- ( 2,-1) -- %
+   ( 2,-3) -- ( 1,-2) -- ( 0,-3) -- (-1,-2) -- ( 0,-1) -- %
+   (-2,-1) -- cycle;}
+   \foreach \i in {0,1} {
+    \foreach \j in {0,1} {
+     \begin{scope}[shift={({12*\i},{12*\j})}]
+      \begin{scope}[fill=green!30,xscale=-1] \M \end{scope}
+      \begin{scope}[fill=green!30,xscale=-1,shift={(-6,6)}] \M \end{scope}
+      \begin{scope}[fill=blue!30 ,draw=black,shift={(6,0)}] \M \end{scope}
+      \begin{scope}[fill=blue!30 ,draw=black,shift={(0,6)}] \M \end{scope}     
+     \end{scope}
+    }
+   }
+   \draw[blue] (-4,6) -- (22,6);
+   \draw[<->,thick,red] (3,12) -- (9,6) -- (15,12);
+   \fill (9,6) circle(0.2);
+   \draw (9,6) node[anchor=north] {$O$};
+   \draw ( 4,10) node {$u$};
+   \draw (14,10) node {$v$};
+   \draw (22,6) node[anchor=north west] {$L$};
+  \end{tikzpicture}
+ \end{center}
+
+ {\bf Pattern~(c):} Put $S=S_L$ and $R=R_{O,2\pi/3}$, so
+ $\ip{R,S}\leq I(X)$. 
+ \begin{center}
+  \begin{tikzpicture}[scale=1.0]
+   \def\a{0.3}
+   \def\b{0.1}
+   \def\c{0.6}
+   \def\d{0.3}
+   \foreach \i in {0,1,2,3} {
+    \foreach \j in {0,1} {
+     \foreach \k in {0,1} {
+      \begin{scope}[shift={({2*\i+\k},{1.73*(2*\j+\k)})}]
+       \foreach \p in {0,120,240} {
+        \begin{scope}[rotate=\p]
+         \filldraw[fill=orange] ( \a, \b) -- ({ \a+\c}, \b) -- ({ \a+\c},{ \b+\d}) -- cycle;
+         \filldraw[fill=orange] ( \a,-\b) -- ({ \a+\c},-\b) -- ({ \a+\c},{-\b-\d}) -- cycle;
+        \end{scope}
+       }
+      \end{scope}
+     }
+    }
+   }
+   \draw[dotted] (-2,0) +( 60: 2.0) -- +( 60:7.5);
+   \draw[dotted] ( 0,0) +( 60:-1.5) -- +( 60:7.5);
+   \draw[blue  ] ( 2,0) +( 60:-1.5) -- +( 60:7.5);
+   \draw[dotted] ( 4,0) +( 60:-1.5) -- +( 60:7.5);
+   \draw[dotted] ( 6,0) +( 60:-1.5) -- +( 60:3.5);
+   \draw[dotted] ( 0,0) +(120:-1.5) -- +(120:2.0);
+   \draw[dotted] ( 2,0) +(120:-1.5) -- +(120:6.0);
+   \draw[dotted] ( 4,0) +(120:-1.5) -- +(120:7.5);
+   \draw[dotted] ( 6,0) +(120:-1.5) -- +(120:7.5);
+   \draw[dotted] ( 8,0) +(120: 0.5) -- +(120:7.5);
+   \draw[dotted] ( 0,   0) +(-1,0) -- +(8,0);
+   \draw[dotted] ( 0,1.73) +(-1,0) -- +(8,0);
+   \draw[dotted] ( 0,3.46) +(-1,0) -- +(8,0);
+   \draw[dotted] ( 0,5.19) +(-1,0) -- +(8,0);
+   \draw[->,thick,red] (60:4) +(300:2) -- +(300:0.1);
+   \draw[->,thick,red] (60:2) +(2,0) -- +(3.9,0);
+   \fill (60:4)        circle(0.05);
+   \fill (60:2) +(2,0) circle(0.05);
+   \fill (60:4) +(2,0) circle(0.05);
+   \fill (60:2) +(4,0) circle(0.05);
+   \fill (60:4) +(330:1.15) circle(0.05);
+   \draw (3.1,2.7) node {$O$};
+   \draw (3.1,1.5) node {$P$};
+   \draw (1.7,3.4) node {$P_2$};
+   \draw (3.7,3.4) node {$P_1$};
+   \draw (4.3,1.5) node {$v$};
+   \draw (2.2,2.8) node {$u$};
+  \end{tikzpicture}
+ \end{center}
+ As $\psi(S)$ is a reflection and $\psi(R)$ is a
+ rotation we see that $\psi(RS)=\psi(R)\psi(S)$ is a reflection and
+ thus that $\psi(RSRS)=\psi(RS)^2=1$, so $RSRS$ is a translation.  As
+ $P$ lies on $L$ we have $S(P)=P$ and $RS(P)=R(P)=P_1$.  This lies on
+ $L$ again, so $SRS(P)=S(P_1)=P_1$, and it follows that
+ $RSRS(P)=R(P_1)=P_2$.  Thus $RSRS$ is a translation sending $O$ to
+ $P_2$, so we must have $RSRS=T_u$.  Similarly, we have $SRSR=T_v$.
+ Next, put $R'=T_u^{-1}T_v^{-1}R$.  This has $\psi(R')=R_{2\pi/3}$, so
+ $R'$ must be a rotation through $2\pi/3$ about some point.  We have
+ seen that $R(P)=P_1=P+u+v$ so $R'(P)=P$ so $P$ must be the centre of
+ the rotation $R'$, so $R'=R_{P,2\pi/3}$.  Now suppose that
+ $f\in I(X)$.  Then $f$ must send $P$ to the centre of some motif, say
+ $f(P)=nu+mv$ for some $n,m\in\Z$, so $T_v^{-m}T_u^{-n}f$ fixes $P$
+ and preserves $X$.  After multiplying by $S$ if necessary we get a
+ rotation that fixes $P$ and preserves $X$, which must be a power of
+ $R'$.  As $T_u$, $T_v$, $S$ and $R'$ lie in $\ip{R,S}$ we deduce that
+ $f\in\ip{R,S}$.  Thus $I(X)=\ip{R,S}$ as required.
+
+\end{solution}
+
+\begin{exercise}
+ Let $X$ be the wallpaper pattern shown below.  We have seen that
+ $I(X)=\ip{T_u,T_v,R_{\pi/3},S_0}$, where $u=(1,0)$ and
+ $v=(1/2,\sqrt{3}/2)$.  We also see geometrically that the rotation
+ $R_{P,\pi}$ and the glide $G_{L,u/2}$ preserve $X$, so it must be
+ possible to write $R_{P,\pi}$ and $G_{L,u/2}$ in terms of $T_u$,
+ $T_v$, $R_{\pi/3}$ and $S_0$.  Do this explicitly.  [Hint: just
+ follow through the steps in the proof that
+ $I(X)=\ip{T_u,T_v,R_{\pi/3},S_0}$.]
+ \begin{center}
+  \begin{tikzpicture}[scale=0.9]
+   \foreach \i in {0,1,2,3} {
+    \foreach \j in {0,1} {
+     \foreach \k in {0,1} {
+      \begin{scope}[shift={({2*\i-\k},{1.73*(2*\j+\k)})}]
+       \filldraw[fill=cyan!70] (0,0) circle(0.6); 
+      \end{scope}
+     }
+    }
+   }
+   \draw[blue] (-2,{1.73 * 1.5}) -- (7,{1.73 * 1.5});
+   \fill (1.0,1.73) circle(0.08);
+   \fill (2.0,1.73) circle(0.08);
+   \draw (1.0,1.45) node {$O$};
+   \draw (2.0,1.45) node {$P$};
+   \draw (6.5,2.20) node {$L$};
+  \end{tikzpicture}
+ \end{center}
+\end{exercise}
+\begin{solution}
+ We have 
+ \[ G_{L,u/2}(0,0)=u/2+S_L(0,0)=(1/2,0)+(0,\sqrt{3}/2)=v, \]
+ so the map $f=T_{-v}G_{L,u/2}=T_{u/2-v}S_L$ satisfies $f(0,0)=(0,0)$.
+ As $L$ is parallel to the $x$-axis we have $\psi(S_L)=S_0$ and
+ $\psi(T_a)=1$ for all $a$ so $\psi(f)=S_0$.  Thus $f(x)=S_0(x)+b$ for
+ some $b$, but $f(0,0)=(0,0)$ so $b=(0,0)$ so $f=S_0$.  Thus
+ $G_{L,u/2}=T_vf=T_vS_0$, which writes $G_{L,u/2}$ in terms of
+ $\{T_u,T_v,R_{\pi/3},S_0\}$ as required.
+
+ Similarly, we have $R_{P,\pi}(0,0)=(1,0)=u$ so the map
+ $h=T_{-u}R_{P,\pi}$ satisfies $h(0,0)=(0,0)$.  It also has
+ $\psi(h)=\psi(T_{-u})\psi(R_{P,\pi})=R_\pi$ so we must have
+ $h=R_\pi$, so $R_{P,\pi}=T_uR_\pi=T_uR_{\pi/3}^3$.
+\end{solution}
+
+\begin{exercise}
+ Let $T$ be a triangle with angles $\pi/2$, $\pi/6$ and $\pi/3$.  Let
+ $S_l$, $S_m$ and $S_n$ be the reflections in the three sides of $T$.
+ Find a pattern $X$ with isometry group $\text{Isom}(X)$ generated by
+ $S_l,S_m$ and $S_n$.
+\end{exercise}
+\begin{solution}
+ Let $X$ be the pattern of hexagons shown below.
+ \begin{center}
+  \begin{tikzpicture}[scale=1.8]
+   \def\r{0.4}
+   \def\M{\draw[very thick,magenta] (30:\r) -- (90:\r) -- (150:\r) -- (210:\r) -- (270:\r) -- (330:\r) -- cycle;}
+   \begin{scope}[shift={(-1,-1.73)}] \M \end{scope}
+   \begin{scope}[shift={( 1,-1.73)}] \M \end{scope}
+   \begin{scope}[shift={( 3,-1.73)}] \M \end{scope}
+   \begin{scope}[shift={(-2, 0.00)}] \M \end{scope}
+   \begin{scope}[shift={( 0, 0.00)}] \M \end{scope}
+   \begin{scope}[shift={( 2, 0.00)}] \M \end{scope}
+   \begin{scope}[shift={(-1, 1.73)}] \M \end{scope}
+   \begin{scope}[shift={( 1, 1.73)}] \M \end{scope}
+   \begin{scope}[shift={( 3, 1.73)}] \M \end{scope}
+   \fill[yellow] (0,0) -- (-1,0) -- (-1,0.57);
+   \draw[red ]  (-2.8, 0) -- ( 3.5,0);
+   \draw[blue]  (-1,-2.6) -- (-1,2.6);
+   \draw[blue]  ( 0,-2.6) -- ( 0,2.6);
+   \draw[olivegreen] (150:2.8) -- (150:-4.0);
+   \fill (-2, 0.00) circle(0.04);
+   \fill ( 0, 0.00) circle(0.04);
+   \fill (-1,-1.73) circle(0.04);
+   \fill ( 1,-1.73) circle(0.04);
+   \draw[thick,red,->] (-1,-1.73) -- +(120:1.95);
+   \draw[thick,red,->] (-1,-1.73) -- +(  0:1.95);
+   \draw ( 0.2, 0.2) node {$O$};
+   \draw (-1.1, 0.3) node{$l$};
+   \draw ( 0.1,-0.8) node{$l'$};
+   \draw (-0.6,-0.1) node{$m$};
+   \draw (-0.6, 0.5) node{$n$};
+   \draw ( 0.3,-1.8) node{$u$};
+   \draw (-1.7,-0.8) node{$v$};
+  \end{tikzpicture}
+ \end{center}
+ I claim that $I(X)=\ip{S_l,S_m,S_n}$.  One checks directly that
+ $S_l$, $S_m$ and $S_n$ send $X$ to itself, so
+ $\ip{S_l,S_m,S_n}\leq I(X)$.  Clearly $S_m=S_0$ and $S_n=S_{-2\pi/6}$
+ and it follows that $\ip{S_m,S_n}=D_6$.  Moreover, the $S_{l'}=S_\pi$
+ lies in $D_6$ so it can be written in terms of $S_n$ and $S_m$ (an
+ explicit expression is $S_{l'}=S_nS_mS_nS_mS_n$).  It follows that
+ the map $T_u=S_{l'}S_l$ lies in $\ip{S_l,S_m,S_n}$.  We also have
+ $S_mS_n=R_{\pi/3}$ so the map
+ $T_v=T_{R_{\pi/3}u}=R_{\pi/3}T_uR_{\pi/3}^{-1}$ also lies in
+ $\ip{T_l,T_m,T_n}$.  Given an arbitary element $g\in I(X)$ we see in
+ the usual way that the map $h=T_u^{-n}T_v^{-m}g$ fixes $O$ for some
+ $n,m\in\Z$, and thus $h$ lies in the symmetry group of the hexagon
+ around $O$, which is the group $D_6=\ip{S_m,S_n}$.  It follows that
+ the map $g=T_v^mT_u^nh$ lies in $\ip{S_l,S_m,S_n}$, which proves that
+ $I(X)=\ip{S_l,S_m,S_n}$ as claimed.
+\end{solution}
+
+\begin{exercise}
+\begin{itemize}
+\item[(a)] Let the group $G$ act on the non empty set $X$.  We say
+ that $G$ acts \emph{transitively} on $X$ if for all $x, y \in X$
+ there is an element $g\in G$ so that $g*x=y$.
+
+ Show that the following are equivalent
+ \begin{itemize}
+ \item[(1)] $G$ acts transitively on $X$
+ \item[(2)] For any $z\in X$ we have $G * z =X$
+ \item[(3)] For some $z\in X$ we have  $G*z=X$.
+ \end{itemize}
+\item[(b)] Decide which of the following actions are transitive. 
+ \begin{itemize}
+ \item[(1)] $S_n$ acting naturally on $\{1,2,\ldots,n\}$.
+% \item[(2)] $GL_n$ acting naturally on the set of $d$-dimensional
+%  subspaces of $\R^n$ (for some fixed $d$ with $0 \leq d \leq n$).
+ \item[(2)] $D_4$ acting on the square $X_4$.
+ \item[(3)] $S_6$ acting by conjugation on the set of elements of
+  $S_6$ having order 3 (so $\theta * \phi = \theta \phi \theta^{-1}$).
+ \end{itemize}
+\item[(c)] Let $G$ be a group and $H$ be a subgroup.  Then $G$ acts on
+ $G/H=\{x H\st x \in G\}$, the set of left cosets of $H$ in $G$, by
+ left multiplication: $g*xH=gxH$, for $g\in G$ and $xH\in G/H$.  Show
+ $G$ acts transitively on $G/H$.
+\item[(d)] If $G$ acts on sets $X_1$ and $X_2$ by
+ $\bullet\:G\tm X_1\xra{}X_1$ and $*\:G\tm X_2\xra{}X_2$ we say these
+ actions are \emph{equivalent} if there is a bijection
+ $\phi\:X_1\xra{}X_2$ such that $g*\phi(x)=\phi(g \bullet x)$ for 
+ all $g \in G$ and $x\in X_1$.
+
+ Show that if $G$ acts transitively on a set $X$ then this action is
+ equivalent to one of $G$ by left multiplication on $G/H$, for some
+ subgroup $H$ of $G$.
+\end{itemize}
+\end{exercise}
+\begin{solution}
+\begin{itemize}
+ \item[(a)] (1)$\Rightarrow$(2): Suppose $G$ acts transitively and
+  that $z\in X$.  Then for any $y\in X$ there exists $g\in G$ such
+  that $g*z=y$, by the definition of transitivity.  This means that
+  $y\in\{g*z\st g\in G\}=G*z$.  As every $y$ lies in $G*z$, we have
+  $G*z=X$, as required.
+
+  (2)$\Rightarrow$(3): if the condition $G*z=X$ holds for every
+  element $z$ of the nonempty set $X$, then it certainly holds for
+  some element.
+
+  (3)$\Rightarrow$(1): Suppose that $G*z=X$ for some element
+  $z\in X$.  Let $x$ and $y$ be points of $X$.  Then $x\in X=G*z$, so
+  $x=a*z$ for some $a\in G$.  Similarly $y=b*z$ for some $b\in G$.
+  Thus the element $g=ba^{-1}$ satisfies $g*x=(ba^{-1})*a*z=b*z=y$.
+  Thus $G$ acts transitively, as claimed.
+ \item[(b)] 
+  \begin{itemize}
+  \item[(1)] Suppose $x,y\in\{1,\ldots,n\}$.  If $x=y$ let
+   $\sg\in S_n$ be the identity permutation, otherwise let $\sg$ be
+   the transposition $(x\; y)$.  Either way we have $\sg*x=y$, so the
+   action is transitive.
+%   \item[(2)] Let $U$ and $V$ be $d$-dimensional subspaces of $\R^n$.
+%    Choose a basis $\{u_1,\ldots,u_d\}$ for $U$, then choose further
+%    vectors $u_{d+1},\ldots,u_n$ so that $\{u_1,\ldots,u_n\}$ is a
+%    basis for $\R^n$.  Choose a basis $\{v_1,\ldots,v_d\}$ for $V$,
+%    then choose further vectors $v_{d+1},\ldots,v_n$ so that
+%    $\{v_1,\ldots,v_n\}$ is a basis for $\R^n$.  Define a linear map
+%    $f\:\R^n\xra{}\R^n$ by $f(u_k)=v_k$.  More precisely, we note that
+%    every element $x\in\R^n$ can be written uniquely in the form
+%    $x=a_1u_1+\ldots+a_nu_n$, and we define
+%    $f(x)=a_1v_1+\ldots+a_nv_n$.  We can define $g\:\R^n\xra{}\R^n$ in
+%    a similar way with $g(v_k)=u_k$ and we find that $g$ is inverse to
+%    $f$, so $f\in GL_n$.  We also have 
+%    \begin{align*}
+%     f(U) &= f(\text{span}(u_1,\ldots,u_d)) \\
+%          &= \text{span}(f(u_1),\ldots,f(u_d)) \\
+%          &= \span(v_1,\ldots,v_d) \\
+%          &= V,
+%    \end{align*}
+%    and this shows that $GL_n$ acts transitively.
+  \item[(2)] This action is not transitive.  The square $X_4$ contains
+   the point $P=(1,0)$, and also the point $Q=(1/2,1/2)$ on the edge
+   between $(1,0)$ and $(0,1)$.  There is no element $g\in D_4$ such
+   that $g(P)=Q$.
+  \item[(3)] This action is not transitive.  To see this, put
+   $x=(1\;2\;3)$ and $y=(1\;2\;3)(4\;5\;6)$.  It is easy to see that
+   $x^3=y^3=1$, so $x$ and $y$ lie in the set under consideration.  As
+   $x$ and $y$ have different cycle types, they are not conjugate.
+   More explicitly, for any $g\in S_6$ the permutation $g*x=gxg^{-1}$
+   satisfies $(gxg^{-1})(g(4))=g(4)$, but there is no number $i$ with
+   $y(i)=i$, so $g*x\neq y$.   
+ \end{itemize}
+ \item[(c)] Given any two elements $xH,yH\in G/H$, the element
+  $g=yx^{-1}$ satisfies $g*(xH)=yH$; this shows that $G$ acts
+  transitively. 
+ \item[(d)] Suppose that $G$ acts transitively on $X$.  Choose a point
+  $a\in X$ and put $H=\{g\in G\st g*a=a\}$.  Define $\phi\:G/H\xra{}X$
+  by $\phi(xH)=x*a$.  To see that this is well-defined, note that if
+  $xH=yH$ then $x^{-1}y\in H$ so $(x^{-1}y)*a=a$ so
+  $x*a=x*(x^{-1}y)*a=y*a$.  Conversely, if $\phi(xH)=\phi(yH)$ then
+  $x*a=y*a$ so $a=(x^{-1}y)*a$ so $x^{-1}y\in H$ so $xH=yH$; this
+  shows that $\phi$ is injective.  Moreover, for any $b\in X$, there
+  is an element $x\in G$ with $x*a=b$, because the action is
+  transitive, and so $\phi(xH)=b$.  This shows that $\phi$ is
+  surjective and thus bijective.  We also have 
+  \[ \phi(g*(xH))=\phi(gxH)=(gx)*a=g*(x*a)=g*\phi(xH), \]
+  so $\phi$ gives an equivalence between the two actions.
+\end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Using the formulae in the notes about the geometry of the tent, find
+ the coordinates of the vertices $P$, $Q$, $R$, $S$ and $T$ of the
+ dodecahedron, as indicated in the diagram below.  
+ \begin{center}
+  \begin{tikzpicture}[scale=1.5]
+   \draw (0.296,-0.989) -- (1.11,-0.745) -- (1.38,-0.0385) -- (0.884,-0.189) --
+          (0.296,-0.989) -- (0.296,0.605) -- (0.884,-0.189) -- (1.38,-0.0385) --
+          (1.11,0.848) -- (0.433,1.25) -- (0.296,0.605) -- (-1.11,0.745) --
+          (-0.433,1.33) -- (0.433,1.25) -- (1.11,0.848);
+   \draw (0.296,-0.989) -- (-1.11,-0.848) -- (-1.11,0.745);
+   \draw[dashed] (1.11,-0.745) -- (1.11,0.848) -- (-0.296,0.989) --
+                 (-0.296,-0.605) -- (1.11,-0.745);
+   \draw[dashed] (-1.11,0.745) -- (-0.296,0.989) -- (-0.433,1.33);
+   \draw[dashed] (-1.11,-0.848) -- (-0.296,-0.605);
+   \fill ( 0.43, 1.25) circle(0.05);
+   \fill ( 0.30, 0.61) circle(0.05);
+   \fill ( 0.88,-0.19) circle(0.05);
+   \fill ( 1.38,-0.04) circle(0.05);
+   \fill ( 1.11, 0.85) circle(0.05);
+   \draw ( 0.44, 1.35) node[anchor=south west] {$P$};
+   \draw ( 0.28, 0.50) node[anchor=north east] {$Q$};
+   \draw ( 0.80,-0.19) node[anchor=east] {$R$};
+   \draw ( 1.44,-0.04) node[anchor=west] {$S$};
+   \draw ( 1.20, 0.94) node[anchor=south west] {$T$};
+   \draw[thick] (0.296,0.605) -- (1.11,0.848);   
+  \end{tikzpicture}
+ \end{center}
+ Then find the centre $C$ of the pentagon $PQRST$ and check that
+ $d(P,C)^2=d(Q,C)^2=d(R,C)^2=(2+\tau)/5$.
+
+ [{\bf Hint:} You may find it convenient to write all numbers in terms
+ of $\tau$.  If a $\sqrt{5}$ turns up you can write it as $2\tau-1$
+ (because $\tau=(\sqrt{5}+1)/2$).  If a $\tau^2$ turns up you can
+ write it as $\tau+1$ (because $\tau^2-\tau-1=0$).]
+\end{exercise}
+\begin{solution}
+ The cube in the middle has centre at $(0,0,0)$ and the sides have
+ length $\tau$ so the coordinates of the vertices are
+ $(\pm\tau/2,\pm\tau/2,\pm\tau/2)$.  We use the usual axes so the
+ $z$-axis is vertical, the $x$-axis passes through the middle of $RS$
+ and the $y$-axis is parallel to $RS$.  With these conventions we have
+ $Q=\tau/2.(1,-1,1)$ and $T=\tau/2.(1,1,1)$.  Next, the right hand
+ face of the cube has $x=\tau/2$ and we see from the notes that the
+ distance from the base of a tent to its ridge is $1/2$ so on the line
+ $RS$ we have $x=\tau/2+1/2=(\tau+1)/2$.  The midpoint of $RS$ lies on
+ the $x$-axis and thus has coordinates $((\tau+1)/2,0,0)$.  To get
+ from this point to $S$ we move half the length of the ridge in the
+ positive $y$-direction.  The length of the ridge is $1$ so we end
+ up with $S=((\tau+1)/2,0,0)+(0,1/2,0)=(\tau+1,1,0)/2$.  Similarly we
+ have $R=(\tau+1,-1,0)/2$.  
+
+ Again, the top face is at height $\tau/2$ so the top ridge is at
+ height $\tau/2+1/2=(\tau+1)/2$ so the centre of the top ridge is
+ $(0,0,\tau+1)/2$.  To get to $P$ we move a distance of $1/2$ in the
+ positive $x$-direction, so $P=(1,0,\tau+1)/2$.  
+
+ We now find that $Q+T=(\tau,0,\tau)$ and $R+S=(\tau+1,0,0)$ so
+ $P+Q+R+S+T=(2\tau+3/2,0,\tau+1/2)$, so 
+ \[ C = (P+Q+R+S+T)/5 = (3+4\tau,0,1+3\tau)/10. \]
+ This implies that
+ \begin{align*}
+  P-C &= (2-4\tau,0,4+2\tau)/10 \\
+  Q-C &= (-3+\tau,-5\tau,-1+2\tau)/10 \\
+  R-C &= (2+\tau,-5,-1-3\tau)/10.
+ \end{align*}
+ It follows that 
+ \begin{align*}
+  d(P,C)^2 &= \|P-C\|^2 = ((2-4\tau)^2+0^2+(4+2\tau)^2)/10^2 \\
+   &= (4-16\tau+16\tau^2+16+16\tau+4\tau^2)/100 \\
+   &= (1+\tau^2)/5 \\
+   &= (\tau+2)/5,
+ \end{align*}
+ where we have used the relation $\tau^2=\tau+1$.  Similarly, we have
+ \begin{align*}
+  d(Q,C)^2 &= ((-3+\tau)^2 + 25\tau^2 +(-1+2\tau)^2)/100 \\
+   &= (9-6\tau+\tau^2+25\tau^2+1-4\tau+4\tau^2)/100 \\
+   &= (1-\tau+3\tau^2)/10 \\
+   &= (2\tau+4)/10 = (\tau+2)/5,
+ \end{align*}
+ and
+ \begin{align*}
+  d(R,C)^2 &= ((2+\tau)^2+25+(1+3\tau)^2)/100 \\
+   &= (4+4\tau+\tau^2+25+1+6\tau+9\tau^2)/100 \\
+   &= (3+\tau+\tau^2)/10 \\
+   &= (4+2\tau)/10 = (2+\tau)/5.
+ \end{align*}
+\end{solution}
+
+\begin{exercise}
+ This problem is a more elaborate application of the method we used to
+ prove that the number $\tau=2\cos(\pi/5)$ is equal to
+ $(1+\sqrt{5})/2$.  
+
+ Define $\zt=e^{2\pi i/15}$ and $\sg=\zt+\zt^{-1}$.  Express the number
+ $\rho=\sg^4-\sg^3-4\sg^2+4\sg+1$ in terms of $\zt$.  Then work out
+ $(\sg+1)\rho$ and $(\zt^5-1)\zt^5(\sg+1)\rho$.  Show that
+ $\zt^5\neq 1$  and that $\sg$ is a positive real number, and deduce
+ that $\rho=0$.
+
+ Now recall that the number $\tau=(1+\sqrt{5})/2$ satisfies
+ $\tau^2-\tau-1=0$ so $\tau^{-1}=\tau-1$ and $\tau-\tau^{-1}=1$.
+ Check that for any $t$ we have 
+ $t^4-t^3-4t^2+4t+1=q_0(t)q_1(t)$, where
+ \begin{align*}
+  q_0(t) &= t^2-\tau t+\tau^{-1}-1 \\
+  q_1(t) &= t^2+\tau^{-1}t-\tau-1.
+ \end{align*}
+ Deduce that either $q_0(\sg)=0$ or $q_1(\sg)=0$.  Given that in fact
+ $q_1(\sg)\neq 0$, prove that $\sg=(\tau+\sqrt{9-3\tau})/2$.
+\end{exercise}
+\begin{solution}
+ First, we have
+ \begin{align*}
+  \sg   &= \zt + \zt^{-1} \\
+  \sg^2 &= \zt^2 + 2 + \zt^{-2} \\
+  \zt^3 &= \zt^3 + 3\zt + 3\zt^{-1} + \zt^{-3} \\
+  \zt^4 &= \zt^4 + 4 \zt^2 + 6 + 4 \zt^{-2} + \zt^{-4},
+ \end{align*}
+ so
+ \begin{align*}
+  \rho &= \sg^4-\sg^3-4\sg^2+4\sg+1 \\
+       &= (\zt^4 + 4 \zt^2 + 6 + 4 \zt^{-2} + \zt^{-4})
+          - (\zt^3 + 3\zt + 3\zt^{-1} + \zt^{-3}) \\
+       &\qquad - (4\zt^2 + 8 + 4\zt^{-2}) 
+               + (4\zt + 4\zt^{-1}) + 1 \\
+       &= \zt^4 - \zt^3 + \zt - 1 + \zt^{-1} - \zt^{-3} + \zt^{-4}.  
+ \end{align*}
+ It follows that
+ \begin{align*}
+  (\sg+1)\rho &= \zt\rho + \rho + \zt^{-1}\rho \\
+   &= \zt^5 - \zt^4 + \zt^2 - \zt + 1 - \zt^{-2} + \zt^{-3} + \\
+   &\qquad
+      \zt^4 - \zt^3 + \zt - 1 + \zt^{-1} - \zt^{-3} + \zt^{-4} + \\
+   &\qquad
+      \zt^3 - \zt^2 + 1 - \zt^{-1} + 1 - \zt^{-4} + \zt^{-5} \\
+   &= \zt^5 + 1 + \zt^{-5},
+ \end{align*}
+ and thus that
+ \begin{align*}
+  (\zt^5-1)\zt^5(\sg+1)\rho &= (\zt^5-1)(\zt^{10}+\zt^5+1) \\
+    &= \zt^{15} + \zt^{10} + \zt^5 - \zt^{10} - \zt^5 - 1 \\
+    &= \zt^{15} - 1 = e^{2\pi i} - 1 = 0.
+ \end{align*}
+ We have $\zt=\cos(2\pi/15)+i\sin(2\pi/15)$ so $\sg=2\cos(2\pi/15)$.
+ It is well-known that $\cos(\tht)>0$ for $|\tht|<\pi/2$ and
+ $2\pi/15<\pi/2$ so $\sg>0$.  This implies that $\sg+1\neq 0$.  We
+ also have $\zt^5=e^{2\pi i/3}=(-1+\sqrt{3}i)/2\neq 1$ so
+ $\zt^5-1\neq 0$ and clearly also $\zt^5\neq 0$.  As
+ $(\zt^5-1)\zt^5(\sg+1)\rho=0$ and the numbers $\zt^5-1$, $\zt^5$ and
+ $\sg+1$ are all nonzero we must have $\rho=0$.  
+
+
+ Next, we have
+ \begin{align*}
+  q_0(t)q_1(t) &= (t^2-\tau t+\tau^{-1}-1)(t^2+\tau^{-1}t-\tau-1) \\
+   &= t^4 + (\tau^{-1}-\tau)t^3 +
+      (-\tau-1 -\tau\tau^{-1} + \tau^{-1}-1) t^2 +
+      (\tau(\tau+1)+(\tau^{-1}-1)\tau^{-1}) t -
+      (\tau^{-1}-1)(\tau+1) \\
+   &= t^4 - (\tau-\tau^{-1}) t^3 -
+      (\tau - \tau^{-1} + 3) t^2 + 
+      (\tau^2+\tau^{-2}+\tau-\tau^{-1}) t +
+      (\tau-\tau^{-1}). 
+ \end{align*}
+ We can simplify most of the terms using the fact that
+ $\tau-\tau^{-1}=1$.  To simplify the coefficient of $t$ we square
+ this equation to get $\tau^2-2+\tau^{-2}=1$ and thus
+ $\tau^2+\tau^{-2}=3$.  Putting this all in we get
+ \begin{align*}
+  q_0(t)q_1(t) &= t^4 - t^3 - (1+3) t^2 + (3+1) t + 1 \\
+   &= t^4 - t^3 - 4 t^2 + 4t + 1,
+ \end{align*}
+ as claimed.  This implies that
+ $0=\rho=\sg^4-\sg^3-4\sg^2+4\sg+1=q_0(\sg)q_1(\sg)$, so either
+ $q_0(\sg)$ or $q_1(\sg)$ is zero.  We are given that $q_1(\sg)\neq 0$
+ so $q_0(\sg)=0$.  The roots of the equation $q_0(t)=0$ are 
+ $t=(\tau\pm\sqrt{\tau^2-4\tau^{-1}+4})/2$.  We have $\tau^2=\tau+1$
+ and $\tau^{-1}=\tau-1$ so
+ $\tau^2-4\tau^{-1}+4=\tau+1-4\tau+4+4=9-3\tau$.  Thus the roots are
+ $t=(\tau\pm\sqrt{9-3\tau})/2$.  We have
+ $\tau=(1+\sqrt{5})/2\simeq 1.618$ and so
+ $\sqrt{9-3\tau}\simeq 2.036$, so $(\tau-\sqrt{9-3\tau})/2<0$.  As
+ $\sg$ is a positive root of $q_0$ we must have 
+ $\sg=(\tau+\sqrt{9-3\tau})/2$.
+\end{solution}
+
+\begin{exercise}
+ Show that the centre of $S_n$ is  trivial, for $n\geq 3$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ The group $\Dir(\Cube)$ of rotational symmetries of the cube acts on the
+ surface of the cube.  Find the sizes of the orbits of points on the surface
+ and describe geometrically which points have which orbit sizes. 
+\end{exercise}
+\begin{solution}
+ Let $S$ be the surface of the cube.  For any point $x\in S$ we have
+ $|Gx|=|G|/|\text{stab}_G(x)|=24/|\text{stab}_G(x)|$.  Moreover,
+ $\text{stab}_G(x)$ is the group of all rotations around $x$ that
+ preserve the cube.  For most points $x$ there are no such rotations
+ (except for the identity) and so $|\text{stab}_G(x)|=1$ and the orbit
+ $Gx$ has order $24$.  If $x$ is the centre of a face then
+ $\text{stab}_G(x)$ is cyclic of order $4$ and so $|Gx|=24/4=6$.  In
+ fact, $Gx$ consists of the centres of the $6$ faces.  If $x$ is a
+ vertex of the cube then $\text{stab}_G(x)$ is cyclic of order $3$ and
+ so $|Gx|=24/3=8$.  In fact, in this case $Gx$ consists of the $8$
+ vertices of the cube.  If $x$ is the midpoint of an edge then
+ $\text{stab}_G(x)$ has order $2$ and so $|Gx|=24/2=12$.  In fact, in
+ this case $Gx$ consists of the midpoints of the $12$ edges of the
+ cube.  In all other cases we have $|Gx|=24$.
+\end{solution}
+
+\begin{exercise}
+ Show that if $S\in\Symm(\Cube)$ is a reflection then $S =-R$ for some
+ rotation $R\in\Dir(\Cube)$ of order 2.  Conversely, show that if
+ $R\in\Dir(\Cube)$ is a rotation of order 2 then $-R\in\Symm(\Cube)$ is
+ a reflection.  Hence find how many reflections there in
+ $\Symm(\Cube)$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ \begin{itemize}
+ \item[(a)] Show that if $G$ is a group of order $p^n$ for some $n$
+  then the centre of $G$ is non-trivial.
+ \item[(b)] Show that any group of order $p^2$ is abelian. [Hint:
+  consider $G/Z(G)$]
+ \item[(c)] Conclude that any group of order $p^2$ is either cyclic or
+  isomorphic to $C_p \times C_p$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Show that if $G$ is a semidirect product of $H$ and $K$ with $H$ and
+ $K$ {\em both} normal then in fact $G\simeq H \tm K$.
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ The following diagram shows a cuboctahedron $X$ in $\R^3$, centred at
+ the origin.  Its faces are squares and equilateral triangles.
+ \begin{center}
+  \begin{tikzpicture}
+   \draw (1.500, 5.825) -- (2.250, 6.125) -- (3.750, 5.825) -- (3.000, 5.562) -- (1.500, 5.825);
+   \draw (3.000, 5.562) -- (1.875, 4.437) -- (3.000, 3.312) -- (4.125, 4.437) -- (3.000, 5.562);
+   \draw (1.125, 5.000) -- (1.500, 5.825) -- (1.875, 4.437) -- (1.500, 3.575) -- (1.125, 5.000);
+   \draw (3.750, 5.825) -- (4.125, 4.437);
+   \draw (1.500, 3.575) -- (3.000, 3.312);
+   \draw (3.000, 3.312) -- (3.750, 3.575) -- (4.125, 4.437);
+   \draw[dotted]
+         (2.250, 3.875) -- (1.125, 5.000) -- (2.250, 6.125) -- (3.375, 5.000) -- (2.250, 3.875);
+   \draw[dotted]
+         (1.500, 3.575) -- (2.250, 3.875) -- (3.750, 3.575) -- (3.375, 5.000) -- (3.750, 5.825);   
+  \end{tikzpicture}
+ \end{center}
+ Which of the standard finite subgroups of $SO_3$ is isomorphic to
+ $\Dir(X)$?  What can you deduce about $\Symm(X)$?
+
+ You may wish to make a model from the net below.
+ \begin{center}
+  \begin{tikzpicture}[rotate=90,yscale=-1]
+   \def\rt{1.732}
+   \draw 
+   (1,1) -- (1,-1) -- (1+\rt,-2) -- (\rt,-2-\rt) -- (0,-1-\rt) --
+   (1,-1) -- (-1,-1) -- (0,-1-\rt) -- (-\rt,-2-\rt) -- (-1-\rt,-2) --
+   (-1,-1) -- (-1,1) -- (-1-\rt,2) -- (-\rt,2+\rt) -- (0,1+\rt) --
+   (-1,1) -- (1,1) -- (0,1+\rt) -- (\rt,2+\rt) -- (0,3+\rt) --
+   (\rt,4+\rt) -- (1+\rt,4+2*\rt) -- (2+\rt,4+\rt) -- (2+2*\rt,3+\rt) --
+   (2+\rt,2+\rt) -- (1+\rt,2) -- (\rt,2+\rt) -- (\rt,4+\rt) --
+   (2+\rt,4+\rt) -- (2+\rt,2+\rt) -- (\rt,2+\rt) -- (1+\rt,2) -- (1,1);
+  \end{tikzpicture}
+ \end{center}
+\end{exercise}
+\begin{solution}
+ Put $G=\Dir(X)$, which is a finite subgroup of $SO_3$.  The
+ normalisations of the midpoints of the edges are poles of degree $2$,
+ the normalisations of the centres of the triangular faces are poles
+ of degree $3$, and the normalisations of the centres of the square
+ faces are poles of degree $4$.  The only one of the standard groups
+ that has poles of degrees $2$, $3$ and $4$ is $G_2$, so $G$ must be
+ conjugate to $G_2$ and thus isomorphic to $S_4$.  
+
+ One can see from the picture that multiplication by $-1$ preserves
+ $X$ and so Proposition~6.9 in the notes tells us that
+ $\Symm(X)\simeq\{\pm 1\}\tm\Dir(X)\simeq\{\pm 1\}\tm S_4$.
+\end{solution}
+
+\begin{exercise}
+ Let $g\:\R^3\xra{}\R^3$ be the map $g(x,y,z)=(y,z,x)$.
+ \begin{itemize}
+ \item[(a)] Prove that $g\in O_3$.
+ \item[(b)] Find a unit vector $u$ with $g(u)=u$.
+ \item[(c)] Find the order of $g$ and deduce that $g\in SO_3$.
+ \item[(d)] Show that $g$ preserves the standard cube (with centre at the
+  origin and edges of length $2$ parallel to the $x$, $y$ and $z$
+  axes). 
+ \item[(e)] Describe the effect of $g$ geometrically.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] It is clear that $g$ is linear, and we have 
+  \[ \|g(x,y,z)\|^2=y^2+z^2+x^2=x^2+y^2+z^2=\|(x,y,z)\|^2, \]
+  so $g$ preserves lengths.  Thus $g\in O_3$.
+ \item[(b)] Visibly $g(a,a,a)=(a,a,a)$ for any $a$.  To get a unit
+  vector, put $a=1/\sqrt{3}$.
+ \item[(c)] We have $g^2(x,y,z)=g(y,z,x)=(z,x,y)$ and
+  $g^3(x,y,z)=g(z,x,y)=(x,y,z)$, so $g^3=1$ and $g$ has order $3$.
+  Because $g\in O_3$ we have $\det(g)=\pm 1$ and
+  $\det(g)^3=\det(g^3)=\det(1)=1$ which would give a contradiction if
+  $\det(g)$ were $-1$, so $\det(g)=1$.  Thus $g\in SO_3$.  
+ \item[(d)] The vertices of the standard cube are the points $(x,y,z)$ for
+  which $x,y,z\in\{1,-1\}$.  Clearly, if $(x,y,z)$ satisfies this
+  condition then so does $(y,z,x)$, so $g$ carries vertices of the
+  cube to vertices of the cube, so it sends the cube to itself.
+ \item[(e)] As $g\in SO_3$, it must be a rotation.  Part~(b) shows
+  that the axis of rotation is the line $x=y=z$.  Part~(c) implies
+  that the angle of rotation is $2\pi/3$.  As $g(0,0,1)=(0,1,0)$ we
+  see that $g$ carries the $z$-axis to the $y$-axis and thus that the
+  direction of rotation (as seen while looking from $(1,1,1)$ towards
+  the origin) is clockwise.
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Let $M_1$, $M_2$ and $M_3$ be the $x$, $y$ and $z$-axes.  
+ \begin{itemize}
+ \item[(a)] Use these to define a homomorphism
+  $\psi\:\Dir(\Cube)\xra{}S_3$.
+ \item[(b)] Describe some elements $g\in\Dir(\Cube)$ and the
+  corresponding permutations $\psi(g)$.
+ \item[(c)] Show that $\psi$ is surjective.
+ \item[(d)] Show that the kernel of $\psi$ is isomorphic to
+  $C_2\tm C_2$. 
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] For any $g\in\Dir(\Cube)$ we let $\psi(g)$ be the
+  permutation such that $g(M_i)=M_{\sg(i)}$ for $i=1,2,3$.
+ \item[(b)] Let $g$ be a half turn around the vector $(0,1,1)$, let
+  $h$ be a one-third turn anticlockwise about the vector $(1,1,1)$,
+  and let $k$ be a quarter turn anticlockwise about the vector
+  $(0,0,1)$.  Then $\psi(g)=(2\; 3)$, $\psi(h)=(1\;2\;3)$ and
+  $\psi(k)=(1\; 2)$.
+ \item[(c)] Part~(b) shows that the image of $\psi$ contains $(1\;2)$
+  and $(2\; 3)$, and these two transpositions generate $S_3$ so $\psi$
+  is surjective.  More explicitly, we have
+  \[ \begin{array}{lcr}
+   \psi(1)      = 1         & \hspace{5em} & \psi(k)  = (1\;2) \\
+   \psi(h)      = (1\;2\;3) &              & \psi(g)  = (2\;3) \\
+   \psi(h^{-1}) = (1\;3\;2) &              & \psi(gh) = (1\;3).
+  \end{array} \]
+ \item[(d)] Let $G$ be the group of matrices of the form 
+  \[ g = \bsm \ep_1 & 0 & 0 \\ 0 & \ep_2 & 0 \\ 0 & 0 & \ep_3 \esm \]
+  such that $\ep_1\ep_2\ep_3=1$.  It is easy to see that $G$ is a
+  subgroup of $SO_3$ and that it preserves the cube so it is a
+  subgroup of $\Dir(\Cube)$.  If $g\in G$ and $x\in\R$ then
+  $g(x,0,0)=(\pm x,0,0)$, so $g$ preserves the $x$-axis, or in other
+  words $g(M_1)=M_1$.  Similarly, we have $g(M_2)=M_2$ and
+  $g(M_3)=M_3$, so $\psi(g)=1$, so $G\leq\ker(\psi)$.
+ 
+  Conversely, if $g\in\ker(\psi)$ then $g(M_1)=M_1$.  The axis $M_1$
+  meets the surface of the cube at $(1,0,0)$ and $(-1,0,0)$, so
+  $g(1,0,0)=\ep_1(1,0,0)$ for some $\ep_1\in\{1,-1\}$.  Similarly we
+  have $g(0,1,0)=\ep_2(0,1,0)$ and $g(0,0,1)=\ep_3(0,0,1)$ for some
+  $\ep_2,\ep_3\in\{1,-1\}$.  Thus, the matrix of $g$ has the form
+  described above, and as $g\in\Dir(\Cube)\leq SO_3$ we have
+  $\det(g)=1$ so $\ep_1\ep_2\ep_3=1$ so $g\in G$.  This shows that
+  $\ker(\psi)=G$.  
+
+  We can define an isomorphism
+  $\chi\:C_2\tm C_2=\{\pm 1\}\tm\{\pm 1\}\xra{}G$ by
+  $\chi(\ep_1,\ep_2)=(\ep_1,\ep_2,\ep_1\ep_2)$. 
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Consider the action of $G$ on $\CC$ as in Question 1.
+ Observe that the stabilizer of $H$ is
+ \[ N_G(H)=\{ g \in G\; |\; gHg^{-1}=H\}. \]
+ This is called the {\em normalizer} of $H$ in $G$.
+
+ \begin{itemize}
+ \item[(a)] 
+  \begin{itemize}
+  \item[(i)] Show that $H$ is a normal subgroup of $N_G(H)$.
+  \item[(ii)] Show that if $H$ is normal in $K$ then $K\sse N_G(H)$.
+  \end{itemize}
+ \item[(b)] Consider the action of $H$ on the set $G/H$ of left cosets
+  of $H$ by left translation: $h*(gH)=hgH$.
+  \begin{itemize}
+  \item[(i)] Show that $\{kH\} $ is a complete orbit if and only if
+   $k^{-1}Hk=H$.
+  \item[(ii)] Let $w$ be the number of singleton orbits.  Show that if
+   $H$ is a $p$-group then
+   \[ [G:H] \equiv w \pmod{p} . \]
+  \item[(iii)] Conclude that if $G$ is a $p$-group and $H \neq G$ then
+   $H\neq N_G(H)$.
+  \item[(iv)] Deduce from (iii) that if $G$ is a $p$-group and $H$ is a
+   subgroup of index $p$ then $H$ is normal in $G$.
+  \end{itemize}
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a group of order $77$, and let $X$ be a set of order $96$
+ on which $G$ acts.  Suppose there are precisely four orbits.  By
+ investigating the possible sizes of the orbits, show that there is
+ exactly one point $x\in X$ such that $gx=x$ for all $g\in G$.
+\end{exercise}
+\begin{solution}
+ Let the sizes of the $4$ orbits be $d_1$, $d_2$, $d_3$ and $d_4$ with
+ $d_1\leq d_2\leq d_3\leq d_4$.  These sizes must divide $77$, and
+ thus must be $1$, $7$, $11$ or $77$.  We must also have
+ $d_1+d_2+d_3+d_4=96$.  If $d_4\neq 77$ then $d_i\leq 11$ for all $i$
+ so $96=d_1+d_2+d_3+d_4\leq 4\tm 11=44$, which is false.  Thus
+ $d_4=77$ and $d_1+d_2+d_3=96-77=19$.  By similar arguments or by
+ inspection we must have $d_1=1$, $d_2=7$ and $d_3=11$.  Thus, there
+ is precisely one orbit of size $1$.  If this orbit has the form
+ $\{x\}$ then $x$ is fixed under the action of $G$.  If $y$ is in any
+ of the other orbits then $|Gy|>1$ so $y$ is not fixed.  Thus, there
+ is precisely one fixed point.
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a finite group, and let $X$ be a set with an action of
+ $G$.  Suppose that there is precisely one orbit, and that $|X|>1$.
+ Use the orbit counting theorem to show that there is an element $g\in
+ G$ such that $\Fix(g)=\emptyset$.
+\end{exercise}
+\begin{solution}
+ The identity element fixes all of $X$, so it has more than one fixed
+ point.  The orbit counting theorem says that the average number of
+ fixed points is the number of orbits, which is $1$.  As the identity
+ has more than one fixed point, some other element $g\in G$ must have
+ less than one, so as to bring the average back down to $1$.  Thus
+ $|\Fix(g)|<1$ but of course $|\Fix(g)|$ is a nonnegative integer so
+ $|\Fix(g)|=0$ so $\Fix(g)=\emptyset$.  
+
+ For a more algebraic presentation, note that $\sum_{g\in G}1=|G|$, so
+ $|G|^{-1}\sum_{g\in G}1=1$.  The orbit counting theorem tells us that
+ $|G|^{-1}\sum_{g\in G}|\Fix(g)|=\text{ number of orbits }=1$.  By
+ subtracting these equations we find that
+ $\sum_{g\in G}(|\Fix(g)|-1)=0$.  If we move the $g=1$ term to the
+ other side we get $\sum_{g\neq 1}(|\Fix(g)|-1)=1-|X|$.  The right
+ hand side is less than $0$, so at least one of the terms on the left
+ must be less than $0$, so $|\Fix(g)|-1<0$ for some $g$.  As before,
+ this means that $\Fix(g)=\emptyset$.
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a finite simple group (so there are no normal subgroups of
+ $G$ except for $\{1\}$ and $G$ itself).  Let $p$ be a prime dividing
+ the order of $G$, and let $X$ be a set of order $n$ on which the
+ group acts.  Suppose that the action is nontrivial, so there is and
+ element $g\in G$ and an element $x\in X$ such that $gx\neq x$.  Prove
+ that $n\geq p$.
+
+ [{\bf Hint:} Use $X$ to define a homomorphism and consider its
+ kernel.  For which integers $m$ does $p$ divide $m!$?]
+\end{exercise}
+\begin{solution}
+ We can use $X$ to define a homomorphism $G\xra{}S_n$ in the usual
+ way.  (In other words, we list the elements of $X$ as
+ $\{x_1,\ldots,x_n\}$ say, and then let $\phi(g)$ be the permutation
+ $\sg$ such that $gx_i=x_{\sg(i)}$ for all $i$.)  The kernel of any
+ homomorphism is a normal subgroup, and there are only two normal
+ subgroups of $G$ so either $\ker(\phi)=\{1\}$ or $\ker(\phi)=G$.  As
+ the action is nontrivial, we have $gx_i\neq x_i$ for some $g\in G$
+ and $i\in\{1,\ldots,n\}$, so $\phi(g)(i)\neq i$, so $\phi(g)\neq 1$.
+ Thus $g\not\in\ker(\phi)$, so $\ker(\phi)\neq G$, so we must have
+ $\ker(\phi)=\{1\}$.  This means that $\phi$ is injective and thus
+ that $|G|=|\phi(G)|$.  Moreover, $\phi(G)$ is a subgroup of $S_n$, 
+ so $n!=|S_n|$ is divisible by $|\phi(G)|=|G|$, and $|G|$ is divisible
+ by $p$, so $n!$ is divisible by $p$.  Now, if $m<p$ then none of the
+ numbers $1,2,\ldots,m$ are divisible by $p$ so $m!$ is not divisible
+ by $p$.  As $p$ divides $n!$ we must have $n\geq p$ as claimed.
+\end{solution}
+
+\begin{exercise}
+ We know that $\Dir(\Tet)\simeq A_4$ and that $\Dir(\Cube)\simeq S_4$.
+ Find a geometric reason that $\Dir(\Tet)$ is isomorphic to a subgroup
+ of $\Dir(\Cube)$.  [Hint: can you see a tetrahedron inside the cube?]
+\end{exercise}
+\begin{solution}
+ The following picture shows a tetrahedron embedded inside a cube.
+ We'll assume as usual that the edges of the cube have length $2$.
+ \begin{center}
+  \begin{tikzpicture}[scale=2]
+   \draw (0.598,-1.21) -- (1.28,-0.881);
+   \draw (0.598,-1.21) -- (-1.28,-1.09);
+   \draw (0.598,-1.21) -- (0.598,0.762);
+   \draw[dashed] (1.28,-0.881) -- (-0.598,-0.762);
+   \draw (1.28,-0.881) -- (1.28,1.09);
+   \draw[dashed] (-1.28,-1.09) -- (-0.598,-0.762);
+   \draw (-1.28,-1.09) -- (-1.28,0.881);
+   \draw[dashed] (-0.598,-0.762) -- (-0.598,1.21);
+   \draw (0.598,0.762) -- (1.28,1.09);
+   \draw (0.598,0.762) -- (-1.28,0.881);
+   \draw (1.28,1.09) -- (-0.598,1.21);
+   \draw (-1.28,0.881) -- (-0.598,1.21);
+   \begin{scope}[red,thick]
+   \draw (1.28,1.09) -- (-1.28,0.881) -- (0.598,-1.21) -- (1.28,1.09);
+    \draw[dashed] (-0.598,-0.762) -- (1.28,1.09);
+    \draw[dashed] (-0.598,-0.762) -- (-1.28,0.881);
+    \draw[dashed] (-0.598,-0.762) -- (0.598,-1.21);
+   \end{scope}
+  \end{tikzpicture}
+ \end{center}
+ Alternatively, we can say that the cube is built from the tetrahedron
+ by attaching a pyramid to each face.  All the pyramids have the same
+ shape: the base edges have length $2\sqrt{2}$, and the remaining
+ edges have length $2$.  Thus, any isometry of the tetrahedron carries
+ pyramids to pyramids and thus gives an isometry of the cube.  This
+ shows that $\Dir(\Tet)\leq\Dir(\Cube)$.  
+\end{solution}
+
+\begin{exercise}
+ In this problem we will find the coordinates of the vertices of a
+ tetrahedron.  We will place the tetrahedron with its centre at the
+ origin and the first vertex $v_1$ on the $z$-axis.  After choosing
+ suitable units of length we may assume that $v_1=(0,0,\sqrt{3})$.  We
+ then rotate our coordinates if necessary so that the next vertex
+ $v_2$ lies in the $xz$-plane, say $v_2=(a,0,-b)$.  There are two more
+ vertices; we call the one with positive $y$-coordinate $v_3$, and the
+ one with negative $y$-coordinate $v_4$.
+ \begin{itemize}
+ \item[(a)] Explain why the points $v_3$ and $v_4$ lie in the plane
+  $z=-b$.
+ \item[(b)] Explain why $v_3=(-a/2,a\sqrt{3}/2,-b)$, and give the
+  corresponding formula for $v_4$.
+ \item[(c)] By considering the distances $d(O,v_i)$ and $d(v_i,v_j)$
+  show that $a^2+b^2=3$ and $a^2+(b+\sqrt{3})^2=3a^2$.
+ \item[(d)] Solve these equations for $a$ and $b$, and obtain explicit
+  expressions for the coordinates of $v_2$, $v_3$ and $v_4$.
+ \item[(e)] Consider the matrix
+  \[ g = \bsm 1/3        &  0 & \sqrt{8}/3 \\
+              0          & -1 & 0          \\
+              \sqrt{8}/3 & 0  & -1/3 \esm
+  \]
+  Calculate $g(v_i)$ for $i=1,2,3,4$ and thus determine the vertex
+  permutation induced by $g$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] A twist of one third around the $z$-axis sends $v_2$ to
+  $v_3$, $v_3$ to $v_4$ and $v_4$ to $v_2$.  Such a twist preserves
+  horizontal planes, and $v_2$ lies in the plane $z=-b$ so the same is
+  true of $v_3$ and $v_4$.
+ \item[(b)] Let $w_2$, $w_3$ and $w_4$ be the points in the $xy$ plane
+  lying above $v_2$, $v_3$ and $v_4$.  Then $w_2=(a,0)$ and $w_3$ and
+  $w_4$ are obtained from $w_2$ by rotating around the origin through
+  $2\pi/3$ in either direction, so the coordinates are
+  $(\cos(\pm 2\pi/3)a,\sin(\pm 2\pi/3)a)$, which is equal to
+  $(-a/2,\pm a\sqrt{3}/2)$.  In combination with~(a) this means that
+  $v_3=(-a/2,a\sqrt{3}/2,-b)$ and $v_3=(-a/2,-a\sqrt{3}/2,-b)$.
+ \item[(c)] All the vertices of a tetrahedron have the same distance
+  from the centre, so $\|v_2\|^2=\|v_1\|^2$, or in other words
+  $a^2+b^2=3$.  The distance between any two vertices is the same, so
+  $d(v_1,v_2)=d(v_3,v_4)$.  We have $v_1-v_2=(-a,0,b+\sqrt{3})$ so
+  $d(v_1,v_2)^2=a^2+(b+\sqrt{3})^2$.  We also have
+  $v_2-v_3=(0,a\sqrt{3},0)$, so $d(v_2,v_3)^2=3a^2$.  It follows that
+  $a^2+(b+\sqrt{3})^2=3a^2$ as claimed.
+ \item[(d)] Our second equation expands out to give
+  $b^2+2b\sqrt{3}+3-2a^2=0$.  Our first equation gives $a^2=3-b^2$ and
+  after substituting this in we get $3b^2+2b\sqrt{3}-3=0$, so
+  $b^2+2b/\sqrt{3}-1=0$, so $(b+1/\sqrt{3})^2=4/3$.  As $b$ must
+  clearly be positive this gives $b=1/\sqrt{3}$.  This implies that
+  $a^2=3-b^2=3-1/3=8/3$ so $a=\sqrt{8/3}=2\sqrt{2/3}$.  Putting this
+  back into our equations for the $v_i$ gives
+  \begin{align*}
+   v_1 &= (0,0,\sqrt{3}) \\
+   v_2 &= (2\sqrt{2/3},0,-1/\sqrt{3}) \\
+   v_3 &= (-\sqrt{2/3},\sqrt{2},-1/\sqrt{3}) \\
+   v_4 &= (-\sqrt{2/3},-\sqrt{2},-1/\sqrt{3}).
+  \end{align*}
+ \item[(e)] Let $V$ be the matrix whose columns are $v_1$, $v_2$,
+  $v_3$ and $v_4$, so $gV$ is the matrix whose columns are $gv_1$,
+  $gv_2$, $gv_3$ and $gv_4$.  We have
+  \begin{align*}
+   gV &= \bsm 1/3&0&2\sqrt{2}/3\\0&-1&0\\2\sqrt{2}/3&0&-1/3 \esm 
+         \bsm 0 & 2\sqrt{2/3} & -\sqrt{2/3} & -\sqrt{2/3} \\
+              0 & 0 & \sqrt{2} & -\sqrt{2} \\
+              \sqrt{3} & -1/\sqrt{3} & -1/\sqrt{3} & -1/\sqrt{3}
+         \esm \\
+      &= \bsm 2\sqrt{2/3} & 0 & -\sqrt{2/3} & -\sqrt{2/3} \\
+              0 & 0 & -\sqrt{2} & \sqrt{2} \\
+              -1/\sqrt{3} & \sqrt{3} & -1/\sqrt{3} & -1/\sqrt{3}
+         \esm, 
+  \end{align*}
+  so $g(v_1)=v_2$, $g(v_2)=v_1$, $g(v_3)=v_4$ and $g(v_4)=v_3$.  Thus,
+  the permutation associated to $g$ is $(1\;2)(3\;4)$.
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+Let $(e_1,e_2)$ be the usual basis of $\R^2$, let $L=\Re_1$ be the
+$x$-axis and $S=S_e$.
+% what's e?
+
+Show that if $G$ is the subgroup $\ip{S T_1,T_2}$ of $I_2$ then the
+point group $\psi(G)$ is cyclic of order $2$, whereas $\sg_a(G)$ is
+trivial for all $a\in\R^2$.
+
+\noindent
+[Hint: For the second part show that every $g\in G$ can be written in the
+form: $S^{i_1}T_1^{i_1}T_2^{i_2}.$]
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $H$ be a wallpaper group such that
+ $\Trans(H)=\{(2n,m)\st n,m\in\Z\}$.  Prove that $|\psi(H)|\leq 4$.
+\end{exercise}
+\begin{solution}
+ The group $\Trans(H)\leq\R^2$ looks like this:
+ \begin{center}
+  \begin{tikzpicture}[scale=1]
+   \foreach \i in {-4,-2,...,4} {
+    \foreach \j in {-2,-1,...,2} {
+     \fill (\i,\j) circle(0.06);
+    }
+   }
+   \draw (-2, 0) node[anchor=north] {$(-2, 0)$};
+   \draw ( 0, 0) node[anchor=north] {$( 0, 0)$};
+   \draw ( 2, 0) node[anchor=north] {$( 2, 0)$};
+   \draw ( 0,-1) node[anchor=north] {$( 0,-1)$};
+   \draw ( 0, 1) node[anchor=north] {$( 0, 1)$};
+  \end{tikzpicture}
+ \end{center}
+ We know that if $A\in\psi(H)$ then $A.\Trans(H)=\Trans(H)$ (Lemma 5.8
+ in the notes).  If $A$ is a rotation about the origin that sends
+ $\Trans(H)$ to itself, then the angle must be $0$ or $\pi$, so $A=I$
+ or $R_{\pi}$.  If $A$ is the reflection across a line $L$ through the
+ origin, then $L$ must be either the $x$-axis or the $y$-axis, so
+ $A=S_0$ or $S_{\pi}$.  Thus $\psi(H)\sse\{1,S_0,S_\pi,S_0S_\pi\}$ and
+ so $|\psi(H)|\leq 4$.
+ 
+ Here is a slightly more formal argument.  We know that
+ $A.\Trans(H)=\Trans(H)$, so $A(0,1)$ lies in $\Trans(H)$ and has
+ length $1$, so $A(0,1)=(0,1)$ or $A(0,1)=(0,-1)$.  In the first case
+ we define $A_1=A$, and in the second we define $A_1=S_0A$; either way
+ we have $A_1.\Trans(H)=\Trans(H)$ and $A_1(0,1)=(0,1)$.  As $A_1$
+ preserves lengths and angles we see that $A_1(2,0)$ is perpendicular
+ to $A_1(0,1)=(0,1)$ and $\|A_1(2,0)\|=2$; the only possibilities are
+ $A_1(2,0)=(2,0)$ or $A_1(2,0)=(-2,0)$.  In the first case we put
+ $A_2=A_1$,and in the second we define $A_2=S_\pi A_1$; either way we
+ have $A_2(0,1)=(0,1)$ and $A_2(2,0)=(2,0)$.  As $(0,1)$ and $(2,0)$
+ are a basis of $\R^2$, this means that $A_2=1$, and it follows that
+ $A$ is either $1$, $S_0$, $S_\pi$ or $S_0S_\pi=R_{\pi}$.
+\end{solution}
+
+\begin{exercise}
+ Let $\Oct$ be a regular octahedron, centred at the origin in $\R^3$.
+ Since $\Oct$ is dual to the cube we know that $\Dir(\Oct)\simeq S_4$.
+ Prove this directly as follows:
+ \begin{itemize}
+  \item[(i)] Describe 24 rotation in $\Dir(\Oct)$.
+  \item[(ii)] Describe a set of 4 objects in which $\Dir(\Oct)$ acts
+   and such that the induced homorphism $\Dir(\Oct)\xra{}S_4$ is
+   injective.  Prove your assertions.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ By considering cycle types show that $A_5$ has no elements of order
+ $15$.  What does the classification of finite subgroups of $SO_3$
+ tell us about subgroups of $A_5$ of order $30$?  Show that there are
+ no such subgroups. 
+\end{exercise}
+\begin{solution}
+ $A_5$ consists of elements of the following types:
+ \begin{itemize}
+ \item the identity, with order $1$
+ \item transposition pairs (such as $(1\;2)(3\;4)$), with order $2$
+ \item $3$-cycles (such as $(1\;2\;3)$), with order $3$
+ \item $5$-cycles (such as $(1\;2\;3\;4\;5)$) with order $5$.
+ \end{itemize}
+ There are thus no elements of order $15$.  
+
+ Now let $G$ be a subgroup of $A_5$ with $|G|=30$.  The group $A_5$ is
+ isomorphic to the subgroup $G_3$ of $SO_3$, so $G$ is isomorphic to
+ some subgroup of $G_3$ and thus to a finite subgroup of $SO_3$.  It
+ follows by the classification that $G$ is isomorphic to $G_1$, $G_2$
+ or $G_3$, or to $\widetilde{C}_n$ or $\widetilde{D}_n$ for some $n$.
+ As $|G|=30$ which is different from the orders of $G_1$, $G_2$ and
+ $G_3$ we must have $G\simeq\widetilde{C}_{30}$ or
+ $G\simeq\widetilde{D}_{15}$.  However $\widetilde{C}_{30}$ and
+ $\widetilde{D}_{15}$ both contain elements of order $15$ and $G$ does
+ not, which gives a contradiction.  Thus there can be no subgroups of
+ $A_5$ of order $30$.
+\end{solution}
+
+\begin{exercise}
+ Suppose $H$ is a subgroup of a finite group $G$, and consider the
+ action of $G$ on the set
+ \[ \CC =\{ g H g^{-1}\; | \; g \in G\} \]
+ of conjugates of $H$.
+ \begin{itemize}
+  \item[(i)] Show that $h*K =hKh^{-1}$ defines an action of $G$ on $\CC$.
+  \item[(ii)] Conclude that $|\CC|$ divides the order of $G$.
+  \item[(iii)] Suppose $G$ is of order $p^ns$ with $(p,s)=1$ and $n_p$
+   is the number of conjugates of $P$.  Use Part (ii) to show that if
+   $n_p\equiv 1$ mod $p$ then $n_p$ divides $s$.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a group of order $605$.  Show that $G$ has a normal
+ subgroup of order $121$ and hence show that $G$ is a semidirect
+ product of proper subgroups.
+
+ Find a group automorphism
+ $\tht\:C_{11}\times C_{11}\xra{} C_{11}\times C_{11}$
+ of order $5$.  Construct a non-abelian group of order $605$ which has
+ a subgroup isomorphic to $C_{11} \times C_{11}$ (You may use general
+ facts about automorphism groups of elementary abelian groups without
+ proof.)
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+\begin{exercise}
+ Write out the multiplication table of the group $\Z_3\rtimes_{-1}\Z_2$.
+\end{exercise}
+\begin{solution}
+ \[ \renewcommand{\arraystretch}{1.5}
+  \begin{array}{|c||c|c|c|c|c|c|}\hline
+         & ( 0,0) & (+1,0) & (-1,0) & ( 0,1) & (+1,1) & (-1,1) \\
+  \hline\hline
+  ( 0,0) & ( 0,0) & (+1,0) & (-1,0) & ( 0,1) & (+1,1) & (-1,1) \\ \hline
+  (+1,0) & (+1,0) & (-1,0) & ( 0,0) & (+1,1) & (-1,1) & ( 0,1) \\ \hline
+  (-1,0) & (-1,0) & ( 0,0) & (+1,0) & (-1,1) & ( 0,1) & (+1,1) \\ \hline
+  ( 0,1) & ( 0,1) & (-1,1) & (+1,1) & ( 0,0) & (+1,0) & (-1,0) \\ \hline
+  (+1,1) & (+1,1) & ( 0,1) & (-1,1) & (+1,0) & ( 0,0) & (+1,0) \\ \hline
+  (-1,1) & (-1,1) & (+1,1) & ( 0,1) & (-1,0) & (-1,0) & ( 0,0) \\ \hline
+ \end{array} \]
+\end{solution}
+
+\begin{exercise}
+ Prove by induction that in $\Z_n\rtimes_a\Z_m$ we have
+ \[ (v,w)^k = (v + a^w v + \ldots + a^{(k-1)w} v,kw). \]
+ List the elements of the group $G=\Z_5\rtimes_2\Z_4$.  Calculate the
+ element $\ov{1}+\ov{2}+\ov{2}^2+\ov{2}^3\in\Z_5$.  Can you explain
+ your result (\emph{carefully}) with less calculation?  Show that
+ every element of $G$ has order $1$, $2$, $4$ or $5$.
+\end{exercise}
+\begin{solution}
+ The base case says that $(v,w)^1=(v,w)$, which is clear.  Given the
+ statement for $(v,w)^k$ we have
+ \begin{align*}
+  (v,w)^{k+1} &= (v,w)(v,w)^k \\
+   &= (v,w)(v + a^w v + \ldots + a^{(k-1)w} v,kw) \\
+   &= (v + a^w(v + a^w v + \ldots + a^{(k-1)w} v),w+kw) \\
+   &= (v + a^wv + a^{2w}v + \ldots + a^{kw}v,(k+1)w),
+ \end{align*}
+ which is the required statement for $(v,w)^{k+1}$.
+
+ The elements of $G$ are as follows:
+ \[ \renewcommand{\arraystretch}{1.5}
+  \begin{array}{ccccc}
+  (\ov{0},\ov{0}) & (\ov{1},\ov{0}) & (\ov{2},\ov{0}) &
+                    (\ov{3},\ov{0}) & (\ov{4},\ov{0}) \\
+  (\ov{0},\ov{1}) & (\ov{1},\ov{1}) & (\ov{2},\ov{1}) & 
+                    (\ov{3},\ov{1}) & (\ov{4},\ov{1}) \\
+  (\ov{0},\ov{2}) & (\ov{1},\ov{2}) & (\ov{2},\ov{2}) & 
+                    (\ov{3},\ov{2}) & (\ov{4},\ov{2}) \\
+  (\ov{0},\ov{3}) & (\ov{1},\ov{3}) & (\ov{2},\ov{3}) & 
+                    (\ov{3},\ov{3}) & (\ov{4},\ov{3}).
+ \end{array} \]
+ 
+ We have $\ov{2}^2=\ov{4}$ and $\ov{2}^3=\ov{8}=\ov{3}$ so
+ $\ov{1}+\ov{2}+\ov{2}^2+\ov{2}^3=\ov{1}+\ov{2}+\ov{4}+\ov{3}=\ov{10}=\ov{0}$.
+ Alternatively, the group $\Z_5^\tm$ has order $4$, so for any
+ $x\in\Z_5^\tm$ we have $x^4=1$ and thus
+ $(x-\ov{1})(\ov{1}+x+x^2+x^3)=x^4-\ov{1}=\ov{0}$.  If $x\neq\ov{1}$
+ then the element $x-\ov{1}$ is nonzero and thus has a multiplicative
+ inverse in $\Z_5$, so we can multiply by this inverse to see that
+ $\ov{1}+x+x^2+x^3=\ov{0}$.  By putting $x=\ov{2}$ we see again that
+ $\ov{1}+\ov{2}+\ov{2}^2+\ov{2}^3=\ov{0}$.  
+
+ Now, for any element $(v,w)\in G$ we have 
+ \[ (v,w)^4=(v+\ov{2}^w v+\ov{2}^{2w} v+\ov{2}^{3w} v,4w)
+           = ((\ov{1} + \ov{2}^w + \ov{2}^{2w} + \ov{2}^{3w})v,0).
+ \]
+ (Here we have used the fact that $4w=0$ for all $w\in\Z_4$.)  If
+ $w\neq 0$ we can put $x=\ov{2}^w\neq 1$ in the previous paragraph and
+ deduce that $\ov{1} + \ov{2}^w + \ov{2}^{2w} + \ov{2}^{3w}=\ov{0}$,
+ so $(v,w)^4=(0,0)$, which implies that the order of $(v,w)$ is $1$,
+ $2$ or $4$.  On the other hand, if $w=0$ then it is easy to see that
+ $(v,w)^k=(v,0)^k=(kv,0)$ and thus that $(v,w)^5=(0,0)$, so the order
+ of $(v,w)$ is $1$ or $5$.
+\end{solution}
+
+\begin{exercise}
+ Recall that if $H$ and $K$ are groups the Cartesian product $H\tm K$
+ is a group under the operation $(h,k)(h',k')=(hh',kk')$.
+
+ Show that if $G$ is a group and $a,b\in G$ are distinct with the
+ property that $a,b$ and $ab$ all have order 2 then $L=\{e,a,b,ab\}$ is
+ a subgroup of $G$ and $L$ is isomorphic to $C_2\tm C_2$.
+
+ Show that if $K$ is any group of order 4 then either $K\simeq C_4$ or
+ $K\simeq C_2\tm C_2$, but not both.  Which of these two alternatives
+ hold for $K=D_2$?
+\end{exercise}
+\begin{solution}
+ We first claim that the elements $e$, $a$, $b$ and $ab$ are all
+ distinct.  Indeed, if $a=e$ or $b=e$ or $ab=e$ then $a$, $b$ or $ab$
+ would have order $1$ rather than $2$, contradicting our assumption.
+ We also have $b\neq a$ by assumption.  We cannot have $ab=a$, because
+ if we did we could multiply on the left by $a^{-1}$ to get $b=e$.
+ Similarly, we cannot have $ab=b$, so all four elements are distinct,
+ so $L$ is a set of order $4$.
+
+ The set $L$ clearly contains $e$.  As $a^2=b^2=(ab)^2=e$ we have
+ $a^{-1}=a$, $b^{-1}=b$, $(ab)^{-1}=ab$ and of course $e^{-1}=e$; thus
+ $L$ is closed under taking inverses.  We also have
+ $ab=(ab)^{-1}=b^{-1}a^{-1}=ba$ so $a$ and $b$ commute.  Using this,
+ it is easy to fill in the multiplication table as follows:
+ \[ \begin{array}{|c|cccc|}
+  \hline
+      & e  & a  & b  & ab \\ \hline
+   e  & e  & a  & b  & ab \\ 
+   a  & a  & e  & ab & b  \\ 
+   b  & b  & ab & e  & a  \\ 
+   ab & ab & b  & a  & e  \\ \hline
+ \end{array} \]
+ (For example, $(ab)a=aba=aab=b$, which explains the entry in the row
+ marked $ab$ and the column marked $a$.)  The table shows that $L$ is
+ closed under multiplication, so it is a subgroup.  Recall that
+ $C_2=\{1,R\}$ where $R^2=1$.  We can define $\phi\:C_2\tm C_2\xra{}L$
+ by $\phi((R^i,R^j))=a^ib^j$, so
+ \begin{align*}
+  \phi((1,1)) &= e \\
+  \phi((R,1)) &= a \\
+  \phi((1,R)) &= b \\
+  \phi((R,R)) &= ab 
+ \end{align*}
+ As $C_2\tm C_2=\{(1,1),(R,1),(1,R),(R,R)\}$ we see that $\phi$ is a
+ bijection. 
+
+ As $a$ and $b$ commute we have
+ \begin{align*}
+  \phi((R^i,R^j))\phi((R^k,R^l)) &=
+   a^ib^ja^kb^l \\
+   &= a^ia^kb^jb^l \\
+   &= a^{i+k} b^{j+l} \\
+   &= \phi((R^{i+k},R^{j+l})) \\
+   &= \phi((R^i,R^j)(R^k,R^l)),
+ \end{align*}
+ which shows that $\phi$ is a homomorphism and thus an isomorphism.
+
+ Now let $K$ be a group of order $4$.  By Lagrange's theorem, every
+ element $a\in K$ has order dividing $4$ and thus equal to $1$, $2$ or
+ $4$.  Only the identity element can have order $1$ so the other $3$
+ elements must have order $2$ or $4$.  If there are no elements of
+ order $4$ then let $a$ and $b$ be any two distinct elements of order
+ $2$.  Then $ab$ is another element of $K$, which is not the identity
+ because $a\neq b^{-1}=b$, so it must also have order $2$.  Using the
+ first part of the question we deduce that $L=\{1,a,b,ab\}$ is a
+ subgroup of $K$ and is isomorphic to $C_2\tm C_2$.  As $|L|=|K|=4$ we
+ must have $L=K$, so $K\simeq C_2\tm C_2$.
+
+ On the other hand, suppose that not all elements of $K\sm\{1\}$ have
+ order $2$.  Let $a$ be an element of order $4$, and put
+ $L=\{1,a,a^2,a^3\}$.  It is easy to see that $L$ is a subgroup
+ isomorphic to $C_4$, and $|L|=|K|=4$ so $L=K$, so $K\simeq C_4$ as
+ claimed.  
+
+ We cannot have both $K\simeq C_2\tm C_2$ and $K\simeq C_4$, for in
+ the first case all elements of $K$ have order $2$ whereas in the
+ second case some elements have order $4$.
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a group of order $18$.
+ \begin{itemize}
+ \item[(a)] Show that there is a normal subgroup $P\leq G$ with
+  $|P|=9$, and another subgroup $Q\leq G$ of the form $Q=\{1,h\}$ with
+  $h^2=1$ (and so $h^{-1}=h$).
+ \item[(b)] Show that if $P\simeq C_9$ then $G\simeq C_2\tm C_9$ or
+  $G\simeq D_9$.
+ \item[(c)] Now suppose that $P\simeq C_3\tm C_3$ (so in particular,
+  $P$ is abelian, and $x^3=1$ for all $x\in P$).  For any $x\in P$, we
+  put  
+  \begin{align*}
+   x^h &= hxh = h^{-1}xh \\
+   x_+ &= x^2\,(x^h)^2 = xxhxhhxh = xxhxxh \\ 
+   x_- &= x^2\,x^h = xxhxh \\
+   P_+ &= \{x\in P \st x^h=x\} \\
+   P_- &= \{x\in P \st x^h=x^{-1}\}.
+  \end{align*}
+  \begin{itemize}
+   \item[(i)] Show that $x_+\in P_+$ and $x_-\in P_-$ and $x=x_+x_-$.
+   \item[(ii)] Show that $P_+$ and $P_-$ are subgroups of $P$, and that
+    $P_+\cap P_-=\{1\}$.
+   \item[(iii)] Deduce that $P\simeq P_+\tm P_-$.
+   \item[(iv)] Show that if $|P_+|=9$ then $G\simeq C_3\tm C_3\tm C_2$.
+   \item[(v)] Show that if $|P_+|=3$ then $G\simeq C_3\tm D_3$.
+  \end{itemize}
+  (The case $|P_+|=1$ gives a new group, for which we do not yet have
+  a name.)
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+  \item[(a)] We know that $n_3$ divides $2$ and is congruent to $1$
+   modulo $3$; the only possibility is $n_3=1$.  This means that there
+   is a unique, normal Sylow $3$-subgroup, which we call $P$.  We then
+   let $Q$ be any Sylow $2$-subgroup.  As $|Q|=2$, it is clear that
+   $Q=\{1,h\}$ for some $h$ with $h^2=1$.
+  \item[(b)] Suppose that $P\simeq C_9$.  We can then choose an
+   element $g\in P$ that generates $P$, with $g^9=1$.  As $P$ is
+   normal, we see that $hgh=g^a$ for some integer $a$.  As $h^2=1$,
+   this means that
+   \[ g = h^2gh^2 = hg^ah=g^{a^2}, \]
+   so $a^2=1\pmod{9}$, so the number $a^2-1=(a+1)(a-1)$ is divisible
+   by $9$.  The following table shows all numbers $a$ mod $9$ and
+   their squares:
+   \[ \begin{array}{|c||c|c|c|c|c|c|c|c|c|} 
+       \hline
+        a   & -4 & -3 & -2 & -1 & 0 & 1 & 2 & 3 & 4 \\
+       \hline
+        a^2 & -2 &  0 &  4 &  1 & 0 & 1 & 4 & 0 & -2 \\
+       \hline
+      \end{array}
+   \]
+   As $a^2=1\pmod{9}$, we must have $a=1\pmod{9}$ or $a=-1\pmod{9}$,
+   so $hgh=g$ or $hgh=g^{-1}$.  If $hgh=g$ then $h$ commutes with $g$
+   and we find that $G\simeq P\tm Q\simeq C_2\tm C_9$.  If
+   $hgh=g^{-1}$ we find that $G\simeq D_9$.
+  \item[(c)] Now suppose instead that $P\simeq C_3\tm C_3$.
+   \begin{itemize}
+    \item[(i)] We have
+     \[ (x_+)^h = hx_+h = h(xxhxxh)h = hxxhxx. \]
+     Now, $xx$ lies in $P$ and $P$ is normal so $hxxh$ lies in $P$.
+     Moreover, $P$ is abelian, so $xx$ commutes with $hxxh$.  We 
+     thus have $hxxhxx=xxhxxh$, or in other words, $(x_+)^h=x_+$.
+     This shows that $x_+\in P_+$.
+
+     Next, we have $xxx=x^3=1$ and so 
+     \[ (x_-)^h x_- = h(xxhxh)h\,xxhxh = 
+         hxxhxxxhxh = hxxhhxh = hxxxh = hh = 1,
+     \]
+     so $(x_-)^h=(x_-)^{-1}$, so $x_-\in P_-$.
+
+     Finally, we have
+     \[ x_+ x_- = (xx)(hxxh)\,(xx)(hxh) = (xx)(xx)(hxxh)(hxh) = 
+         xhxxxh = xhh = x.
+     \]
+     (In the second equality, we used the fact that each of the four
+     bracketed terms lies in $P$, so we can commute them past each
+     other.) 
+    \item[(ii)] Clearly $1\in P_+$ and $1\in P_-$.  If $x,y\in P_+$ we
+     have $x=hxh$ and $y=hyh$, so $xy=hxh\,hyh=hxyh$, so $xy\in P_+$.
+     In particular, we can take $y=x$ to see that the element
+     $x^{-1}=x^2$ lies in $P_+$.  This shows that $P_+$ is a subgroup
+     of $P$.  Now suppose instead that $x,y\in P_-$, so that
+     $hxh=x^{-1}$ and $hyh=y^{-1}$.  As $x$ and $y$ commute we have
+     $x^{-1}y^{-1}=(xy)^{-1}$, so
+     $hxyh=hxh\,hyh=x^{-1}y^{-1}=(xy)^{-1}$, so $xy\in P_-$.  It
+     follows that $P_-$ is also a subgroup.
+
+     If $x\in P_+\cap P_-$ then $x^h=x$ and also $x^h=x^{-1}$, so
+     $x=x^{-1}$, so $x^2=1$.  As $P\simeq C_3\tm C_3$ we also know
+     that $x^3=1$, and it follows that $x=x^3(x^2)^{-1}=1$.  This
+     shows that $P_+\cap P_-=\{1\}$.
+    \item[(iii)] As $P_+$ and $P_-$ are subgroups of the abelian group
+     $P$, we see that they commute with each other, so we can define a
+     homomorphism $\phi\:P_+\tm P_-\xra{}P$ by $\phi(y,z)=yz$.  For
+     any $x\in P$ we have $(x_+,x_-)\in P_+\tm P_-$ and
+     $\phi(x_+,x_-)=x_+x_-=x$.  This shows that $\phi$ is surjective.
+     We also have $P_+\cap P_-=\{1\}$, which implies that $\phi$ is
+     injective.  This means we have an isomorphism
+     $P_+\tm P_-\xra{}P$, and so $|P_+||P_-|=9$.
+    \item[(iv)] Suppose that $|P_+|=9$, so $P_+=P$ and $P_-=\{1\}$.
+     This means that $hxh=x$ for all $x\in P$, so $P$ commutes with
+     $Q$, so $G\simeq Q\tm P\simeq C_2\tm C_3\tm C_3$.
+    \item[(v)] Now suppose instead that $|P_+|=3$, so $|P_-|=3$ also.
+     This means that $P_+\simeq P_-\simeq C_3$, so we can choose
+     $a\in P_+$ and $b\in P_-$ such that $P_+=\{1,a,a^2\}$ and
+     $P_-=\{1,b,b^2\}$ and $a^3=b^3=1$.  We define
+     $\phi\:C_3\tm D_6\xra{}G$ by 
+     \begin{align*}
+      \phi((R^i,R^j))  &= a^i b^j \\
+      \phi((R^i,R^jS)) &= a^i b^j h.
+     \end{align*}
+     It is easy to check that this is an isomorphism of groups.
+   \end{itemize}
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+\begin{itemize}
+ \item[(a)] Let $G$ be a group of order $21$.  Show that $G$ has a
+  normal subgroup of order $7$ and hence show that $G$ is a semidirect
+  product of proper subgroups.
+ \item[(b)] Construct a non-abelian group of order $21$.
+ \item[(c)] Using the fact that $\Z_7^\tm$ is cyclic, show that every
+  non-Abelian group of order $21$ is isomorphic to the one in (b).
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ \begin{itemize}
+ \item[(a)] If we let $n_7$ be the number of Sylow $7$-subgroups then
+  $n_7$ divides $3$ and is congruent to $1$ modulo $7$ so we must have
+  $n_7=1$.  If we let $N$ be the unique Sylow $7$-subgroup then it
+  follows that $N$ is normal in $G$.  [Explicitly, if $g\in G$ then
+  $gNg^{-1}$ is clearly a subgroup of order $7$ but we have seen that
+  $N$ is the only such subgroup so $gNg^{-1}=N$, which means that $N$
+  is normal.]  Now let $Q$ be a Sylow $3$-subgroup of $G$.  The order
+  of $N\cap Q$ divides both $7=|N|$ and $3=|Q|$ so we must have
+  $|N\cap Q|=1$ so $N\cap Q=\{1\}$.  This means that
+  $|NQ|=|N||Q|/|N\cap Q|=21=|G|$ so $NQ=G$, so $G$ is the semidirect
+  product of $N$ and $Q$.
+ \item[(b)] Recall that $\Z_n\rtimes_a\Z_m$ is defined whenever
+  $a\in\Z_n^\tm$ and $a^m=\ov{1}$.  As $\ov{2}\in\Z_7^\tm$ and
+  $\ov{2}^3=\ov{8}=\ov{1}$, we can define the group
+  $H=\Z_7\rtimes_2\Z_3$, which is a non-Abelian group of order $21$.
+ \item[(c)] Let $G$ be a non-Abelian group of order $21$.  As in
+  part~(a) we see that there are subgroups $N$ and $Q$ of $G$ such
+  that $N$ is normal, $|N|=7$, $|Q|=3$, and $G$ is the semidirect
+  product of $N$ and $Q$.  As the orders of $N$ and $Q$ are prime,
+  they must be cyclic groups.  We saw in lectures that all semidirect
+  products of cyclic groups have the form $\Z_n\rtimes_a\Z_m$, so
+  $G\simeq \Z_7\rtimes_a\Z_3$ for some $a\in\Z_7^\tm$ with $a^3=1$.  
+
+  We know that $\Z_7^\tm$ is cyclic of order $6$, generated by some
+  element $b$ say.  From this it is not hard to see that there are
+  precisely three elements satisfying $a^3=\ov{1}$, viz. $a=\ov{1}$,
+  $a=b^2$ and $a=b^{-2}$.  Explicitly, we have
+  \[ \renewcommand{\arraystretch}{1.5}
+   \begin{array}{|c|cccccc|} \hline
+   a   & \ov{ 1} & \ov{ 2} & \ov{ 3} & \ov{-1} & \ov{-2} & \ov{-3}
+    \\ \hline
+   a^3 & \ov{ 1} & \ov{ 1} & \ov{-1} & \ov{-1} & \ov{-1} & \ov{ 1}
+    \\ \hline
+  \end{array} \]
+  so the three possibilities are $a=\ov{1}$, $a=\ov{2}$ and
+  $a=\ov{-3}=\ov{2}^{-1}$.  [If we take $b=\ov{3}$ then $b$ generates
+  $\Z_7^\tm$ and $b^2=\ov{2}$ and $b^{-2}=\ov{-3}$.]  The case $a=1$
+  would give the Abelian group $\Z_7\tm\Z_3$, which is impossible as
+  $G$ is assumed to be non-Abelian.
+
+  We now see that $G$ is isomorphic either to the group
+  $H=\Z_7\rtimes_2\Z_3$ considered in part~(b), or to the group
+  $H':=\Z_7\rtimes_{-3}\Z_3$.  It will thus be enough to show that $H'$
+  is isomorphic to $H$.
+
+  Define $\phi\:H\xra{}H'$ by $\phi(v,w)=(v,-w)$; this is clearly a
+  bijection.  We next show that $\phi$ is a homomorphism.  We will
+  write $*$ for the group operation in $H$ and $*'$ for the group
+  operation in $H'$, so as to make clear which is which.  We have
+  \begin{align*}
+   \phi((v,w)*(x,y)) &= \phi(v+\ov{2}^wx,w+y) \\
+    &= (v+\ov{2}^wx,-w-y) \\
+    &= (v+\ov{-3}^{-w}x,-w-y) \\
+    &= (v,-w)*'(x,-y) \\
+    &= \phi(v,w)*'\phi(x,y),
+  \end{align*}
+  which shows that $\phi$ is a homomorphism as claimed, and thus an
+  isomorphism.  
+ \end{itemize}
+\end{solution}
+
+\begin{exercise}
+ Let $G$ be a group of order $60$, and suppose that $G$ has a cyclic
+ normal subgroup $N$ of order $12$.  Let $Q$ be a Sylow $5$-subgroup of
+ $G$.  What standard groups are $N$, $Q$ and $\Aut(N)$ isomorphic to?
+ Show that every homomorphism $\phi\:Q\xra{}\Aut(N)$ is trivial.
+ Deduce that every element of $Q$ commutes with every element of $N$,
+ and thus that $G$ is Abelian.
+\end{exercise}
+\begin{solution}
+ As $N$ is cyclic of order $12$, it is isomorphic to $\Z_{12}$.  As
+ $|G|=5\tm 12$ and $5$ does not divide $12$, the Sylow $5$-subgroup
+ $Q$ must have order $5$.  Groups of prime order are cyclic so $Q$ is
+ isomorphic to $\Z_5$.  Finally,
+ $\Aut(N)\simeq\Aut(\Z_{12})\simeq\Z_{12}^\tm$, and we showed in
+ lectures that $\Z_{12}^\tm=\{\ov{\pm 1},\ov{\pm 5}\}\simeq C_2\tm
+ C_2$, so $\Aut(N)\simeq C_2\tm C_2$.  As the order of $Q$ is coprime
+ to the order of $\Aut(N)$, we deduce that any homomorphism
+ $\phi\:Q\xra{}\Aut(N)$ is trivial.  [More explicitly, if $g\in Q$
+ then $g^5=1$ so $\phi(g)^5=\phi(g^5)=1$.  On the other hand, for any
+ $h\in\Aut(N)\simeq C_2\tm C_2$ we have $h^2=1$ so $\phi(g)^2=1$.
+ This means that $\phi(g)=\phi(g)^5(\phi(g)^2)^{-2}=1$, so $\phi$ is
+ trivial.]
+
+ For any $g\in Q$ we define as usual $\gm_g\:N\xra{}N$ by
+ $\gm_g(x)=gxg^{-1}$, so $\gm_g\in\Aut(N)$.  We then have a
+ homomorphism $\phi\:Q\xra{}\Aut(N)$ given by $\phi(g)=\gm_g$.  This
+ must be trivial, by our first paragraph.  Thus $gxg^{-1}=x$ for all
+ $g\in Q$ and $x\in N$.  After multiplying on the right by $g$ we
+ deduce that $gx=xg$ for all $g$ and $x$, so every element of $Q$
+ commutes with every element of $N$.  
+
+ Now define $\mu\:N\tm Q\xra{}G$ by $\mu(x,g)=xg=gx$.  As $N$ and $Q$
+ commute, this function is a homomorphism.  The image is the subgroup
+ $NQ$, and because $|N|=12$ and $|Q|=5$ are coprime we have
+ $|NQ|=|N||Q|=60=|G|$, so $NQ=G$.  It follows that $\mu$ is surjective
+ and $|N\tm Q|=|G|$ so it must also be injective and thus an
+ isomorphism.  Thus $G\simeq \Z_{12}\tm\Z_5$, so $G$ is Abelian.
+\end{solution}
+
+\begin{exercise}
+ Show that every group of order 1225 is abelian.
+\end{exercise}
+\begin{solution}
+ First note that $1225=25\tm 49=5^2 7^2$, so we will study the Sylow
+ $5$-subgroups and $7$-subgroups of $G$.  We know that $n_5$ divides
+ $49$ (so $n_5\in\{1,7,49\}$) and $n_5=1\pmod{5}$.  As $7=2\pmod{5}$
+ and $49=4\pmod{5}$ we see that the only possibility is $n_5=1$.  We
+ therefore have a unique Sylow $5$-subgroup, which we call $P$.  Note
+ that $P$ is normal, and also that $|P|=5^2$, so Proposition~2.8 tells
+ us that $P$ is abelian.
+
+ Next, we know that $n_7$ divides $25$ (so $n_7\in\{1,5,25\}$) and
+ $n_7=1\pmod{7}$.  As $5=5\pmod{7}$ and $25=4\pmod{7}$, we see that
+ $n_7$ must be $1$.  There is thus a unique Sylow $7$-subgroup, which
+ we call $Q$.  We again see that $Q$ is normal and abelian.
+
+ Using Proposition~2.9 in the notes, we see that $G\simeq P\tm Q$.
+ This is abelian, because $P$ and $Q$ are.
+\end{solution}
+
+\begin{exercise}
+ If $G$ is a group let $\tht_g\:G\xra{}G$ be defined by
+ $\tht_g(x)=gxg^{-1}$. The group of inner automorphisms is
+ \[ \Inn (G)=\{ \theta_g \; |\; g \in G\}. \]
+ \begin{itemize}
+  \item[(i)] Show that $\Inn(G)$ is a normal subgroup of $\Aut(G)$.
+  \item[(ii)] Calculate $\Aut(G)$, $\Inn(G)$ and $\Out(G)=\Aut(G)/\Inn(G)$
+  in the following cases
+  \begin{itemize}
+  \item[(a)] $G=C_7$
+  \item[(b)] $G=C_3 \times C_3$
+  \item[(c)] $G=S_3$
+  \item[(d)] [A bit harder] $G=Q_8$.
+  \end{itemize}
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+ 
+\end{solution}
+
+\begin{exercise}
+ Given $m \geq 1$ consider the $2\times 2$ matrices
+ \[ x = \left(\begin{array}{cc}
+     e^{\pi i/m} & 0             \\
+     0           & e^{-\pi i/m}  \\
+    \end{array} \right) \mbox{ and }
+   y = \left( \begin{array}{cc}
+     0           & -1            \\
+     1           &  0            \\
+    \end{array}\right)
+ \]
+ Let $Q_{4m}=\ip{x,y}$ be the subgroup of $GL_2(\C)$ that they
+ generate. This is called the generalized quaternion group.
+ \begin{itemize}
+  \item[(i)] Show that $x$ is of order $2m$ and $y$ is of order $4$.
+  \item[(ii)] Show that $yxy^{-1}=x^{-1}$.
+  \item[(iii)] Deduce from Part (ii) that any element of $Q_{4m}$ can
+   be written in the form $x^iy^j$. Since $x^m=y^2$, we may assume
+   $j=0$ or $1$. List the $4m$ elements of $Q_{4m}$.
+  \item[(iv)] Deduce from Part (ii) that for any $l$ the subgroup
+   $\ip{x^l}$ is normal in $Q_{4m}$.
+  \item[(v)] Show that if $m$ is odd, $Q_{4m}$ is a semidirect product
+   of the normal subgroup $N=\ip{x^2}$ by the subgroup $H=\ip{y}$,
+   associated to the homomorphism $\phi\: H\xra{}\Aut(N)\cong U(\Z_m)$
+   given by $\phi(y)=\psi_{-1}$.
+  \item[(vi)] Conclude that $Q_{12}$ as defined here is isomorphic to
+   the group with that name in the lectures.
+  \item[(vii)] Show that $Q_8$ is not a semidirect product of proper
+   subgroups.
+ \end{itemize}
+\end{exercise}
+\begin{solution}
+
+\end{solution}
+
+
+
+\end{document}

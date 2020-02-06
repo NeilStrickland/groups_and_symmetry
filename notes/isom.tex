@@ -1,0 +1,176 @@
+\documentclass{amsart}
+\usepackage{amssymb}
+\usepackage{fullpage}
+
+\newcommand{\R}         {{\mathbb{R}}}
+\newcommand{\ip}[1]     {\langle #1\rangle}
+\newcommand{\sse}       {\subseteq}
+\newcommand{\st}        {\;|\;}
+\newcommand{\xra}       {\xrightarrow}
+\renewcommand{\:}       {\colon}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{conj}[theorem]{Conjecture}
+\newtheorem{construction}[theorem]{Construction}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\begin{document}
+\title{All isometries are affine}
+\author{N.~P.~Strickland}
+\date{\today}
+\bibliographystyle{abbrv}
+
+\maketitle
+
+\begin{definition}
+ An \emph{isometry} of $\R^n$ is a bijective map $f\:\R^n\xra{}\R^n$
+ that preserves distances, ie $d(f(x),f(y))=d(x,y)$ for all
+ $x,y\in\R^n$.  We write $I_n$ for the group of all such isometries.
+ We also write $FI_n:=\{f\in I_n\st f(0)=0\}$.
+\end{definition}
+
+It is clear that any orthogonal matrix $A\in O_n$ gives rise to an
+isometry $f_A\:\R^n\xra{}\R^n$ by $f_A(x)=Ax$.  We will blur the
+distinction between $A$ and $f_A$ and thus write $O_n\sse I_n$.  In
+fact $f_A(0)=0$ so $O_n\sse FI_n$.  Moreover,
+Proposition~\ref{prop-orthogonal} tells us that
+$GL_n\cap I_n=O_n$.
+
+For an example of an isometry not in $O_n$, let $a$ be a point in
+$\R^n$ and define $T_ax=x+a$.  This is clearly a bijection (with
+$T_a^{-1}=T_{-a}$) and
+\[ d(T_ax,T_ay)=\|(x+a)-(y+a)\|=\|x-y\|=d(x,y), \]
+so it is an isometry.  Isometries of this form are called
+\emph{translations}.  As $T_aT_b=T_{a+b}$, we see that the
+translations form an Abelian subgroup of $I_n$, which we denote by
+$T_n$.  The assignment $a\mapsto T_a$ gives an isomorphism $\R^n\simeq
+T_n$.  If $a\neq 0$ then $T_a^n=T_{na}\neq 1$ for all $n\neq 0$, so
+$T_a$ has infinite order.  Moreover, we have $T_ax\neq x$ for all $x$,
+so $T_a$ has no fixed points.
+
+\begin{theorem}\label{thm-isometry}
+ Any distance preserving map $f\:\R^n\xra{}\R^n$ has the form
+ $f(x)=Ax+b$ for some $A\in O_n$ and $b\in\R^n$.  It is thus
+ automatically bijective.
+\end{theorem}
+The proof will be given after a number of preparatory lemmas.
+
+\begin{lemma}
+ For any $x,y\in\R^n$, the point $z=(x+y)/2$ is the unique point such
+ that $d(x,z)=d(y,z)=d(x,y)/2$.
+\end{lemma}
+\begin{proof}
+ It is trivial to check that $d(x,z)=d(y,z)=d(x,y)/2$, and it should
+ be geometrically clear (at least in dimensions $\leq 3$) that it is
+ the unique point with this property.  For a formal proof, suppose we
+ also have $d(x,w)=d(y,w)=d(x,y)/2$.  Put $x'=x-z=(x-y)/2$ and
+ $y'=y-z=(y-x)/2=-x'$ and $w'=w-z$ and $r=d(x,y)$.  Then
+ $\|x'\|=\|y'\|=r/2$, and also $\|x'-w'\|=\|y'-w'\|=r/2$.  Thus
+ $\ip{x'-w',x'-w'}=r^2/4=\ip{x',x'}$, and by expanding this out we
+ see that $\|w'\|^2=2\ip{x',w'}$.  Similarly, we have
+ $\|w'\|^2=2\ip{y',w'}$.  By adding these equations together and
+ using the fact that $y'=-x'$ we see that $\|w'\|^2=0$, so $w'=0$, so
+ $w=z$.
+\end{proof}
+
+\begin{lemma}
+ If $f\:\R^n\xra{}\R^n$ preserves distances then
+ $f((x+y)/2)=(f(x)+f(y))/2$.
+\end{lemma}
+\begin{proof}
+ Put $z=(x+y)/2$ and $z'=(f(x)+f(y))/2$ and $r=d(x,y)$.  We then have
+ $d(f(x),f(z))=d(x,z)=r/2$ and $d(f(y),f(z))=d(y,z)=r/2$ and
+ $d(f(x),f(y))=d(x,y)=r$.  However, $z'$ is the \emph{unique} point
+ with $d(f(x),z')=d(f(y),z')=d(f(x),f(y))/2$, so we must have
+ $f(z)=z'$.  In other words, $f((x+y)/2)=(f(x)+f(y))/2$, as claimed.
+\end{proof}
+
+\begin{lemma}
+ If $f\:\R^n\xra{}\R^n$ preserves distances and $f(0)=0$ then
+ $\ip{f(x),f(y)}=\ip{x,y}$.
+\end{lemma}
+\begin{proof}
+ First, we have $f(0)=0$ and thus
+ \[ \|x\|=d(x,0)=d(f(x),f(0))=d(f(x),0)=\|f(x)\| \]
+ for all $x\in\R^n$.
+
+ Next, we can take $y=0$ in the previous lemma to see that
+ $f(x/2)=f(x)/2$ for all $x\in\R^n$.  We can then feed this back into
+ the previous lemma to see that $f((x+y)/2)=f(x+y)/2$ and thus that
+ $f(x+y)=f(x)+f(y)$ for all $x,y\in\R^n$.  If we take the inner
+ product of this equation with itself, we find that
+ \[ \|f(x+y)\|^2 = \|f(x)\|^2 + \|f(y)\|^2 + 2\ip{f(x),f(y)}. \]
+ Thus, we have
+ \begin{align*}
+  2\ip{f(x),f(y)} &= \|f(x+y)\|^2 - \|f(x)\|^2 - \|f(y)\|^2 \\
+                  &= \|x+y\|^2 - \|x\|^2 - \|y\|^2 \\
+                  &= \ip{x+y,x+y} - \ip{x,x} - \ip{y,y} \\
+                  &= 2\ip{x,y},
+ \end{align*}
+ as required.
+\end{proof}
+
+\begin{corollary}\label{cor-isometry}
+ If $f\:\R^n\xra{}\R^n$ preserves distances and $f(0)=0$ then
+ $f\in O_n$.
+\end{corollary}
+\begin{proof}
+ Let $e_1,\ldots,e_n$ be the usual basis of $\R^n$, and put
+ $u_k=f(e_k)$.  As $f$ preserves inner products, we see that
+ $\ip{u_i,u_j}=0$ unless $i=j$, and $\ip{u_i,u_i}=1$.  Define a linear
+ map $g\:\R^n\xra{}\R^n$ by
+ \[ g(x_1,\ldots,x_n) = x_1u_1 + \ldots + x_nu_n.  \]
+ We then have
+ \[ \ip{g(x),g(y)} = \sum_{i,j} x_iy_j \ip{u_i,u_j} =
+      \sum_i x_iy_i = \ip{x,y},
+ \]
+ so $g\in O_n$.  I claim that $f=g$.  To see this, consider the map
+ $h=g^{-1}f$, which again preserves distances and sends $0$ to $0$,
+ and thus preserves inner products.  By construction, we have
+ $h(e_k)=e_k$ for all $k$.  As $h$ preserves inner products, we have
+ \begin{align*}
+  x_k &= \ip{x,e_k} \\
+      &= \ip{h(x),h(e_k)} \\
+      &= \ip{h(x),e_k} \\
+      &= h(x)_k,
+ \end{align*}
+ so $x=h(x)$ for all $x\in\R^n$.  Thus $h$ is the identity, and $f=g$
+ as claimed.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm-isometry}]
+ Suppose that $f\:\R^n\xra{}\R^n$ preserves distances.  Define
+ $b=f(0)$ and $g(x)=f(x)-b$.  Clearly $g$ preserves distances and
+ $g(0)=0$.  By the above Corollary, there is an orthogonal matrix $A$
+ such that $g(x)=Ax$ for all $x$, so $f(x)=Ax+b$ for all $x$ s
+ claimed.  It follows that $f$ is a bijection, with
+ $f^{-1}(y)=A^{-1}(y-b)$.
+\end{proof}
+
+We conclude this section by giving a simple criterion for when an
+isometry is the identity.
+\begin{definition}
+ A list $u_0,\ldots,u_n$ of $n+1$ points in $\R^n$ is in \emph{general
+ position} if the vectors $u_1-u_0,\ldots,u_n-u_0$ form a basis of
+ $\R^n$.
+\end{definition}
+
+\begin{proposition}\label{prop-gen-pos}
+ If $u_0,\ldots,u_n$ are in general position, $f\in I_n$ and
+ $f(u_i)=u_i$ for all $i$, then $f=1$.
+\end{proposition}
+\begin{proof}
+ We have $f(x)=Ax+b$ for some $A,b$.  It follows that
+ \[ A(u_i-u_0) = (Au_i+b)-(Au_0+b) = f(u_i)-f(u_0) = u_i-u_0 \]
+ for all $i$.  As the vectors $u_i-u_0$ form a basis, we deduce that
+ $A=I$, so $f(x)=x+b$ for all $x$.  In particular, $u_0=f(u_0)=u_0+b$,
+ so $b=0$.  Thus $f(x)=x$ for all $x$ as claimed.
+\end{proof}
+
+\end{document}
