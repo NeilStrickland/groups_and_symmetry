@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Cubes</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="alternating_five.js"></script>
+  <script type="text/javascript" src="plato.js"></script>
+
+  <style>
+   @import url(owl/owl.css);
+
+   html, body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: white;
+   }
+
+   canvas {
+       width: 100%;
+       height: 500px;
+       touch-action: none;
+   }
+
+  </style>
+ </head>
+ <body>
+  <div style="text-align:center">
+   <h1>Cubes inscribed in a dodecahedron</h1>
+   <canvas id="main_canvas"></canvas>
+   <br/><br/>
+   <div id="text" id="msg_div" style="width: 800px; margin: 0 auto;
+				      text-align:left">
+    <table width="100%" class="edged">
+     <tr>
+      <td>
+       Cube 1&nbsp;
+       <input id="cb1" type="checkbox" checked="checked"></input>
+      </td>
+      <td>
+       Cube 2&nbsp;
+       <input id="cb2" type="checkbox" checked="checked"></input>
+      </td>
+      <td>
+       Cube 3&nbsp;
+       <input id="cb3" type="checkbox" checked="checked"></input>
+      </td>
+      <td>
+       Cube 4&nbsp;
+       <input id="cb4" type="checkbox" checked="checked"></input>
+      </td>
+      <td>
+       Cube 5&nbsp;
+       <input id="cb5" type="checkbox" checked="checked"></input>
+      </td>
+     </tr>
+    </table>
+    <br/>
+    There are five inscribed cubes in the dodecahedron.  Each of these
+    cubes has twelve edges, with one edge cutting across each of the
+    twelve faces of the dodecahedron.  If we focus on one of these
+    cubes, then the full dodecahedron can be obtained by attaching a
+    tent to each face of the cube.  The rotational symmetry group of
+    the dodecahedron acts on the set of five cubes as the alternating
+    permutation group $A_5$.
+   </div>
+  </div>
+
+  <script type="text/javascript">
+
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    this.name = 'plato';
+    this.find_ids();
+    
+    var me = this;
+
+    this.engine =
+     new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+    this.scene = owl3.white_scene(this.engine,this.main_canvas);
+    this.scene.camera.radius = 7;
+
+    this.DC = plato.dodecahedron_complex;
+    this.DC.grey_plot(this.scene);
+    this.DC.wireframe_plot(this.scene,{col : [0,0,0]});
+    this.DC.inscribed_cubes_plot(this.scene);
+
+    this.cb = {};
+    
+    for (i = 1; i <= 5; i++) {
+     this.cb[i] = document.getElementById('cb' + i);
+     this.cb[i].onclick = function() { me.set_visibility_all(); }
+    }
+    
+    this.engine.runRenderLoop(function () {
+     if (me.scene) {
+      me.scene.render();
+     }});
+   
+    window.addEventListener("resize", function () {
+     me.engine.resize();
+    });
+
+   }
+    
+   demo.set_visibility_all = function(X,x) {
+    for (i = 1; i <= 5; i++) {
+     this.set_visibility(i,this.cb[i].checked ? 1 : 0);
+    }
+   }
+
+   demo.set_visibility = function(i,b) {
+    var E = this.DC.inscribed_cube_plots[i-1];
+
+    for (e of E) {
+     e.mesh.material.alpha = b;
+    }
+   }
+   
+   demo.init();
+   
+  </script>
+ </body>
+</html>

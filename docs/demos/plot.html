@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/tabber.js"></script>
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="alternating_five.js"></script>
+  <script type="text/javascript" src="plato.js"></script>
+
+  <style>
+   @import url(owl/tabber.css);
+   @import url(owl/owl.css);
+
+   html, body {
+       width: 100%;
+       margin: 0;
+       padding: 0;
+       background: white;
+   }
+   
+   canvas {
+       width: 300;
+       height: 300;
+       touch-action: none;
+   }
+
+   div.solid {
+       text-align: center;
+   }
+
+  </style>
+ </head>
+ <body>
+  <div style="width:100%; text-align:center">
+   <h1>Platonic solids</h1>
+  </div>
+
+  <div class="tabber">
+   <div class="tabbertab" id="tab1">
+    <h2>Icosahedron</h2>
+    <div id="solid1" class="solid"></div><br/>
+    <div class="text" id="msg_div1" style="width: 800px; margin: 0 auto; text-align:left">
+     The icosahedron has $20$ triangular faces, $30$ edges and $12$ vertices.  The rotational
+     symmetry group is isomorphic to the alternating permutation group $A_5$ (of order $60$).
+    </div>
+   </div>
+   <div class="tabbertab" id="tab2">
+    <h2>Octahedron</h2>
+    <div id="solid2" class="solid"></div><br/>
+    <div class="text" id="msg_div2" style="width: 800px; margin: 0 auto; text-align:left">
+     The octahedron has $8$ triangular faces, $12$ edges and $6$ vertices.  The rotational
+     symmetry group is isomorphic to the permutation group $S_4$ (of order $24$).
+    </div>
+   </div>
+   <div class="tabbertab" id="tab3">
+    <h2>Tetrahedron</h2>
+    <div id="solid3" class="solid"></div><br/>
+    <div class="text" id="msg_div3" style="width: 800px; margin: 0 auto; text-align:left">
+     The tetrahedron has $4$ triangular faces, $6$ edges and $4$ vertices.  The rotational
+     symmetry group is isomorphic to the alternating permutation group $A_4$ (of order $12$).
+    </div>
+   </div>
+   <div class="tabbertab" id="tab4">
+    <h2>Cube</h2>
+    <div id="solid4" class="solid"></div><br/>
+    <div class="text" id="msg_div4" style="width: 800px; margin: 0 auto; text-align:left">
+     The cube has $6$ square faces, $12$ edges and $8$ vertices.  The rotational
+     symmetry group is isomorphic to the permutation group $S_4$ (of order $24$).
+    </div>
+   </div>
+   <div class="tabbertab" id="tab5">
+    <h2>Dodecahedron</h2>
+    <div id="solid5" class="solid"></div><br/>
+    <div class="text" id="msg_div5" style="width: 800px; margin: 0 auto; text-align:left">
+     The dodecahedron has $12$ pentagonal faces, $30$ edges and $20$ vertices.  The rotational
+     symmetry group is isomorphic to the alternating permutation group $A_5$ (of order $60$).
+    </div>
+   </div>   
+  </div>
+  
+  <script type="text/javascript">
+
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    this.name = 'plato';
+    this.container = document.getElementById('container');
+    var me = this;
+
+    var rr = [0,2.2,2.9,4.5,4.5,5.2];
+    
+    for (var p = 1; p <= 5; p++) {
+     var P = plato.platonic_complexes[p];
+     P.div = document.getElementById('solid' + p);
+     P.canvas = document.createElement('canvas');
+     P.canvas.width  = 500;
+     P.canvas.height = 500;
+     P.div.appendChild(P.canvas);
+     P.engine =
+      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+     P.scene = owl3.basic_scene(P.engine,P.canvas);
+     P.scene.camera.radius = rr[p] * 1.3;
+     P.plot(P.scene);
+     this.set_callbacks(P);
+    }
+   }
+    
+   demo.set_callbacks = function(P) {
+    P.engine.runRenderLoop(function () {
+     if (P.scene) {
+      P.scene.render();
+     }});
+   
+    window.addEventListener("resize", function () {
+     P.engine.resize();
+    });
+   }
+
+   demo.init();
+   
+  </script>
+ </body>
+</html>

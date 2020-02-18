@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Duality</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/tabber.js"></script>
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="alternating_five.js"></script>
+  <script type="text/javascript" src="plato.js"></script>
+
+  <style>
+   @import url(owl/tabber.css);
+   @import url(owl/owl.css);
+
+   html, body {
+       width: 100%;
+       margin: 0;
+       padding: 0;
+       background: white;
+   }
+   
+   canvas {
+       width: 500;
+       height: 500;
+       touch-action: none;
+   }
+
+   div.solid {
+       text-align: center;
+   }
+
+   div.slidecontainer {
+       width: 500px;
+       margin : 0 auto;
+   }
+   
+  </style>
+ </head>
+ <body>
+  <div style="width:100%; text-align:center">
+   <h1>Duality for platonic solids</h1>
+  </div>
+  
+  <div class="tabber">
+   <div class="tabbertab" id="tab3">
+    <h2>The tetrahedron</h2>
+    <div id="solid3" class="solid"></div><br/>
+    <div class="text" id="msg_div3" style="width: 800px; margin: 0 auto; text-align:left">
+     <div id="msg3_0">This is a tetrahedron</div>
+     <div id="msg3_1" style="display:none">
+      If we mark the centre of each square face of the tetrahedron, and
+      join these points together, we get another tetrahedron, pointing the opposite way.  
+     </div>
+     <div id="msg3_2" style="display:none">
+      If we mark the centre of each face of the smaller tetrahedron, and
+      join these points together, we get an even smaller tetrahedron, with the
+      same orientation as the original one.  In other words, the tetrahedron is
+      its own dual.
+     </div>
+    </div>
+   </div>
+   <div class="tabbertab" id="tab4">
+    <h2>The cube and octahedron</h2>
+    <div id="solid4" class="solid"></div><br/>
+    <div class="text" id="msg_div4" style="width: 800px; margin: 0 auto; text-align:left">
+     <div id="msg4_0">This is a cube</div>
+     <div id="msg4_1" style="display:none">
+      If we mark the centre of each square face of the cube, and
+      join these points together, we get an octahedron.  In other words, the dual of
+      a cube is an octahedron.
+     </div>
+     <div id="msg4_2" style="display:none">
+      If we mark the centre of each face of the octahedron, and
+      join these points together, we get a cube, which is just a smaller copy
+      of the solid that we started with.  In other words, the dual of
+      an octahedron is a cube.
+     </div>
+    </div>
+   </div>
+   <div class="tabbertab" id="tab5">
+    <h2>The dodecahedron and icosahedron</h2>
+    <div id="solid5" class="solid"></div><br/>
+    <div class="text" id="msg_div5" style="width: 800px; margin: 0 auto; text-align:left">
+     <div id="msg5_0">This is a dodecahedron</div>
+     <div id="msg5_1" style="display:none">
+      If we mark the centre of each pentagonal face of the dodecahedron, and
+      join these points together, we get an icosahedron.  In other words, the dual of
+      a dodecahedron is an icosahedron.
+     </div>
+     <div id="msg5_2" style="display:none">
+      If we mark the centre of each face of the icosahedron, and
+      join these points together, we get a dodecahedron, which is just a smaller copy
+      of the solid that we started with.  In other words, the dual of
+      a an icosahedron is a dodecahedron.
+     </div>
+    </div>
+   </div>
+  </div>
+  
+  <script type="text/javascript">
+
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    this.name = 'plato';
+    var me = this;
+
+    for (var p of [3,4,5]) {
+     var P = plato.platonic_complexes[p];
+     P.index = p;
+     P.msg = [];
+     for (i = 0; i < 3; i++) {
+      P.msg.push(document.getElementById('msg' + p + '_' + i));
+     }
+     var Q = Object.create(P.dual);
+     P.dual = Q;
+     var R = Object.create(Q.dual);
+     Q.dual = R;
+     P.tab = document.getElementById('tab' + p);
+     P.div = document.getElementById('solid' + p);
+     P.canvas = document.createElement('canvas');
+     P.canvas.width  = 500;
+     P.canvas.height = 500;
+     P.div.appendChild(P.canvas);
+     P.slidecontainer = document.createElement('div');
+     P.slidecontainer.className = 'slidecontainer';
+     P.div.appendChild(P.slidecontainer);
+     P.slider = document.createElement('input');
+     P.slider.className = 'slider';
+     P.slider.type = 'range';
+     P.slider.min = 0;
+     P.slider.max = 200;
+     P.slider.value = 0;
+     P.slidecontainer.appendChild(P.slider);
+     
+     P.engine =
+      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene.camera.radius = 5;
+
+     P.plot(P.scene);
+     Q.plot(P.scene,{scale : -1/P.dual_factor, col : [0.5,0.5,0.5]});
+     Q.thick_wireframe_plot(P.scene,{scale : -1.001/P.dual_factor, col : [0,0,0]});
+     R.plot(P.scene,{scale :  1/(P.dual_factor * Q.dual_factor)});
+
+     this.set_callbacks(P);
+    }
+   }
+    
+   demo.set_callbacks = function(P) {
+    var me = this;
+    
+    P.engine.runRenderLoop(function () {
+     if (P.scene) {
+      P.scene.render();
+     }});
+   
+    window.addEventListener("resize", function () {
+     P.engine.resize();
+    });
+
+    P.slider.oninput = function() {
+     me.set_stage(P,this.value);
+    }
+   }
+
+   demo.set_stage = function(P,v) {
+    var p = P.index;
+    var Q = P.dual;
+    var R = Q.dual;
+    
+    if (v == 0) {
+     this.show_msg(P,0);
+    } else if (v <= 100) {
+     this.show_msg(P,1);
+     this.fade(P,1 - 0.01 * v);
+     this.fade(Q,1);
+     this.fade(R,1);
+    } else {
+     this.show_msg(P,2);
+     this.fade(P,0);
+     this.fade(Q,1 - 0.01 * (v - 100));
+     this.fade(R,1);
+    }
+   }
+
+   demo.show_msg = function(P,i) {
+    for (var j = 0; j < 3; j++) {
+     P.msg[j].style.display = (j == i) ? 'block' : 'none';
+    }
+   }
+   
+   demo.fade = function(X,x) {
+    var n = X.num_facets;
+    for (i = 0; i < n; i++) {
+     var f = X.facet_plots[i];
+     f.material.alpha = x;
+    }
+   }
+
+   demo.init();
+   
+  </script>
+ </body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>Poles</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/tabber.js"></script>
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="alternating_five.js"></script>
+  <script type="text/javascript" src="plato.js"></script>
+
+  <style>
+   @import url(tabber.css);
+   @import url(owl.css);
+
+   html, body {
+       width: 100%;
+       margin: 0;
+       padding: 0;
+       background: white;
+   }
+   
+   canvas {
+       width: 500;
+       height: 500;
+       touch-action: none;
+   }
+
+   div.solid {
+       text-align: center;
+   }
+
+   div.slidecontainer {
+       width: 500px;
+       margin : 0 auto;
+   }
+   
+  </style>
+ </head>
+ <body>
+  <div style="width:100%; text-align:center">
+   <h1>Axes of rotation for platonic solids</h1>
+  </div>
+  
+  <div class="tabber">
+   <div class="tabbertab" id="tab3">
+    <h2>The tetrahedron</h2>
+    <div id="solid3" class="solid"></div><br/>
+    <div class="text" id="msg_div3" style="width: 800px; margin: 0 auto; text-align:left">
+     The tetrahedron has rotational symmetries of order $2$ and $3$.
+     The poles of order two are the midpoints of edges.  The poles
+     of order $3$ are the vertices, or the centres of the faces (which
+     are opposite the vertices).  The rotation group acts on the four
+     vertices as the alternating group $A_4$.  The full symmetric
+     group $S_4$ also acts on the tetrahedron, but the odd
+     permutations act by orthogonal matrices of determinant $-1$,
+     which are not rotations.  The transpositions act as reflections,
+     but the $4$-cycles are more complicated.
+    </div>
+   </div>
+   <div class="tabbertab" id="tab4">
+    <h2>The cube and octahedron</h2>
+    <div id="solid4" class="solid"></div><br/>
+    <div class="text" id="msg_div4" style="width: 800px; margin: 0 auto; text-align:left">
+     The cube and the octahedron have the same rotational symmetries,
+     which have order $2$, $3$ or $4$.  The poles of order $2$ are the
+     midpoints of the edges of the cube, which are the same (up to
+     rescaling) as the midpoints of the edges of the octahedron.
+     The poles of order $3$ are the vertices of the cube, or the
+     centres of the faces of the octahedron.  The poles of order $4$
+     are the vertices of the octahedron, or the centres of the faces
+     of the cube.  The rotation group acts on the four long diagonals
+     of the cube as the permutation group $S_4$.
+    </div>
+   </div>
+   <div class="tabbertab" id="tab5">
+    <h2>The dodecahedron and icosahedron</h2>
+    <div id="solid5" class="solid"></div><br/>
+    <div class="text" id="msg_div5" style="width: 800px; margin: 0 auto; text-align:left">
+     The dodecahedron and the icosahedron have the same rotational
+     symmetries, which have order $2$, $3$ or $5$.  The poles of order
+     $2$ are the midpoints of the edges of the dodecahedron, which are
+     the same (up to rescaling) as the midpoints of the edges of the
+     icosahedron.  The poles of order $3$ are the vertices of the
+     dodecahedron, or the centres of the faces of the icosahedron..
+     The poles of order $5$ are the vertices of the icosahedron, or
+     the centres of the faces of the dodecahedron.  The rotation group
+     acts on the five inscribed cubes of the dodecahedron as the
+     permutation group $S_4$.
+    </div>
+   </div>
+  </div>
+  
+  <script type="text/javascript">
+
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    this.name = 'plato';
+    var me = this;
+
+    var rr = [0,2.2,2.9,4.5,4.5,5.2];
+    
+    for (var p of [3,4,5]) {
+     var P = plato.platonic_complexes[p];
+     P.index = p;
+     var Q = Object.create(P.dual);
+     P.dual = Q;
+     P.tab = document.getElementById('tab' + p);
+     P.div = document.getElementById('solid' + p);
+     P.canvas = document.createElement('canvas');
+     P.canvas.width  = 500;
+     P.canvas.height = 500;
+     P.div.appendChild(P.canvas);
+     P.slidecontainer = document.createElement('div');
+     P.slidecontainer.className = 'slidecontainer';
+     P.div.appendChild(P.slidecontainer);
+     P.slider = document.createElement('input');
+     P.slider.className = 'slider';
+     P.slider.type = 'range';
+     P.slider.min = 0;
+     P.slider.max = 200;
+     P.slider.value = 100;
+     P.slidecontainer.appendChild(P.slider);
+     
+     P.engine =
+      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene.camera.radius = 5;
+     P.sphere = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 1.99}, P.scene);
+     owl3.set_colour(P.sphere,0.7,0.7,0.7);
+     P.all_unit_poles_plot(P.scene);
+     P.sphere_wireframe_plot(P.scene,{col : [0.14,0.68,0.38]});
+     Q.sphere_wireframe_plot(P.scene,{col : [0.83,0.33,0.00], scale : -1});
+     P.plot(P.scene,{scale :  1/P.vertex_radius})
+     Q.plot(P.scene,{scale : -1/Q.vertex_radius})
+     this.set_callbacks(P);
+    }
+   }
+    
+   demo.set_callbacks = function(P) {
+    var me = this;
+    
+    P.engine.runRenderLoop(function () {
+     if (P.scene) {
+      P.scene.render();
+     }});
+   
+    window.addEventListener("resize", function () {
+     P.engine.resize();
+    });
+
+    P.slider.oninput = function() {
+     me.set_stage(P,this.value);
+    }
+   }
+
+   demo.set_stage = function(P,v) {
+    var Q = P.dual;
+    var w = Math.abs(0.01 * v - 1);
+    P.sphere.material.alpha = 1 - w;
+
+    for (e of P.short_edge_plots) { e.mesh.material.alpha = 1 - w; }
+    for (e of Q.short_edge_plots) { e.mesh.material.alpha = 1 - w; }
+    
+    if ( v <= 100 ) {
+     this.fade(P,0);
+     this.fade(Q,1);
+    } else {
+     this.fade(P,1);
+     this.fade(Q,0);
+    }
+   }
+
+   demo.fade = function(X,x) {
+    var n = X.num_facets;
+    for (i = 0; i < n; i++) {
+     var f = X.facet_plots[i];
+     f.material.alpha = x;
+    }
+   }
+
+   demo.init();
+   
+  </script>
+ </body>
+</html>

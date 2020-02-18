@@ -1,0 +1,127 @@
+<html>
+ <head>
+  <title>Symmetry</title>
+  <style type="text/css" media="screen">
+   @import url(owl/owl.css);
+
+   table#A {
+    position: absolute;
+    left: 50px;
+    top: 60px;
+   }
+   
+   table#B {
+    position: absolute;
+    left: 680px;
+    top: 60px;
+   }
+
+   span.video_link {
+    position:absolute;
+    right: 5px;
+   }
+
+   canvas {
+       width: 200;
+       height: 150;
+       touch-action: none;
+   }
+
+   div.solid {
+       text-align: center;
+       display : inline-block;
+   }
+   
+  </style>
+  <script src="https://preview.babylonjs.com/babylon.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
+   MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX","output/HTML-CSS"],
+    tex2jax: {inlineMath: [["$","$"]]}
+   });
+  </script> 
+  <script type="text/javascript" src="owl/vec.js"></script>
+  <script type="text/javascript" src="owl/owl.js"></script>
+  <script type="text/javascript" src="alternating_five.js"></script>
+  <script type="text/javascript" src="plato.js"></script>
+ </head>
+ <body>
+  <div id="frame">
+   <div  style="margin-left:50px;">
+    <h1>Groups and symmetry demonstrations</h1>
+    <table id="A" class="edged">
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="plot.html">Platonic solids</a></div></td>
+      <td width="200px"></td>
+     </tr>
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="nesting.html">Nesting</a></div></td>
+      <td width="200px"></td>
+     </tr>
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="long_axes.html">Long axes of the cube</a></div></td>
+      <td width="200px"></td>
+     </tr>
+    </table>
+    <table id ="B" class="edged">
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="poles.html">Axes of rotation</a></div></td>
+      <td width="200px"></td>
+     </tr>
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="dual.html">Duality</a></div></td>
+      <td width="200px"></td>
+     </tr>
+     <tr>
+      <td width="350px"><div style="position:relative"><a href="inscribed_cubes.html">Cubes inscribed in the dodecahedron</a></div></td>
+      <td width="200px"></td>
+     </tr>
+    </table>
+   </div>
+   <div id="container" style="padding-top:150px; padding-left:100px;"></div>
+  </div>
+  <script type="text/javascript">
+   var demo = Object.create(owl.demo);
+
+   demo.init = function() {
+    this.name = 'plato';
+    this.container = document.getElementById('container');
+    var me = this;
+
+    var rr = [0,2.2,2.9,4.5,4.5,5.2];
+    
+    for (var p = 1; p <= 5; p++) {
+     var P = plato.platonic_complexes[p];
+     P.div = document.createElement('div');
+     P.div.className = 'solid';
+     P.canvas = document.createElement('canvas');
+     P.canvas.width  = 200;
+     P.canvas.height = 150;
+     P.div.appendChild(P.canvas);
+     this.container.appendChild(P.div);
+     P.engine =
+      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene.camera.radius = rr[p];
+     P.plot(P.scene);
+     this.set_callbacks(P);
+    }
+   }
+    
+   demo.set_callbacks = function(P) {
+    P.engine.runRenderLoop(function () {
+     if (P.scene) {
+      P.scene.render();
+     }});
+   
+    window.addEventListener("resize", function () {
+     P.engine.resize();
+    });
+   }
+
+   demo.init();
+   
+  </script>
+ </body>
+</html>
