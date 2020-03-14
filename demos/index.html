@@ -93,6 +93,7 @@
     
     for (var p = 1; p <= 5; p++) {
      var P = plato.platonic_complexes[p];
+     P.owl3 = Object.create(owl3);
      P.div = document.createElement('div');
      P.div.className = 'solid';
      P.canvas = document.createElement('canvas');
@@ -102,9 +103,9 @@
      this.container.appendChild(P.div);
      P.engine =
       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene = P.owl3.white_scene(P.engine,P.canvas);
      P.scene.camera.radius = rr[p];
-     P.plot(P.scene);
+     P.plot(P.owl3);
      this.set_callbacks(P);
     }
    }

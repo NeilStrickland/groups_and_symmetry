@@ -59,16 +59,17 @@
     
     var me = this;
 
+    this.owl3 = Object.create(owl3);
     this.engine =
      new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
 
-    this.scene = owl3.white_scene(this.engine,this.main_canvas);
+    this.scene = this.owl3.white_scene(this.engine,this.main_canvas);
     this.scene.camera.radius = 7;
 
     this.CC = plato.cube_complex;
-    this.CC.grey_plot(this.scene);
-    this.CC.wireframe_plot(this.scene,{col : [0,0,0]});
-    this.CC.long_axes_plot(this.scene);
+    this.CC.grey_plot(this.owl3);
+    this.CC.wireframe_plot(this.owl3,{col : [0,0,0]});
+    this.CC.long_axes_plot(this.owl3);
 
     this.engine.runRenderLoop(function () {
      if (me.scene) {

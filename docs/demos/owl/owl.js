@@ -31,11 +31,23 @@ owl.standard_colour = function(i) {
  return c;
 }
 
+owl.math_font = 'MathJax_Math-italic';
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 // Three dimensions
+
+owl3.scene = null;
+
+// transform can be set to an affine self-map of R3
+owl3.transform = function(x) {
+ return x;
+}
+
+owl3.transform0 = function(x) {
+ return vec.sub(this.transform(x),this.transform([0,0,0]));
+}
 
 owl3.basic_scene = function(engine,canvas) {
  var scene = new BABYLON.Scene(engine);
@@ -51,6 +63,9 @@ owl3.basic_scene = function(engine,canvas) {
  camera.wheelPrecision = 50;
 
  scene.camera = camera;
+
+ this.scene = scene;
+
  return scene;
 };
 
@@ -70,15 +85,18 @@ owl3.white_scene = function(engine,canvas) {
  camera.wheelPrecision = 50;
 
  scene.camera = camera;
+
+ this.scene = scene;
+ 
  return scene;
 };
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.set_colour = function(mesh,r,g,b) {
+owl3.set_colour = function(mesh,c) {
  var mat = new BABYLON.StandardMaterial("mat", mesh.getScene());
  mat.backFaceCulling = false;
- mat.diffuseColor  = new BABYLON.Color3(r,g,b);
+ mat.diffuseColor  = new this.col3(c);
  mesh.material = mat;
  mesh.sideOrientation = BABYLON.Mesh.DOUBLESIDE;
 }
@@ -86,7 +104,7 @@ owl3.set_colour = function(mesh,r,g,b) {
 //////////////////////////////////////////////////////////////////////
 
 owl3.make_grid_with_normal = function(n,m,f,g) {
- var i,j,t,u,x,positions,indices,normals,grid;
+ var i,j,t,u,x,xx,v,vv,positions,indices,normals,grid;
  
  positions = [];
  indices = [];
@@ -97,10 +115,12 @@ owl3.make_grid_with_normal = function(n,m,f,g) {
    t = (i * 1.)/n;
    u = (j * 1.)/m;
    x = f(t,u);
-   positions.push(x[0],x[1],x[2]);
+   xx = this.transform(x);
+   positions.push(xx[0],xx[1],xx[2]);
    if (g) {
     v = g(t,u);
-    normals.push(v[0],v[1],v[2]);
+    vv = this.transform0(v);
+    normals.push(vv[0],vv[1],vv[2]);
    }
    if (i < n && j < m) {
     i1 = (i + 1);
@@ -219,90 +239,108 @@ owl3.col4 = function(c) {
 // Return a BABYLON mesh for a sphere, intended for use with small
 // spheres marking points.
 
-owl3.point = function(u,c,d,scene) {
- var col = this.col4(c);
- var mesh = BABYLON.MeshBuilder.CreateSphere("point", {diameter : d}, scene);
- owl3.set_colour(mesh,c[0],c[1],c[2]);
- var p = this.vect(u);
- mesh.position = p;
- var q = mesh.position;
- return mesh;
+owl3.point = {
+ owner : null,
+ position : [0,0,0],
+ diameter : 0.03,
+ colour   : [1,0,0]
 }
 
-//////////////////////////////////////////////////////////////////////
-// Return a BABYLON mesh for a thin line.  Tubes can be used instead
-// for thick lines.
-
-owl3.make_line = function(u,v,c,scene) {
- var col = this.col4(c);
- var pts = [this.vect(u), this.vect(v)];
- var mesh = 
-  BABYLON.MeshBuilder.CreateLines("line",
-   {points : pts, colors : [col, col]}, scene);
- mesh.points = pts;
- return mesh;
+owl3.point.make_mesh = function() {
+ var c = this.colour;
+ var d = this.diameter;
+ var p = this.position;
+ var x = this.owner.transform(p);
+ this.mesh = BABYLON.MeshBuilder.CreateSphere("point",
+  {diameter : d}, this.owner.scene);
+ this.owner.set_colour(this.mesh,c);
+ this.mesh.position = this.owner.vect(x);
+ return this.mesh;
 }
 
-//////////////////////////////////////////////////////////////////////
-// Return a BABYLON mesh for a filled triangle.
-
-owl3.make_triangle = function(u,v,w,c,scene) {
- var col = this.col4(c);
- var grid = new BABYLON.VertexData();
- grid.positions = owl.flat([this.unvect(u),this.unvect(v),this.unvect(w)]);
- grid.indices = [0,1,2];
- var mesh = new BABYLON.Mesh("triangle",scene);
- grid.applyToMesh(mesh);
- owl3.set_colour(mesh,c[0],c[1],c[2]);
- return mesh;
+owl3.point.set_position = function(p) {
+ this.position = p;
+ var x = this.owner.transform(p);
+ this.mesh.position = this.owner.vect(x);
 }
- 
+
+owl3.make_point = function(u,c,d) {
+ var x = Object.create(this.point);
+ x.owner = this;
+ x.position = u;
+ x.colour = this.col4(c);
+ x.diameter = d;
+ x.make_mesh();
+ return x;
+}
+
 //////////////////////////////////////////////////////////////////////
 // Return a BABYLON mesh for a label.  The label will have text in black on
 // a small white rectangle, which will rotate automatically so that it
 // always faces the camera.
 
-owl3.make_label = function(u,t,scene) {
- var x = {};
- var u0 = owl3.vect(u);
- var n = u0.subtract(scene.camera.position);
- x.source_plane = new BABYLON.Plane(-n.x,-n.y,-n.z,0);
- x.source_plane.normalize();
+owl3.label = {
+ owner : null,
+ position : [0,0,0],
+ text : 'label'
+}
+
+owl3.label.make_mesh = function() {
+ var u0 = owl3.vect(this.owner.transform(this.position));
+ var n = u0.subtract(this.owner.scene.camera.position);
+ this.source_plane = new BABYLON.Plane(-n.x,-n.y,-n.z,0);
+ this.source_plane.normalize();
 
  var opts = {
-  sourcePlane : x.source_plane,
+  sourcePlane : this.source_plane,
   updatable : true
  };
 
- x.label_plane = BABYLON.MeshBuilder.CreatePlane('plane_' + v.name,opts,this.scene);
- x.label_plane.position = u0;
- x.label_plane.sourcePlane = x.source_plane;
- x.plane_texture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(x.label_plane);
- x.button = BABYLON.GUI.Button.CreateSimpleButton(null, t);
- x.button.width  = 0.2;
- x.button.height = 0.2;
- x.button.color  = 'black';
- x.button.background = 'white';
- x.button.fontSize = 200;
- x.plane_texture.addControl(x.button);
+ this.label_plane = BABYLON.MeshBuilder.CreatePlane(null,opts,this.owner.scene);
+ this.label_plane.position = u0;
+ this.label_plane.sourcePlane = this.source_plane;
+ this.plane_texture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.label_plane);
+ this.button = BABYLON.GUI.Button.CreateSimpleButton(null, this.text);
+ this.button.width  = 0.2;
+ this.button.height = 0.2;
+ this.button.color  = 'black';
+ this.button.background = 'white';
+ this.button.fontSize = 200;
+ this.plane_texture.addControl(this.button);
+}
 
+owl3.make_label = function(u,t) {
+ var x = Object.create(this.label);
+ x.owner = this;
+ x.position = u;
+ x.text = t;
+ x.make_mesh();
  return x;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.thin_curve = {};
+owl3.curve = {
+ owner : null,
+ enabled : 1,
+ n : 48,
+ t0 : 0, // minimum parameter value
+ t1 : 1, // maximum parameter value
+ colour : new BABYLON.Color4(1,0,0,1),
+ radius : 0,
+ embedding : function(t) { return [t,t,t]; }
+};
 
-owl3.thin_curve.n = 48;
-owl3.thin_curve.colour = new BABYLON.Color4(1,0,0,1); // red
-
-owl3.thin_curve.make_mesh = function(scene) {
+owl3.curve.set_positions = function() {
  var f,i,x,y,mat;
  var me = this;
 
- this.scene = scene;
-
- f = function(t) { return me.embedding(t); };
+ f = function(t) {
+  var s = me.t0 + t * (me.t1 - me.t0);
+  var u = me.embedding(s);
+  var x = me.owner.transform(u);
+  return x;
+ }
 
  this.positions = [];
  for (i = 0; i <= this.n; i++) {
@@ -310,52 +348,127 @@ owl3.thin_curve.make_mesh = function(scene) {
   y = new BABYLON.Vector3(x[0],x[1],x[2]);
   this.positions.push(y);
  }
+}
 
- this.cols = Array(this.positions.length).fill(this.colour);
- this.mesh = BABYLON.MeshBuilder.CreateLines(null,
-     {points : this.positions, colors : this.cols, alpha : 1, updatable : true}, scene);
+owl3.curve.make_mesh = function() {
+ var f,i,x,y,mat;
+ var me = this;
 
+ if (this.mesh) {
+  this.owner.scene.removeMesh(this.mesh);
+  this.mesh.dispose();
+ }
+ 
+ this.set_positions();
+
+ if (this.radius) {
+  this.mesh = BABYLON.MeshBuilder.CreateTube(
+   this.name, {path: this.positions,
+	       radius: this.radius,
+	       cap: BABYLON.Mesh.CAP_ALL,
+	       updateable: true}, this.owner.scene);
+
+  mat = new BABYLON.StandardMaterial("mat", this.owner.scene);
+  mat.diffuseColor  = this.colour;
+  this.mesh.material = mat;
+ } else {
+  this.cols = Array(this.positions.length).fill(this.colour);
+  this.mesh = BABYLON.MeshBuilder.CreateLines(
+   null,
+   {points : this.positions, colors : this.cols, alpha : 1, updatable : true},
+   this.owner.scene
+  );
+ } 
+
+ this.mesh.setEnabled(this.enabled);
+ return this.mesh;
+}
+
+owl3.curve.update_mesh = function() {
+ this.make_mesh();
+}
+
+owl3.curve.set_enabled = function(b) {
+ this.enabled = b;
+ this.mesh.setEnabled(b);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.thin_line = Object.create(owl3.thin_curve);
+owl3.line = Object.create(owl3.curve);
+owl3.line.n = 2;
+owl3.line.a = [0,0,0];
+owl3.line.b = [1,1,1];
 
-owl3.thin_line.a = [0,0,0];
-owl3.thin_line.b = [1,1,1];
-
-owl3.thin_line.embedding = function(t) {
+owl3.line.embedding = function(t) {
  return vec.add(vec.smul(1-t,this.a),vec.smul(t,this.b));
 }
 
-//////////////////////////////////////////////////////////////////////
+owl3.make_line = function(a,b,c,r) {
+ var x = Object.create(owl3.line);
 
-owl3.thin_circle = Object.create(owl3.thin_curve);
+ x.owner = this;
+ x.a = a;
+ x.b = b;
+ x.colour = this.col4(c);
+ x.radius = r;
+ x.make_mesh();
 
-owl3.thin_circle.c = [0,0,0];
-owl3.thin_circle.u = [1,0,0];
-owl3.thin_circle.v = [0,1,0];
+ return x;
+}
 
-owl3.thin_circle.embedding = function(t) {
- var ct = Math.cos(2 * Math.PI * t);
- var st = Math.sin(2 * Math.PI * t);
- return [this.c[0] + ct * this.u[0] + st * this.v[0],
-	 this.c[1] + ct * this.u[1] + st * this.v[1],
-	 this.c[2] + ct * this.u[2] + st * this.v[2]
-	];
+owl3.make_thin_line = function(a,b,c) {
+ return this.make_line(a,b,c,0);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.thin_sphere_arc = Object.create(owl3.thin_curve);
+owl3.circle = Object.create(owl3.curve);
 
-owl3.thin_sphere_arc.a = [-1,0,0];
-owl3.thin_sphere_arc.b = [ 1,0,0];
-owl3.thin_sphere_arc.u = [ 0,1,0];
-owl3.thin_sphere_arc.v = [ 1,0,0];
-owl3.thin_sphere_arc.theta = Math.PI;
+owl3.circle.c = [0,0,0];
+owl3.circle.u = [1,0,0];
+owl3.circle.v = [0,1,0];
 
-owl3.thin_sphere_arc.set_ends = function(a,b) {
+owl3.circle.embedding = function(t) {
+ var ct = Math.cos(2 * Math.PI * t);
+ var st = Math.sin(2 * Math.PI * t);
+ var x = [this.c[0] + ct * this.u[0] + st * this.v[0],
+	  this.c[1] + ct * this.u[1] + st * this.v[1],
+	  this.c[2] + ct * this.u[2] + st * this.v[2]
+	 ];
+ return x;
+}
+
+owl3.make_circle = function(c,u,v,r) {
+ var x = Object.create(this.circle);
+
+ x.owner = this;
+ x.c = c;
+ x.u = u;
+ x.v = v;
+ x.radius = r;
+ x.make_mesh();
+
+ return x;
+}
+
+owl3.make_thin_circle = function(c,u,v) {
+ return this.make_circle(c,u,v,0);
+}
+
+//////////////////////////////////////////////////////////////////////
+
+owl3.sphere_arc = Object.create(owl3.curve);
+
+owl3.sphere_arc.c = [ 0,0,0];
+owl3.sphere_arc.a = [-1,0,0];
+owl3.sphere_arc.b = [ 1,0,0];
+owl3.sphere_arc.u = [ 0,1,0];
+owl3.sphere_arc.v = [ 1,0,0];
+owl3.sphere_arc.theta = Math.PI;
+
+owl3.sphere_arc.set_ends = function(a,b) {
+ this.c = [0,0,0];
  this.a = vec.hat(a);
  this.b = vec.hat(b);
  this.u = vec.hat(vec.add(this.b,this.a));
@@ -363,157 +476,142 @@ owl3.thin_sphere_arc.set_ends = function(a,b) {
  this.theta = 2 * Math.asin(vec.dp(this.b,this.v));
 };
 
-owl3.thin_sphere_arc.embedding = function(t) {
+owl3.sphere_arc.embedding = function(t) {
  var phi = this.theta * (t - 0.5);
- return vec.add(vec.smul(Math.cos(phi),this.u),
-		vec.smul(Math.sin(phi),this.v));
+ var x = vec.add(this.c,
+		 vec.add(vec.smul(Math.cos(phi),this.u),
+			 vec.smul(Math.sin(phi),this.v)));
+ return x;
 };
 
-//////////////////////////////////////////////////////////////////////
+owl3.make_sphere_arc = function(a,b,r) {
+ var x = Object.create(this.sphere_arc);
+ x.owner = this;
+ x.set_ends(a,b);
+ x.radius = r;
+ x.make_mesh();
 
-owl3.thick_curve = {};
+ return x;
+}
 
-owl3.thick_curve.n = 48;
-owl3.thick_curve.colour = new BABYLON.Color4(1,0,0,1); // red
-owl3.thick_curve.radius = 0.03;
-
-owl3.thick_curve.set_colour = function(c) {
- this.colour = owl3.col4(c);
+owl3.make_thin_sphere_arc = function(a,b) {
+ return this.make_sphere_arc(a,b,0);
 }
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.thick_curve.make_mesh = function(scene) {
- var f,i,x,y,mat;
- var me = this;
-
- this.scene = scene;
-
- f = function(t) { return me.embedding(t); };
-
- positions = [];
- for (i = 0; i <= this.n; i++) {
-  x = f((i * 1.)/this.n);
-  y = new BABYLON.Vector3(x[0],x[1],x[2]);
-  positions.push(y);
- }
-
- this.mesh = BABYLON.MeshBuilder.CreateTube(
-  this.name, {path: positions,
-	      radius: this.radius,
-	      cap: BABYLON.Mesh.CAP_ALL,
-	      updateable: true}, scene);
-
- mat = new BABYLON.StandardMaterial("mat", scene);
- mat.diffuseColor  = this.colour;
- this.mesh.material = mat;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-owl3.thick_curve.update_mesh = function(scene) {
- var f,i,x,y,positions;
- var me = this;
-
- f = function(t) { return me.embedding(t); };
-
- positions = [];
- for (i = 0; i <= this.n; i++) {
-  x = f((i * 1.)/this.n);
-  y = new BABYLON.Vector3(x[0],x[1],x[2]);
-  positions.push(y);
- }
-
- this.mesh.dispose();
- this.mesh = BABYLON.MeshBuilder.CreateTube(
-  this.name, {path: positions, radius: this.radius},scene);
- mat = new BABYLON.StandardMaterial("mat", scene);
- mat.diffuseColor  = this.colour;
- this.mesh.material = mat;
-}
-
-//////////////////////////////////////////////////////////////////////
-
-owl3.thick_line = Object.create(owl3.thick_curve);
-
-owl3.thick_line.a = [0,0,0];
-owl3.thick_line.b = [1,1,1];
-
-owl3.thick_line.embedding = function(t) {
- return [
-  (1 - t) * this.a[0] + t * this.b[0],
-  (1 - t) * this.a[1] + t * this.b[1],
-  (1 - t) * this.a[2] + t * this.b[2]
- ];
-}
-
-//////////////////////////////////////////////////////////////////////
-
-owl3.thick_sphere_arc = Object.create(owl3.thick_curve);
-
-owl3.thick_sphere_arc.r = 1;
-owl3.thick_sphere_arc.a = [-1,0,0];
-owl3.thick_sphere_arc.b = [ 1,0,0];
-owl3.thick_sphere_arc.u = [ 0,1,0];
-owl3.thick_sphere_arc.v = [ 1,0,0];
-owl3.thick_sphere_arc.theta = Math.PI;
-
-owl3.thick_sphere_arc.set_ends = function(a,b) {
- this.r = vec.nm(a);
- this.a = a;
- this.b = vec.smul(this.r,vec.hat(b));
- this.u = vec.hat(vec.add(this.b,this.a));
- this.v = vec.hat(vec.sub(this.b,this.a));
- this.theta = 2 * Math.asin(vec.dp(this.b,this.v));
+owl3.polygon = {
+ owner : null,
+ enabled : 1,
+ v : [[1,0,0],[0,0,1],[0,1,0]],
+ colour : new BABYLON.Color4(0.5,0.5,1,1)
 };
 
-owl3.thick_sphere_arc.embedding = function(t) {
- var phi = this.theta * (t - 0.5);
- return vec.add(vec.smul(this.r * Math.cos(phi),this.u),
-		vec.smul(this.r * Math.sin(phi),this.v));
-};
-
-//////////////////////////////////////////////////////////////////////
-
-owl3.triangle = {
- v : [[1,0,0],[0,0,1],[0,1,0]]
-};
-
-owl3.triangle.make_mesh = function(scene) {
- this.scene = scene;
+owl3.polygon.make_mesh = function() {
  var grid = new BABYLON.VertexData();
- grid.positions = owl.flat(this.v);
- grid.indices = [0,1,2];
- this.mesh = new BABYLON.Mesh(this.name,scene);
+ grid.positions = owl.flat(this.v.map(this.owner.transform));
+ var n = this.v.length;
+ grid.indices = [];
+ for (i = 1; i < n - 1; i++) {
+  grid.indices.push(0,i,i+1);
+ }
+
+ if (this.mesh) {
+  this.owner.scene.removeMesh(this.mesh);
+  this.mesh.dispose();
+ }
+
+ this.mesh = new BABYLON.Mesh(null,this.owner.scene);
+ this.owner.set_colour(this.mesh,this.colour);
  grid.applyToMesh(this.mesh);
+ this.mesh.setEnabled(this.enabled);
+ 
+ return this.mesh;
+}
+
+owl3.polygon.set_enabled = function(b) {
+ this.enabled = b;
+ this.mesh.setEnabled(b);
+}
+
+owl3.make_polygon = function(v,c) {
+ var x = Object.create(this.polygon);
+ x.owner = this;
+ x.v = v;
+ if (arguments.length > 1) {
+  x.colour = this.col4(c);
+ }
+ x.make_mesh();
+
+ return x;
 }
 
 //////////////////////////////////////////////////////////////////////
 
-owl3.surface = {};
+owl3.surface = {
+ owner : null,
+ enabled : 1,
+ name : 'surface',
+ n : 48,
+ m : 48,
+ colour : new BABYLON.Color4(0.5,0.5,1,1),
+ t0 : 0,
+ t1 : 1,
+ u0 : 0,
+ u1 : 1,
+ embedding : function(t,u) {
+  return [t,u,0];
+ },
+ normal : null
+};
+
 owl3.surface.n = 48;
 owl3.surface.m = 48;
 owl3.surface.colour = {r : 0.5, g : 0.5, b : 1};
 
-owl3.surface.make_mesh = function(scene) {
- var f,g,i,j,t,u,c;
+owl3.surface.set_fg = function() {
  var me = this;
 
- f = function(t,u) { return me.embedding(t,u); };
+ this.f = function(t,u) {
+  var tt = me.t0 + t * (me.t1 - me.t0);
+  var uu = me.u0 + u * (me.u1 - me.u0);
+  var xx = me.embedding(tt,uu);
+  return xx;
+ }
+ 
  if (this.normal) {
-  g = function(t,u) { return me.normal(t,u); };
+  this.g = function(t,u) {
+   var tt = me.t0 + t * (me.t1 - me.t0);
+   var uu = me.u0 + u * (me.u1 - me.u0);
+   var nn = me.normal(tt,uu);
+   return nn;
+  }
  } else {
-  g = null;
+  this.g = null;
+ }
+}
+
+owl3.surface.make_mesh = function() {
+ var me = this;
+
+ this.set_fg();
+
+ if (this.mesh) {
+  this.owner.scene.removeMesh(this.mesh);
+  this.mesh.dispose();
  }
 
- this.scene = scene;
- this.mesh = new BABYLON.Mesh(this.name, scene);
+ this.mesh = new BABYLON.Mesh(this.name, this.owner.scene);
  if (! this.normal) { this.normal = null; }
- this.grid = 
-  owl3.make_grid_with_normal(this.n,this.m,f,g);
+ this.grid = this.owner.make_grid_with_normal(this.n,this.m,this.f,this.g);
 
+ var gp = this.grid.positions;
+ var gi = this.grid.indices;
+ var gn = this.grid.normals;
+ 
  this.grid.applyToMesh(this.mesh,true);
-
+ this.mesh.setEnabled(this.enabled);
+ 
  if (this.colour_function) {
   this.cols = [];
   for (i = 0; i <= this.n; i++) {
@@ -527,27 +625,26 @@ owl3.surface.make_mesh = function(scene) {
   this.mesh.hasVertexAlpha = true;
   this.mesh.setVerticesData(BABYLON.VertexBuffer.ColorKind, this.cols);
  } else {
-  owl3.set_colour(this.mesh,this.colour.r,this.colour.g,this.colour.b);
+  this.owner.set_colour(this.mesh,this.colour);
  }
 }
 
-//////////////////////////////////////////////////////////////////////
-
 owl3.surface.update_mesh = function() {
- var f,g;
  var me = this;
 
- f = function(t,u) { return me.embedding(t,u); };
- if (this.normal) {
-  g = function(t,u) { return me.normal(t,u); };
- } else {
-  g = null;
- }
+ this.set_fg();
 
- this.grid = owl3.make_grid_with_normal(this.n,this.m,f,g);
+ this.grid = this.owner.make_grid_with_normal(this.n,this.m,this.f,this.g);
  this.mesh.updateVerticesData(BABYLON.VertexBuffer.PositionKind, this.grid.positions);
  this.mesh.updateVerticesData(BABYLON.VertexBuffer.NormalKind, this.grid.normals);
 }
+
+owl3.surface.set_enabled = function(b) {
+ this.enabled = b;
+ this.mesh.setEnabled(b);
+}
+
+
 
 //////////////////////////////////////////////////////////////////////
 // Standard embedding of a 3-simplex as a regular tetrahedron.
@@ -559,6 +656,7 @@ owl3.tetrahedron_embedding = function(t) {
 }
 
 //////////////////////////////////////////////////////////////////////
+
 owl3.torus = Object.create(owl3.surface);
 owl3.torus.name = 'torus';
 owl3.torus.R = 2;
@@ -584,8 +682,17 @@ owl3.torus.normal = function(t,u) {
  return [cu*ct,su,cu*st];
 };
 
+owl3.make_torus = function(R,r) {
+ var x = Object.create(this.torus);
+ x.owner = this;
+ if (arguments.length > 0) { x.R = R; }
+ if (arguments.length > 1) { x.r = r; }
+ x.make_mesh();
+ return x;
+}
 
 //////////////////////////////////////////////////////////////////////
+
 owl3.cylinder = Object.create(owl3.surface);
 owl3.cylinder.name = 'cylinder';
 owl3.cylinder.r = 2;
@@ -603,7 +710,17 @@ owl3.cylinder.normal = function(t,u) {
 	 Math.sin(2 * Math.PI * t)];
 };
 
+owl3.make_cylinder = function(r,h) {
+ var x = Object.create(this.cylinder);
+ x.owner = this;
+ if (arguments.length > 0) { x.r = r; }
+ if (arguments.length > 1) { x.h = h; }
+ x.make_mesh();
+ return x;
+}
+
 //////////////////////////////////////////////////////////////////////
+
 owl3.sphere = Object.create(owl3.surface);
 owl3.sphere.name = 'sphere';
 owl3.sphere.r = 3;
@@ -621,7 +738,16 @@ owl3.sphere.embedding = function(t,u) {
  return [this.r * x[0], this.r * x[1], this.r * x[2]];
 };
 
+owl3.make_sphere = function(r) {
+ var x = Object.create(this.sphere);
+ x.owner = this;
+ if (arguments.length > 0) { x.r = r; }
+ x.make_mesh();
+ return x;
+}
+
 //////////////////////////////////////////////////////////////////////
+
 owl3.mobius = Object.create(owl3.surface);
 owl3.mobius.name = 'mobius';
 owl3.mobius.R = 3;
@@ -651,7 +777,17 @@ owl3.mobius_normal = function(t,u) {
  return n;
 }
 
+owl3.make_mobius = function(R,r) {
+ var x = Object.create(this.mobius);
+ x.owner = this;
+ if (arguments.length > 0) { x.R = R; }
+ if (arguments.length > 1) { x.r = r; }
+ x.make_mesh();
+ return x;
+}
+
 //////////////////////////////////////////////////////////////////////
+
 owl3.klein = Object.create(owl3.surface);
 owl3.klein.a = 0.4;
 owl3.klein.b = 0.6;
@@ -677,7 +813,65 @@ owl3.klein.embedding = function(t,u) {
  return [-x,z,y];
 }
 
+owl3.make_klein = function(R,r) {
+ var x = Object.create(this.klein);
+ x.owner = this;
+ if (arguments.length > 0) { x.a = a; }
+ if (arguments.length > 1) { x.b = b; }
+ if (arguments.length > 2) { x.c = c; }
+ x.make_mesh();
+ return x;
+}
+
 //////////////////////////////////////////////////////////////////////
+
+owl3.boys = Object.create(owl3.surface);
+
+owl3.boys.coeffs =
+ [[0.19841, 0, 0, 0.13226, 0.31036, 0, 0, 0.05120, 0.03890],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, -0.60213, -0.37851, 0, 0, -0.00688, 0.15039, 0, 0],
+  [0.30612, 0, 0, -0.25597, -0.26741, 0, 0, -0.06826, -0.05186],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, -0.13195, -0.06075, 0, 0, 0.00344, -0.07520, 0, 0],
+  [0.07282, 0, 0, 0.12371, -0.04294, 0, 0, 0.01706, 0.01297]];
+
+owl3.boys.embedding0 = function(t,u) {
+ var t0 = Math.PI * t / 2;
+ var u0 = Math.PI * u * 2; 
+ var Bt = [1,Math.sin(t0),Math.cos(t0),Math.sin(2*t0),Math.cos(2*t0),
+	   Math.sin(3*t0),Math.cos(3*t0),Math.sin(4*t0),Math.cos(4*t0)];
+ var Bu = [1,Math.sin(u0),Math.cos(u0),Math.sin(2*u0),Math.cos(2*u0),
+	   Math.sin(3*u0),Math.cos(3*u0),Math.sin(4*u0),Math.cos(4*u0)];
+
+ var v = 0;
+ for (var i = 0; i < 9; i++) {
+  for (var j = 0; j < 9; j++) {
+   v += this.coeffs[i][j] * Bt[i] * Bu[j];
+  }
+ }
+
+ return v;
+}
+
+owl3.boys.embedding = function(t,u) {
+ return [
+  this.embedding0(t,u),
+  this.embedding0(t,u+1/3),
+  this.embedding0(t,u+2/3)
+ ];
+}
+
+owl3.make_boys = function() {
+ var x = Object.create(this.boys);
+ x.owner = this;
+ x.make_mesh();
+ return x;
+}
+
+//////////////////////////////////////////////////////////////////////
+
 owl3.trefoil = Object.create(owl3.surface);
 owl3.trefoil.R = 1;
 owl3.trefoil.r = 0.1;
@@ -721,6 +915,15 @@ owl3.trefoil.normal = function(t0,u0) {
  return [(cu * f.y[0] + su * f.z[0]),
 	 (cu * f.y[1] + su * f.z[1]),
 	 (cu * f.y[2] + su * f.z[2])];
+}
+
+owl3.make_trefoil = function(R,r) {
+ var x = Object.create(this.trefoil);
+ x.owner = this;
+ if (arguments.length > 0) { x.R = R; }
+ if (arguments.length > 1) { x.r = r; }
+ x.make_mesh();
+ return x;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -865,6 +1068,20 @@ owl2.text = function(s,x,y) {
  n.setAttribute('fill','black');
  n.setAttribute('x', x);
  n.setAttribute('y', y);
+ n.textContent = s;
+ return n; 
+};
+
+owl2.math_text = function(s,x,y) {
+ var n = this.node('text');
+ n.setAttribute('text-anchor','middle');
+ n.setAttribute('alignment-baseline','middle');
+ n.setAttribute('font-size','24px');
+ n.setAttribute('font-family',comb.math_font);
+ n.setAttribute('fill','black');
+ n.setAttribute('x', x);
+ n.setAttribute('y', y);
+ n.setAttribute('pointer-events','none');
  n.textContent = s;
  return n; 
 };
