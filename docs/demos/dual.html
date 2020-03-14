@@ -119,6 +119,7 @@
 
     for (var p of [3,4,5]) {
      var P = plato.platonic_complexes[p];
+     P.owl3 = Object.create(owl3);
      P.index = p;
      P.msg = [];
      for (i = 0; i < 3; i++) {
@@ -147,13 +148,13 @@
      
      P.engine =
       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene = P.owl3.white_scene(P.engine,P.canvas);
      P.scene.camera.radius = 5;
 
-     P.plot(P.scene);
-     Q.plot(P.scene,{scale : -1/P.dual_factor, col : [0.5,0.5,0.5]});
-     Q.thick_wireframe_plot(P.scene,{scale : -1.001/P.dual_factor, col : [0,0,0]});
-     R.plot(P.scene,{scale :  1/(P.dual_factor * Q.dual_factor)});
+     P.plot(P.owl3);
+     Q.plot(P.owl3,{scale : -1/P.dual_factor, col : [0.5,0.5,0.5]});
+     Q.thick_wireframe_plot(P.owl3,{scale : -1.001/P.dual_factor, col : [0,0,0]});
+     R.plot(P.owl3,{scale :  1/(P.dual_factor * Q.dual_factor)});
 
      this.set_callbacks(P);
     }

@@ -264,6 +264,13 @@ owl3.point.set_position = function(p) {
  this.mesh.position = this.owner.vect(x);
 }
 
+owl3.point.set_colour = function(c) {
+ this.colour = owl3.col4(c);
+ if (this.mesh) {
+  this.owner.set_colour(this.mesh,c);
+ }
+}
+
 owl3.make_point = function(u,c,d) {
  var x = Object.create(this.point);
  x.owner = this;
@@ -386,6 +393,13 @@ owl3.curve.make_mesh = function() {
 
 owl3.curve.update_mesh = function() {
  this.make_mesh();
+}
+
+owl3.curve.set_colour = function(c) {
+ this.colour = owl3.col4(c);
+ if (this.mesh) {
+  this.owner.set_colour(this.mesh,this.colour);
+ }
 }
 
 owl3.curve.set_enabled = function(b) {
@@ -534,6 +548,13 @@ owl3.polygon.set_enabled = function(b) {
  this.mesh.setEnabled(b);
 }
 
+owl3.polygon.set_colour = function(c) {
+ this.colour = owl3.col4(c);
+ if (this.mesh) {
+  this.owner.set_colour(this.mesh,this.colour);
+ }
+}
+
 owl3.make_polygon = function(v,c) {
  var x = Object.create(this.polygon);
  x.owner = this;
@@ -639,12 +660,17 @@ owl3.surface.update_mesh = function() {
  this.mesh.updateVerticesData(BABYLON.VertexBuffer.NormalKind, this.grid.normals);
 }
 
+owl3.surface.set_colour = function(c) {
+ this.colour = owl3.col4(c);
+ if (this.mesh) {
+  this.owner.set_colour(this.mesh,this.colour);
+ }
+}
+
 owl3.surface.set_enabled = function(b) {
  this.enabled = b;
  this.mesh.setEnabled(b);
 }
-
-
 
 //////////////////////////////////////////////////////////////////////
 // Standard embedding of a 3-simplex as a regular tetrahedron.

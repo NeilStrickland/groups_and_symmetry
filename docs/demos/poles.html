@@ -114,6 +114,7 @@
     
     for (var p of [3,4,5]) {
      var P = plato.platonic_complexes[p];
+     P.owl3 = Object.create(owl3);
      P.index = p;
      var Q = Object.create(P.dual);
      P.dual = Q;
@@ -136,15 +137,15 @@
      
      P.engine =
       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.scene = owl3.white_scene(P.engine,P.canvas);
+     P.scene = P.owl3.white_scene(P.engine,P.canvas);
      P.scene.camera.radius = 5;
      P.sphere = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 1.99}, P.scene);
-     owl3.set_colour(P.sphere,0.7,0.7,0.7);
-     P.all_unit_poles_plot(P.scene);
-     P.sphere_wireframe_plot(P.scene,{col : [0.14,0.68,0.38]});
-     Q.sphere_wireframe_plot(P.scene,{col : [0.83,0.33,0.00], scale : -1});
-     P.plot(P.scene,{scale :  1/P.vertex_radius})
-     Q.plot(P.scene,{scale : -1/Q.vertex_radius})
+     owl3.set_colour(P.sphere,[0.7,0.7,0.7]);
+     P.all_unit_poles_plot(P.owl3);
+     P.sphere_wireframe_plot(P.owl3,{col : [0.14,0.68,0.38]});
+     Q.sphere_wireframe_plot(P.owl3,{col : [0.83,0.33,0.00], scale : -1});
+     P.plot(P.owl3,{scale :  1/P.vertex_radius})
+     Q.plot(P.owl3,{scale : -1/Q.vertex_radius})
      this.set_callbacks(P);
     }
    }

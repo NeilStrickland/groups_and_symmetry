@@ -1,5 +1,7 @@
 var plato = {};
 
+plato.owl3 = null;
+
 plato.pole_colours = {
  2 : [0,1,0],
  3 : [1,0,0],
@@ -25,7 +27,7 @@ plato.solid.find_vertex_index = function(u) {
  return(i_min);
 }
 
-plato.solid.plot = function(scene,opts) {
+plato.solid.plot = function(o,opts) {
  opts = opts || {};
  var scale = opts.scale || 1;
  var n = this.num_facets;
@@ -51,20 +53,20 @@ plato.solid.plot = function(scene,opts) {
    jj.push([0,j,j+1])
   }
   g.indices = owl.flat(jj);
-  var mesh = new BABYLON.Mesh(null,scene);
+  var mesh = new BABYLON.Mesh(null,o.scene);
   g.applyToMesh(mesh);
-  owl3.set_colour(mesh,...cols[i]);
+  o.set_colour(mesh,cols[i]);
   this.facet_plots.push(mesh);
  }
 }
 
-plato.solid.grey_plot = function(scene,opts) {
+plato.solid.grey_plot = function(o,opts) {
  opts = {} || opts;
  opts.col = [0.7,0.7,0.7];
- this.plot(scene,opts);
+ this.plot(o,opts);
 }
 
-plato.solid.wireframe_plot = function(scene,opts) {
+plato.solid.wireframe_plot = function(o,opts) {
  opts = opts || {};
  var scale = opts.scale || 1;
  var col = opts.col || [0.7,0.7,0.7];
@@ -73,14 +75,14 @@ plato.solid.wireframe_plot = function(scene,opts) {
 
  for (var e of this.short_edges) {
   this.short_edge_plots.push(
-   owl3.make_line(vec.smul(scale,this.embedding[e[0]]),
-		  vec.smul(scale,this.embedding[e[1]]),
-		  col,scene)
+   o.make_thin_line(vec.smul(scale,this.embedding[e[0]]),
+		    vec.smul(scale,this.embedding[e[1]]),
+		    col)
   );
  }
 }
 
-plato.solid.thick_wireframe_plot = function(scene,opts) {
+plato.solid.thick_wireframe_plot = function(o,opts) {
  opts = opts || {};
  var scale  = opts.scale || 1;
  var col    = opts.col || [0.7,0.7,0.7];
@@ -89,17 +91,18 @@ plato.solid.thick_wireframe_plot = function(scene,opts) {
  this.short_edge_plots = [];
 
  for (var e of this.short_edges) {
-  var l = Object.create(owl3.thick_line);
+  var l = Object.create(o.line);
+  l.owner = o;
   l.radius = radius;
   l.a = vec.smul(scale,this.embedding[e[0]]);
   l.b = vec.smul(scale,this.embedding[e[1]]);
   l.set_colour(col);
-  l.make_mesh(scene);
+  l.make_mesh();
   this.short_edge_plots.push(l);
  }
 }
 
-plato.solid.sphere_wireframe_plot = function(scene,opts) {
+plato.solid.sphere_wireframe_plot = function(o,opts) {
  opts = opts || {};
  var scale = opts.scale || 1;
  var col = opts.col || [0.7,0.7,0.7];
@@ -108,17 +111,18 @@ plato.solid.sphere_wireframe_plot = function(scene,opts) {
  this.short_edge_plots = [];
 
  for (var e of this.short_edges) {
-  var a = Object.create(owl3.thick_sphere_arc);
+  var a = Object.create(o.sphere_arc);
+  a.owner = o;
   a.radius = 0.01;
   a.set_ends(vec.smul(r,this.embedding[e[0]]),
 	     vec.smul(r,this.embedding[e[1]]));
   a.set_colour(col);
-  a.make_mesh(scene);
+  a.make_mesh();
   this.short_edge_plots.push(a);
  }
 }
 
-plato.solid.all_poles_plot = function(scene) {
+plato.solid.all_poles_plot = function(o) {
  this.pole_plots = {2 : [], 3 : [], 4 : [], 5 : []};
 
  for (var d of [2,3,4,5]) {
@@ -126,17 +130,13 @@ plato.solid.all_poles_plot = function(scene) {
   var c = plato.pole_colours[d];
   for (var i of this.poles[d]) {
    var u = alternating_five.all_poles[i];
-   var m = Object.create(owl3.thick_line);
-   m.a = vec.smul( r,u);
-   m.b = vec.smul(-r,u);
-   m.set_colour(c);
-   m.make_mesh(scene);
+   var m = o.make_thin_line(vec.smul( r,u),vec.smul(-r,u),c);
    this.pole_plots[d].push(m);
   }
  }
 }
 
-plato.solid.all_unit_poles_plot = function(scene) {
+plato.solid.all_unit_poles_plot = function(o) {
  this.unit_pole_plots = {2 : [], 3 : [], 4 : [], 5 : []};
 
  for (var d of [2,3,4,5]) {
@@ -144,17 +144,14 @@ plato.solid.all_unit_poles_plot = function(scene) {
   var c = plato.pole_colours[d];
   for (var i of this.poles[d]) {
    var u = alternating_five.all_poles[i];
-   var m = Object.create(owl3.thick_line);
-   m.a = vec.smul( r,u);
-   m.b = vec.smul(-r,u);
-   m.set_colour(c);
-   m.make_mesh(scene);
+   var m = o.make_line(vec.smul( r,u),vec.smul(-r,u),c,0.03);
+   m.make_mesh();
    this.unit_pole_plots[d].push(m);
   }
  }
 }
 
-plato.solid.sample_poles_plot = function(scene) {
+plato.solid.sample_poles_plot = function(o) {
  this.pole_plots = {2 : [], 3 : [], 4 : [], 5 : []};
 
  for (var d of [2,3,4,5]) {
@@ -163,20 +160,16 @@ plato.solid.sample_poles_plot = function(scene) {
   if (this.poles[d].length) {
    var i = this.poles[d][0];
    var u = alternating_five.all_poles[i];
-   var m = Object.create(owl3.thick_line);
-   m.a = vec.smul( r,u);
-   m.b = vec.smul(-r,u);
-   m.radius = 0.02 * this.vertex_radius;
-   m.set_colour(c);
-   m.make_mesh(scene);
+   var m = o.make_line(vec.smul( r,u),vec.smul(-r,u),c,0.02 * this.vertex_radius);
+   m.make_mesh();
    this.pole_plots[d].push(m);
   }
  }
 }
 
-plato.solid.dual_plot = function(scene) {
- this.wireframe_plot(scene);
- this.dual.plot(scene,{scale : -1/this.dual_factor});
+plato.solid.dual_plot = function(o) {
+ this.wireframe_plot(o);
+ this.dual.plot(o,{scale : -1/this.dual_factor});
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -466,58 +459,58 @@ plato.init = function() {
 
  for (p = 1; p <= 5; p++) { AC[p].dual = AC[6-p]; }
  
- DC.all_edges_plot = function(scene) {
+ DC.all_edges_plot = function(o) {
   this.all_edges_plots = [];
   for (var e of this.short_edges) {
    this.all_edges_plots.push(
-    owl3.make_line(this.embedding[e[0]],
-		   this.embedding[e[1]],
-		   [0.0,0.0,1.0],scene)
+    o.make_thin_line(this.embedding[e[0]],
+		     this.embedding[e[1]],
+		     [0.0,0.0,1.0])
    );
   }
 
   for (var e of this.long_edges_a) {
    this.all_edges_plots.push(
-    owl3.make_line(this.embedding[e[0]],
-		   this.embedding[e[1]],
-		   [1.0,0.0,0.0],scene)
+    o.make_thin_line(this.embedding[e[0]],
+		     this.embedding[e[1]],
+		     [1.0,0.0,0.0])
    );
   }
 
   for (var e of this.long_edges_b) {
    this.all_edges_plots.push(
-    owl3.make_line(this.embedding[e[0]],
-		   this.embedding[e[1]],
-		   [0.0,1.0,0.0],scene)
+    o.make_thin_line(this.embedding[e[0]],
+		     this.embedding[e[1]],
+		     [0.0,1.0,0.0])
    );
   }
  }
 
- DC.triangle_plot = function(scene) {
+ DC.triangle_plot = function(o) {
   this.triangle_plots = [];
 
   var v = this.embedding;
   
   for (f of this.faces_a) {
-   this.triangle_plots.push(owl3.make_triangle(v[f[0]],v[f[1]],v[f[2]],[0,0,1],scene));
+   this.triangle_plots.push(o.make_polygon([v[f[0]],v[f[1]],v[f[2]]],[0,0,1]));
   }
 
   for (f of this.faces_b) {
-   this.triangle_plots.push(owl3.make_triangle(v[f[0]],v[f[1]],v[f[2]],[1,0,0],scene));
+   this.triangle_plots.push(o.make_polygon([v[f[0]],v[f[1]],v[f[2]]],[1,0,0]));
   }
 
   for (f of this.faces_c) {
-   this.triangle_plots.push(owl3.make_triangle(v[f[0]],v[f[1]],v[f[2]],[0,1,0],scene));
+   this.triangle_plots.push(o.make_polygon([v[f[0]],v[f[1]],v[f[2]]],[0,1,0]));
   }
 
   for (var e of this.short_edges) {
-   owl3.make_line(this.embedding[e[0]],
-		  this.embedding[e[1]],
-		  [0.9,0.9,0.9],scene);
+   o.make_thin_line(this.embedding[e[0]],
+		    this.embedding[e[1]],
+		    [0.9,0.9,0.9]);
   }
  }
 
- DC.inscribed_cubes_plot = function(scene) {
+ DC.inscribed_cubes_plot = function(o) {
   this.inscribed_cube_plots = [];
   var v = this.embedding;
 
@@ -536,12 +529,13 @@ plato.init = function() {
    for (j = 0; j < 8; j++) {
     for (k = 0 + 1; k < 8; k++) {
      if (Math.abs(vec.dd(v[C0[j]],v[C0[k]]) - 2) < 0.0001) {
-      var l = Object.create(owl3.thick_line);
+      var l = Object.create(o.line);
+      l.owner = o;
       l.a = v[C0[j]];
       l.b = v[C0[k]];
       l.radius = 0.02;
       l.colour = cols[i];
-      l.make_mesh(scene);
+      l.make_mesh();
       CP0.push(l);
      }
     }
@@ -550,7 +544,7 @@ plato.init = function() {
   }
  }
 
- CC.long_axes_plot = function(scene) {
+ CC.long_axes_plot = function(o) {
   this.long_axis_plots = [];
 
   var cols = [
@@ -564,12 +558,13 @@ plato.init = function() {
 
   for (var i = 0; i < 4; i++) {
    var u = uu[i];
-   var l = Object.create(owl3.thick_line);
+   var l = Object.create(owl3.line);
+   l.owner = o;
    l.a = vec.smul(-1.3,u);
    l.b = vec.smul( 1.3,u);
    l.radius = 0.03;
    l.colour = cols[i];
-   l.make_mesh(scene);
+   l.make_mesh();
    this.long_axis_plots.push(l);
   }
  }
