@@ -5,8 +5,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://preview.babylonjs.com/babylon.js"></script>
-  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
    MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
@@ -14,10 +12,7 @@
     tex2jax: {inlineMath: [["$","$"]]}
    });
   </script> 
-  <script type="text/javascript" src="owl/vec.js"></script>
-  <script type="text/javascript" src="owl/owl.js"></script>
-  <script type="text/javascript" src="alternating_five.js"></script>
-  <script type="text/javascript" src="plato.js"></script>
+  <script src="require.js"></script>
 
   <style>
    @import url(owl/owl.css);
@@ -81,60 +76,74 @@
 
   <script type="text/javascript">
 
-   var demo = Object.create(owl.demo);
-
-   demo.init = function() {
-    this.name = 'plato';
-    this.find_ids();
-    
-    var me = this;
-    this.owl3 = Object.create(owl3);
-    
-    this.engine =
-     new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
-
-    this.scene = this.owl3.white_scene(this.engine,this.main_canvas);
-    this.scene.camera.radius = 7;
-
-    this.DC = plato.dodecahedron_complex;
-    this.DC.grey_plot(this.owl3);
-    this.DC.wireframe_plot(this.owl3,{col : [0,0,0]});
-    this.DC.inscribed_cubes_plot(this.owl3);
-
-    this.cb = {};
-    
-    for (i = 1; i <= 5; i++) {
-     this.cb[i] = document.getElementById('cb' + i);
-     this.cb[i].onclick = function() { me.set_visibility_all(); }
+   requirejs.config({
+    baseUrl: '.',
+    paths: {
+     "babylonjs" : 'https://preview.babylonjs.com/babylon',
+     "babylonjs-gui" : 'https://preview.babylonjs.com/gui/babylon.gui.min',
+     "owl" : 'owl/owl',
+     "vec" : 'owl/vec',
+     "plato" : 'plato',
+     "alternating_five" : 'alternating_five'
     }
-    
-    this.engine.runRenderLoop(function () {
-     if (me.scene) {
-      me.scene.render();
-     }});
+   });
    
-    window.addEventListener("resize", function () {
-     me.engine.resize();
-    });
+   require(['babylonjs','owl','vec','plato','alternating_five'],
+	   function(BABYLON,owl,vec,plato,alternating_five) {
+    var demo = Object.create(owl.demo);
 
-   }
-    
-   demo.set_visibility_all = function(X,x) {
-    for (i = 1; i <= 5; i++) {
-     this.set_visibility(i,this.cb[i].checked ? 1 : 0);
+    demo.init = function() {
+     this.name = 'plato';
+     this.find_ids();
+
+     var me = this;
+     this.owl3 = Object.create(owl.three_d);
+
+     this.engine =
+      new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+     this.scene = this.owl3.white_scene(this.engine,this.main_canvas);
+     this.scene.camera.radius = 7;
+
+     this.DC = plato.dodecahedron_complex;
+     this.DC.grey_plot(this.owl3);
+     this.DC.wireframe_plot(this.owl3,{col : [0,0,0]});
+     this.DC.inscribed_cubes_plot(this.owl3);
+
+     this.cb = {};
+
+     for (i = 1; i <= 5; i++) {
+      this.cb[i] = document.getElementById('cb' + i);
+      this.cb[i].onclick = function() { me.set_visibility_all(); }
+     }
+
+     this.engine.runRenderLoop(function () {
+      if (me.scene) {
+       me.scene.render();
+      }});
+
+     window.addEventListener("resize", function () {
+      me.engine.resize();
+     });
+
     }
-   }
 
-   demo.set_visibility = function(i,b) {
-    var E = this.DC.inscribed_cube_plots[i-1];
-
-    for (e of E) {
-     e.mesh.material.alpha = b;
+    demo.set_visibility_all = function(X,x) {
+     for (i = 1; i <= 5; i++) {
+      this.set_visibility(i,this.cb[i].checked ? 1 : 0);
+     }
     }
-   }
-   
-   demo.init();
-   
+
+    demo.set_visibility = function(i,b) {
+     var E = this.DC.inscribed_cube_plots[i-1];
+
+     for (e of E) {
+      e.mesh.material.alpha = b;
+     }
+    }
+
+    demo.init();
+   });   
   </script>
  </body>
 </html>

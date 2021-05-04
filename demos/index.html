@@ -33,7 +33,6 @@
    }
    
   </style>
-  <script src="https://preview.babylonjs.com/babylon.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
    MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
@@ -41,10 +40,7 @@
     tex2jax: {inlineMath: [["$","$"]]}
    });
   </script> 
-  <script type="text/javascript" src="owl/vec.js"></script>
-  <script type="text/javascript" src="owl/owl.js"></script>
-  <script type="text/javascript" src="alternating_five.js"></script>
-  <script type="text/javascript" src="plato.js"></script>
+  <script src="require.js"></script>
  </head>
  <body>
   <div id="frame">
@@ -82,47 +78,61 @@
    <div id="container" style="padding-top:150px; padding-left:100px;"></div>
   </div>
   <script type="text/javascript">
-   var demo = Object.create(owl.demo);
-
-   demo.init = function() {
-    this.name = 'plato';
-    this.container = document.getElementById('container');
-    var me = this;
-
-    var rr = [0,2.2,2.9,4.5,4.5,5.2];
-    
-    for (var p = 1; p <= 5; p++) {
-     var P = plato.platonic_complexes[p];
-     P.owl3 = Object.create(owl3);
-     P.div = document.createElement('div');
-     P.div.className = 'solid';
-     P.canvas = document.createElement('canvas');
-     P.canvas.width  = 200;
-     P.canvas.height = 150;
-     P.div.appendChild(P.canvas);
-     this.container.appendChild(P.div);
-     P.engine =
-      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.scene = P.owl3.white_scene(P.engine,P.canvas);
-     P.scene.camera.radius = rr[p];
-     P.plot(P.owl3);
-     this.set_callbacks(P);
+   requirejs.config({
+    baseUrl: '.',
+    paths: {
+     "babylonjs" : 'https://preview.babylonjs.com/babylon',
+     "babylonjs-gui" : 'https://preview.babylonjs.com/gui/babylon.gui.min',
+     "owl" : 'owl/owl',
+     "vec" : 'owl/vec',
+     "plato" : 'plato',
+     "alternating_five" : 'alternating_five'
     }
-   }
-    
-   demo.set_callbacks = function(P) {
-    P.engine.runRenderLoop(function () {
-     if (P.scene) {
-      P.scene.render();
-     }});
+   });
    
-    window.addEventListener("resize", function () {
-     P.engine.resize();
-    });
-   }
+   require(['babylonjs','owl','vec','plato','alternating_five'],
+	   function(BABYLON,owl,vec,plato,alternating_five) {
+    var demo = Object.create(owl.demo);
 
-   demo.init();
-   
+    demo.init = function() {
+     this.name = 'plato';
+     this.container = document.getElementById('container');
+     var me = this;
+
+     var rr = [0,2.2,2.9,4.5,4.5,5.2];
+
+     for (var p = 1; p <= 5; p++) {
+      var P = plato.platonic_complexes[p];
+      P.owl3 = Object.create(owl.three_d);
+      P.div = document.createElement('div');
+      P.div.className = 'solid';
+      P.canvas = document.createElement('canvas');
+      P.canvas.width  = 200;
+      P.canvas.height = 150;
+      P.div.appendChild(P.canvas);
+      this.container.appendChild(P.div);
+      P.engine =
+       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+      P.scene = P.owl3.white_scene(P.engine,P.canvas);
+      P.scene.camera.radius = rr[p];
+      P.plot(P.owl3);
+      this.set_callbacks(P);
+     }
+    }
+
+    demo.set_callbacks = function(P) {
+     P.engine.runRenderLoop(function () {
+      if (P.scene) {
+       P.scene.render();
+      }});
+
+     window.addEventListener("resize", function () {
+      P.engine.resize();
+     });
+    }
+
+    demo.init();
+   });   
   </script>
  </body>
 </html>

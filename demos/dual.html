@@ -5,8 +5,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://preview.babylonjs.com/babylon.js"></script>
-  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
    MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
@@ -15,10 +13,7 @@
    });
   </script> 
   <script type="text/javascript" src="owl/tabber.js"></script>
-  <script type="text/javascript" src="owl/vec.js"></script>
-  <script type="text/javascript" src="owl/owl.js"></script>
-  <script type="text/javascript" src="alternating_five.js"></script>
-  <script type="text/javascript" src="plato.js"></script>
+  <script src="require.js"></script>
 
   <style>
    @import url(owl/tabber.css);
@@ -111,108 +106,122 @@
   
   <script type="text/javascript">
 
-   var demo = Object.create(owl.demo);
+   requirejs.config({
+    baseUrl: '.',
+    paths: {
+     "babylonjs" : 'https://preview.babylonjs.com/babylon',
+     "babylonjs-gui" : 'https://preview.babylonjs.com/gui/babylon.gui.min',
+     "owl" : 'owl/owl',
+     "vec" : 'owl/vec',
+     "plato" : 'plato',
+     "alternating_five" : 'alternating_five'
+    }
+   });
+   
+   require(['babylonjs','owl','vec','plato','alternating_five'],
+	   function(BABYLON,owl,vec,plato,alternating_five) {
+    var demo = Object.create(owl.demo);
 
-   demo.init = function() {
-    this.name = 'plato';
-    var me = this;
+    demo.init = function() {
+     this.name = 'plato';
+     var me = this;
 
-    for (var p of [3,4,5]) {
-     var P = plato.platonic_complexes[p];
-     P.owl3 = Object.create(owl3);
-     P.index = p;
-     P.msg = [];
-     for (i = 0; i < 3; i++) {
-      P.msg.push(document.getElementById('msg' + p + '_' + i));
+     for (var p of [3,4,5]) {
+      var P = plato.platonic_complexes[p];
+      P.owl3 = Object.create(owl.three_d);
+      P.index = p;
+      P.msg = [];
+      for (i = 0; i < 3; i++) {
+       P.msg.push(document.getElementById('msg' + p + '_' + i));
+      }
+      var Q = Object.create(P.dual);
+      P.dual = Q;
+      var R = Object.create(Q.dual);
+      Q.dual = R;
+      P.tab = document.getElementById('tab' + p);
+      P.div = document.getElementById('solid' + p);
+      P.canvas = document.createElement('canvas');
+      P.canvas.width  = 500;
+      P.canvas.height = 500;
+      P.div.appendChild(P.canvas);
+      P.slidecontainer = document.createElement('div');
+      P.slidecontainer.className = 'slidecontainer';
+      P.div.appendChild(P.slidecontainer);
+      P.slider = document.createElement('input');
+      P.slider.className = 'slider';
+      P.slider.type = 'range';
+      P.slider.min = 0;
+      P.slider.max = 200;
+      P.slider.value = 0;
+      P.slidecontainer.appendChild(P.slider);
+
+      P.engine =
+       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+      P.scene = P.owl3.white_scene(P.engine,P.canvas);
+      P.scene.camera.radius = 5;
+
+      P.plot(P.owl3);
+      Q.plot(P.owl3,{scale : -1/P.dual_factor, col : [0.5,0.5,0.5]});
+      Q.thick_wireframe_plot(P.owl3,{scale : -1.001/P.dual_factor, col : [0,0,0]});
+      R.plot(P.owl3,{scale :  1/(P.dual_factor * Q.dual_factor)});
+
+      this.set_callbacks(P);
      }
-     var Q = Object.create(P.dual);
-     P.dual = Q;
-     var R = Object.create(Q.dual);
-     Q.dual = R;
-     P.tab = document.getElementById('tab' + p);
-     P.div = document.getElementById('solid' + p);
-     P.canvas = document.createElement('canvas');
-     P.canvas.width  = 500;
-     P.canvas.height = 500;
-     P.div.appendChild(P.canvas);
-     P.slidecontainer = document.createElement('div');
-     P.slidecontainer.className = 'slidecontainer';
-     P.div.appendChild(P.slidecontainer);
-     P.slider = document.createElement('input');
-     P.slider.className = 'slider';
-     P.slider.type = 'range';
-     P.slider.min = 0;
-     P.slider.max = 200;
-     P.slider.value = 0;
-     P.slidecontainer.appendChild(P.slider);
-     
-     P.engine =
-      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.scene = P.owl3.white_scene(P.engine,P.canvas);
-     P.scene.camera.radius = 5;
-
-     P.plot(P.owl3);
-     Q.plot(P.owl3,{scale : -1/P.dual_factor, col : [0.5,0.5,0.5]});
-     Q.thick_wireframe_plot(P.owl3,{scale : -1.001/P.dual_factor, col : [0,0,0]});
-     R.plot(P.owl3,{scale :  1/(P.dual_factor * Q.dual_factor)});
-
-     this.set_callbacks(P);
     }
-   }
-    
-   demo.set_callbacks = function(P) {
-    var me = this;
-    
-    P.engine.runRenderLoop(function () {
-     if (P.scene) {
-      P.scene.render();
-     }});
-   
-    window.addEventListener("resize", function () {
-     P.engine.resize();
-    });
 
-    P.slider.oninput = function() {
-     me.set_stage(P,this.value);
-    }
-   }
+    demo.set_callbacks = function(P) {
+     var me = this;
 
-   demo.set_stage = function(P,v) {
-    var p = P.index;
-    var Q = P.dual;
-    var R = Q.dual;
-    
-    if (v == 0) {
-     this.show_msg(P,0);
-    } else if (v <= 100) {
-     this.show_msg(P,1);
-     this.fade(P,1 - 0.01 * v);
-     this.fade(Q,1);
-     this.fade(R,1);
-    } else {
-     this.show_msg(P,2);
-     this.fade(P,0);
-     this.fade(Q,1 - 0.01 * (v - 100));
-     this.fade(R,1);
-    }
-   }
+     P.engine.runRenderLoop(function () {
+      if (P.scene) {
+       P.scene.render();
+      }});
 
-   demo.show_msg = function(P,i) {
-    for (var j = 0; j < 3; j++) {
-     P.msg[j].style.display = (j == i) ? 'block' : 'none';
+     window.addEventListener("resize", function () {
+      P.engine.resize();
+     });
+
+     P.slider.oninput = function() {
+      me.set_stage(P,this.value);
+     }
     }
-   }
-   
-   demo.fade = function(X,x) {
-    var n = X.num_facets;
-    for (i = 0; i < n; i++) {
-     var f = X.facet_plots[i];
-     f.material.alpha = x;
+
+    demo.set_stage = function(P,v) {
+     var p = P.index;
+     var Q = P.dual;
+     var R = Q.dual;
+
+     if (v == 0) {
+      this.show_msg(P,0);
+     } else if (v <= 100) {
+      this.show_msg(P,1);
+      this.fade(P,1 - 0.01 * v);
+      this.fade(Q,1);
+      this.fade(R,1);
+     } else {
+      this.show_msg(P,2);
+      this.fade(P,0);
+      this.fade(Q,1 - 0.01 * (v - 100));
+      this.fade(R,1);
+     }
     }
-   }
+
+    demo.show_msg = function(P,i) {
+     for (var j = 0; j < 3; j++) {
+      P.msg[j].style.display = (j == i) ? 'block' : 'none';
+     }
+    }
+
+    demo.fade = function(X,x) {
+     var n = X.num_facets;
+     for (i = 0; i < n; i++) {
+      var f = X.facet_plots[i];
+      f.material.alpha = x;
+     }
+    }
 
    demo.init();
-   
+  });   
   </script>
  </body>
 </html>
