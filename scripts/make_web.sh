@@ -1,1 +1,1 @@
-cp -r ../docs/* /d/wamp/www/pm1nps/courses/groups
+cp -r ../docs/* $WEBDIR/pm1nps/courses/groups
