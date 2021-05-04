@@ -5,12 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://preview.babylonjs.com/babylon.js"></script>
-  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
-  <script type="text/javascript" src="owl/vec.js"></script>
-  <script type="text/javascript" src="owl/owl.js"></script>
-  <script type="text/javascript" src="alternating_five.js"></script>
-  <script type="text/javascript" src="plato.js"></script>
+  <script src="require.js"></script>
 
   <style>
    @import url(owl/tabber.css);
@@ -44,63 +39,78 @@
 
   <script type="text/javascript">
 
-   var demo = Object.create(owl.demo);
-
-   demo.init = function() {
-    this.name = 'dodeahedron';
-    
-    this.container = document.getElementById('container');
-    var me = this;
-
-    var DC = plato.dodecahedron_complex;
-    DC.pics = [];
-
-    for (var p = 1; p <= 3; p++) {
-     var P = {};
-     DC.pics.push(P);
-     P.div = document.createElement('div');
-     P.owl3 = Object.create(owl3);
-     P.div.className = 'solid';
-     P.canvas = document.createElement('canvas');
-     P.canvas.width  = 400;
-     P.canvas.height = 400;
-     P.div.appendChild(P.canvas);
-     this.container.appendChild(P.div);
-     P.engine =
-      new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
-     P.owl3.white_scene(P.engine,P.canvas);
-     var mesh = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 0.6}, P.owl3.scene);
-     P.owl3.set_colour(mesh,[1,0,0]);
-     
-     P.owl3.scene.camera.radius = 5;
-     if (p == 1) {
-      DC.all_edges_plot(P.owl3);
-      var mesh = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 2.6}, P.owl3.scene);
-      P.owl3.set_colour(mesh,[0.7,0.7,0.7]);
-     } else if (p == 2) {
-      DC.inscribed_cubes_plot(P.owl3);
-      DC.grey_plot(P.owl3);
-      DC.wireframe_plot(P.owl3,{scale : 1.001, col : [0,0,0]});
-     } else {
-      DC.triangle_plot(P.owl3);
-      DC.wireframe_plot(P.owl3,{scale : 1.001, col : [0,1,1]});
-     }
-     this.set_callbacks(P);
+   requirejs.config({
+    baseUrl: '.',
+    paths: {
+     "babylonjs" : 'https://preview.babylonjs.com/babylon',
+     "babylonjs-gui" : 'https://preview.babylonjs.com/gui/babylon.gui.min',
+     "owl" : 'owl/owl',
+     "vec" : 'owl/vec',
+     "plato" : 'plato',
+     "alternating_five" : 'alternating_five'
     }
-   }
-    
-   demo.set_callbacks = function(P) {
-    P.engine.runRenderLoop(function () {
-     if (P.owl3.scene) {
-      P.owl3.scene.render();
-     }});
+   });
    
-    window.addEventListener("resize", function () {
-     P.engine.resize();
-    });
-   }
+  require(['babylonjs','owl','vec','plato','alternating_five'],
+	  function(BABYLON,owl,vec,plato,alternating_five) {
+    var demo = Object.create(owl.demo);
 
-   demo.init();
+    demo.init = function() {
+     this.name = 'dodeahedron';
+
+     this.container = document.getElementById('container');
+     var me = this;
+
+     var DC = plato.dodecahedron_complex;
+     DC.pics = [];
+
+     for (var p = 1; p <= 3; p++) {
+      var P = {};
+      DC.pics.push(P);
+      P.div = document.createElement('div');
+      P.owl3 = Object.create(owl.three_d);
+      P.div.className = 'solid';
+      P.canvas = document.createElement('canvas');
+      P.canvas.width  = 400;
+      P.canvas.height = 400;
+      P.div.appendChild(P.canvas);
+      this.container.appendChild(P.div);
+      P.engine =
+       new BABYLON.Engine(P.canvas, true, { preserveDrawingBuffer: true, stencil: true });
+      P.owl3.white_scene(P.engine,P.canvas);
+      var mesh = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 0.6}, P.owl3.scene);
+      P.owl3.set_colour(mesh,[1,0,0]);
+
+      P.owl3.scene.camera.radius = 5;
+      if (p == 1) {
+       DC.all_edges_plot(P.owl3);
+       var mesh = BABYLON.MeshBuilder.CreateSphere(null, {diameter : 2.6}, P.owl3.scene);
+       P.owl3.set_colour(mesh,[0.7,0.7,0.7]);
+      } else if (p == 2) {
+       DC.inscribed_cubes_plot(P.owl3);
+       DC.grey_plot(P.owl3);
+       DC.wireframe_plot(P.owl3,{scale : 1.001, col : [0,0,0]});
+      } else {
+       DC.triangle_plot(P.owl3);
+       DC.wireframe_plot(P.owl3,{scale : 1.001, col : [0,1,1]});
+      }
+      this.set_callbacks(P);
+     }
+    }
+
+    demo.set_callbacks = function(P) {
+     P.engine.runRenderLoop(function () {
+      if (P.owl3.scene) {
+       P.owl3.scene.render();
+      }});
+
+     window.addEventListener("resize", function () {
+      P.engine.resize();
+     });
+    }
+
+    demo.init();
+   });
    
   </script>
  </body>

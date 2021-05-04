@@ -5,8 +5,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script src="https://preview.babylonjs.com/babylon.js"></script>
-  <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js"> 
    MathJax.Hub.Config({
     extensions: ["tex2jax.js"],
@@ -14,10 +12,7 @@
     tex2jax: {inlineMath: [["$","$"]]}
    });
   </script> 
-  <script type="text/javascript" src="owl/vec.js"></script>
-  <script type="text/javascript" src="owl/owl.js"></script>
-  <script type="text/javascript" src="alternating_five.js"></script>
-  <script type="text/javascript" src="plato.js"></script>
+  <script src="require.js"></script>
 
   <style>
    @import url(owl/owl.css);
@@ -51,39 +46,52 @@
 
   <script type="text/javascript">
 
-   var demo = Object.create(owl.demo);
-
-   demo.init = function() {
-    this.name = 'plato';
-    this.find_ids();
-    
-    var me = this;
-
-    this.owl3 = Object.create(owl3);
-    this.engine =
-     new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
-
-    this.scene = this.owl3.white_scene(this.engine,this.main_canvas);
-    this.scene.camera.radius = 7;
-
-    this.CC = plato.cube_complex;
-    this.CC.grey_plot(this.owl3);
-    this.CC.wireframe_plot(this.owl3,{col : [0,0,0]});
-    this.CC.long_axes_plot(this.owl3);
-
-    this.engine.runRenderLoop(function () {
-     if (me.scene) {
-      me.scene.render();
-     }});
+   requirejs.config({
+    baseUrl: '.',
+    paths: {
+     "babylonjs" : 'https://preview.babylonjs.com/babylon',
+     "babylonjs-gui" : 'https://preview.babylonjs.com/gui/babylon.gui.min',
+     "owl" : 'owl/owl',
+     "vec" : 'owl/vec',
+     "plato" : 'plato',
+     "alternating_five" : 'alternating_five'
+    }
+   });
    
-    window.addEventListener("resize", function () {
-     me.engine.resize();
-    });
+   require(['babylonjs','owl','vec','plato','alternating_five'],
+	   function(BABYLON,owl,vec,plato,alternating_five) {
+    var demo = Object.create(owl.demo);
 
-   }
-       
-   demo.init();
-   
+    demo.init = function() {
+     this.name = 'plato';
+     this.find_ids();
+
+     var me = this;
+
+     this.owl3 = Object.create(owl.three_d);
+     this.engine =
+      new BABYLON.Engine(this.main_canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+     this.scene = this.owl3.white_scene(this.engine,this.main_canvas);
+     this.scene.camera.radius = 7;
+
+     this.CC = plato.cube_complex;
+     this.CC.grey_plot(this.owl3);
+     this.CC.wireframe_plot(this.owl3,{col : [0,0,0]});
+     this.CC.long_axes_plot(this.owl3);
+
+     this.engine.runRenderLoop(function () {
+      if (me.scene) {
+       me.scene.render();
+      }});
+
+     window.addEventListener("resize", function () {
+      me.engine.resize();
+     });
+    }
+
+    demo.init();
+   });   
   </script>
  </body>
 </html>
