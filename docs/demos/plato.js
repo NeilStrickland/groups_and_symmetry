@@ -124,6 +124,45 @@ define("plato",['babylonjs','owl','vec','alternating_five'],
   }
  }
 
+ plato.solid.offset_edge_plot = function(o,opts) {
+  opts = opts || {};
+  var scale = opts.scale || 1;
+  var col = opts.col || [0,0,0];
+  
+  this.offset_edge_plots = [];
+  for (var f of this.faces) {
+   var c = [0,0,0];
+   for (var i of f) { c = vec.add(c,this.embedding[i]); }
+   var n = f.length;
+   c = vec.smul(1./n,c);
+   var ff = f; 
+   ff.push(f[0]);
+   for (i = 0; i < n; i++) {
+    var a = vec.smul(scale,vec.add(vec.smul(0.95,this.embedding[ff[i  ]]),vec.smul(0.06,c)));
+    var b = vec.smul(scale,vec.add(vec.smul(0.95,this.embedding[ff[i+1]]),vec.smul(0.06,c)));
+    this.offset_edge_plots.push(o.make_thin_line(a,b,col));
+   }
+  }
+ }
+
+ plato.solid.offset_vertex_plot = function(o,opts) {
+  opts = opts || {};
+  var scale = opts.scale || 1;
+  var col = opts.col || [0,0,0];
+  var d = opts.d || 0.05;
+  this.offset_vertex_plots = [];
+  for (var f of this.faces) {
+   var c = [0,0,0];
+   for (var i of f) { c = vec.add(c,this.embedding[i]); }
+   var n = f.length;
+   c = vec.smul(1./n,c);
+   for (i = 0; i < n; i++) {
+    var a = vec.smul(scale,vec.add(vec.smul(0.95,this.embedding[f[i]]),vec.smul(0.05,c)));
+    this.offset_vertex_plots.push(o.make_point(a,col,d));
+   }
+  }      
+ }
+
  plato.solid.all_poles_plot = function(o) {
   this.pole_plots = {2 : [], 3 : [], 4 : [], 5 : []};
 
